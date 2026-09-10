@@ -122,3 +122,30 @@ def test_end_to_end_writes_a_valid_submission(data, tmp_path):
     assert len(sub) == len(test) and (sub["Item_Outlet_Sales"] >= 0).all()
     baseline = rmse(truth, np.full_like(truth, train[TARGET].mean()))
     assert rmse(truth, sub["Item_Outlet_Sales"]) < 0.8 * baseline
+
+
+def test_recover_units_rebuilds_every_sale():
+    from src.structure import recover_units
+
+    rng = np.random.default_rng(0)
+    mrp = rng.uniform(31, 267, 5000).round(4)
+    units = rng.integers(1, 60, 5000)
+    offset = rng.integers(-20, 21, 5000) / 10
+    sales = (units * (mrp + offset)).round(4)
+    got_units, got_offset = recover_units(sales, mrp)
+    # A sale can occasionally split two ways (30 x 62 = 31 x 60); every split
+    # found must still rebuild the sale, and nearly all must be the true one.
+    np.testing.assert_allclose(got_units * (mrp + got_offset), sales, atol=0.01)
+    assert np.mean(got_units == units) > 0.97
+
+
+def test_store_rate_popularity_learns_rates_and_shrinks():
+    from src.structure import StoreRatePopularity
+
+    X = pd.DataFrame({"Outlet_Identifier": ["A"] * 4 + ["B"] * 4,
+                      "Item_Identifier": ["x", "y", "x", "y", "x", "y", "x", "y"]})
+    y = np.array([12, 8, 12, 8, 3, 2, 3, 2], dtype=float)  # store A 10/row, B 2.5/row; x sells 1.2x
+    unshrunk = StoreRatePopularity(smoothing=0).fit(X, y)
+    np.testing.assert_allclose(unshrunk.predict(X), y)
+    shrunk = StoreRatePopularity(smoothing=1000).fit(X, y).predict(X)
+    np.testing.assert_allclose(shrunk, [10, 10, 10, 10, 2.5, 2.5, 2.5, 2.5], rtol=0.01)
