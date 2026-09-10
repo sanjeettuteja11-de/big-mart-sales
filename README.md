@@ -140,7 +140,19 @@ flexibility mostly fits noise. The blend puts 96% of its weight on
 StoreRatePopularity and scores no better, so the recommended submission is
 `submissions/store_rate_popularity_cv1071.csv`.
 
-Leaderboard score: _to be added after upload._
+### Leaderboard
+
+`store_rate_popularity_cv1071.csv` scored **1148.28** on the Analytics Vidhya
+leaderboard (rank 566 of all submissions on 2026-09-11; rank 1 was 1126.03,
+rank 40 was 1138.81).
+
+The leaderboard score is 77 points worse than the cross-validated one. That
+is not a modelling problem: train and test features are indistinguishable
+(adversarial validation AUC 0.495, i.e. chance), and a random subset of
+training rows the size of the test set scores 1071 ± 9 with this model. The
+scored test rows are simply noisier than the training rows, which hits every
+competitor equally. Published write-ups of this problem report the same gap
+(CV around 1080–1090, leaderboard around 1150–1155).
 
 ## How to run
 
