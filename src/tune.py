@@ -86,7 +86,12 @@ def poisson_space(t: optuna.Trial) -> dict:
     return dict(alpha=t.suggest_float("alpha", 1e-6, 1.0, log=True), max_iter=3000)
 
 
+def store_rate_space(t: optuna.Trial) -> dict:
+    return dict(smoothing=t.suggest_float("smoothing", 1, 2000, log=True))
+
+
 SPACES = {
+    "store_rate": store_rate_space,
     "lightgbm": lightgbm_space, "xgboost": xgboost_space, "catboost": catboost_space,
     "hist_gb": hist_gb_space, "random_forest": forest_space, "extra_trees": forest_space,
     "ridge": ridge_space, "poisson": poisson_space,

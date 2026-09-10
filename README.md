@@ -13,6 +13,41 @@ file has 8,523 rows with sales; the test file has 5,681 rows to predict.
 Besides the prediction, the business question is **which product and store
 properties drive sales**.
 
+## Key finding: every sale is whole units × a price near MRP
+
+Every one of the 8,523 training sales splits exactly as
+
+```
+Item_Outlet_Sales = units × (Item_MRP + offset)
+```
+
+where **units** is a whole number and **offset** is a multiple of 0.1 between
+−2 and +2 ([src/structure.py](src/structure.py)). For example,
+443.4228 = 9 × (48.2692 + 1.0).
+
+What that shows ([reports/eda_summary.md](reports/eda_summary.md)):
+
+- **The offset is noise.** Its mean is −0.015, and it is unrelated to store,
+  category, price band, visibility or units.
+- **Units don't depend on price** (correlation +0.01). Grocery stores sell
+  about 2.4 units per product, Supermarket Type1 about 16, Type2 about 14 and
+  Type3 about 27.
+- **Within a store, units don't depend on the product's attributes.**
+  Category, fat content, price band, visibility and weight all show no effect.
+  Only the product's identity has a small effect, and it has to be shrunk hard
+  to help.
+
+So the best prediction is **MRP × the store's expected units × a heavily shrunk
+product factor**. That is `StoreRatePopularity`, and it beats every
+general-purpose model below. What's left is randomness in units that no column
+explains: at a Type1 supermarket, units have a variance of about 50.
+
+**Business reading:** price sets how much revenue each unit brings in, and the
+store format sets how many units sell. Shelf visibility, category and fat
+content don't change units sold. Revenue growth comes from store format
+(supermarkets sell 6–11× more units per product than grocery stores) and from
+product price.
+
 ## Approach
 
 ### 1. Cleaning ([src/data.py](src/data.py))
@@ -50,6 +85,7 @@ The target changes; the objective does not. This is checked by a test.
 
 | Model | Input | Target |
 |---|---|---|
+| **StoreRatePopularity**: MRP × store rate × shrunk product factor ([src/structure.py](src/structure.py)) | store and product codes | units |
 | Ridge with a price slope per store | one-hot | sales |
 | Poisson GLM (log link: sales = price^b × store effect) | one-hot | sales |
 | HistGradientBoosting, Random Forest, Extra Trees | native / codes | units |
@@ -77,8 +113,34 @@ and the best single model scores better.
 
 ## Results
 
-_Pending: the real data needs an Analytics Vidhya login._ After
-`python -m src.train`, the full table is in `outputs/cv_results.json`.
+Five folds × three repeats on the 8,523 training rows, RMSE on sales (lower
+is better). Always predicting the mean scores 1,706.4. Full details are in
+[outputs/cv_results.json](outputs/cv_results.json).
+
+| Model | CV RMSE |
+|---|---|
+| **StoreRatePopularity** (tuned smoothing = 55) | **1,071.33** |
+| Ridge, price slope per store | 1,075.10 |
+| Poisson GLM | 1,075.98 |
+| CatBoost (sales) | 1,078.64 |
+| CatBoost (units) | 1,078.94 |
+| Extra Trees (units) | 1,079.07 |
+| Random Forest (units) | 1,079.19 |
+| LightGBM (sales) | 1,083.87 |
+| LightGBM (units + popularity) | 1,086.12 |
+| LightGBM (units) | 1,087.27 |
+| XGBoost (units) | 1,088.14 |
+| HistGradientBoosting (units) | 1,091.81 |
+| Blend of all, honest CV | 1,071.46 |
+
+The structural model wins, and its whole fit takes about 0.1 seconds: 10 store
+rates plus 1,559 shrunk product factors. Without the product factor (smoothing
+→ ∞) it scores 1,071.95. The general-purpose models lose because their extra
+flexibility mostly fits noise. The blend puts 96% of its weight on
+StoreRatePopularity and scores no better, so the recommended submission is
+`submissions/store_rate_popularity_cv1071.csv`.
+
+Leaderboard score: _to be added after upload._
 
 ## How to run
 

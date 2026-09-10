@@ -116,7 +116,18 @@ XGBOOST = dict(
 )
 CATBOOST = dict(iterations=1000, learning_rate=0.03, depth=5, l2_leaf_reg=6.0)
 
+def _store_rate(p, seed):
+    from src.structure import StoreRatePopularity
+
+    return StoreRatePopularity(**p)
+
+
 SPECS = [
+    # Sales = whole units x price, and units depend on little but the store
+    # (src/structure.py). Units are independent of price, so the plain mean
+    # ("units_unweighted") estimates each store's rate more efficiently than
+    # an MRP^2-weighted one.
+    ModelSpec("store_rate_popularity", "catboost", "units_unweighted", _store_rate, dict(smoothing=50.0)),
     ModelSpec("ridge_interactions", "linear", "raw", _ridge, dict(alpha=3.0)),
     ModelSpec("poisson_glm", "glm", "raw", _poisson, dict(alpha=1e-4, max_iter=3000)),
     ModelSpec(
