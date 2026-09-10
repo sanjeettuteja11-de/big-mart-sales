@@ -1,0 +1,11 @@
+numpy>=2.0
+pandas>=2.2
+scikit-learn>=1.4     # HistGradientBoosting categorical_features="from_dtype"
+scipy>=1.11
+lightgbm>=4.3
+xgboost>=2.1
+catboost>=1.2
+optuna>=4.0           # src/tune.py
+matplotlib>=3.8       # src/eda.py
+seaborn>=0.13
+pytest>=8.0
