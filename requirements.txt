@@ -1,6 +1,6 @@
 numpy>=2.0
 pandas>=2.2
-scikit-learn>=1.4     # HistGradientBoosting categorical_features="from_dtype"
+scikit-learn>=1.6     # shuffled GroupKFold and native HistGradientBoosting categoricals
 scipy>=1.11
 lightgbm>=4.7          # eval_X / eval_y in the sklearn API
 xgboost>=2.1

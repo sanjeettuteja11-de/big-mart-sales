@@ -34,7 +34,7 @@ def main() -> None:
         "", "## Cross-validated models", "",
         f"{cv['cv']['n_splits']}-fold × {cv['cv']['n_repeats']} repeats, stratified by store, seed {cv['cv']['seed']}. "
         f"Baseline (always predict the mean): **{cv['baseline_rmse']:,.2f}**. "
-        "Boosting round counts come from early stopping on 15% of each training fold.", "",
+        "Preprocessing is fitted inside each training fold and early-stopping split. Historical runs without cv.fold_fit=true used global preprocessing.", "",
         "| Model | OOF RMSE | Fold mean ± std | Rounds | Seconds |", "|---|---|---|---|---|",
     ]
     for m in cv["models"]:
@@ -48,7 +48,7 @@ def main() -> None:
         "", "## Blend", "",
         f"Non-negative weights summing to one, fitted on out-of-fold predictions: {b['weights']}.", "",
         f"- In-sample blend RMSE (weights fitted and scored on the same rows, optimistic): {b['oof_rmse']:.2f}",
-        f"- Nested blend RMSE (weights fitted on 4/5 of the rows, scored on the other 1/5): **{b['honest_cv_rmse']:.2f}**",
+        f"- Second-stage OOF-row crossfit RMSE (not fully nested; selection bias remains): **{b.get('row_crossfit_rmse', b.get('honest_cv_rmse')):.2f}**",
         f"- Best single model: {cv['models'][0]['model']} at {cv['models'][0]['oof_rmse']:.2f}",
         f"- Recommended submission: `{cv['submissions']['recommended']}`",
     ]
@@ -63,7 +63,7 @@ def main() -> None:
 
     studies = sorted(OUTPUTS.glob("params/*.study.json"))
     if studies:
-        lines += ["", "## Hyperparameter search (Optuna)", "", "| Model | Default params RMSE | Tuned RMSE | Trials | CV during search |", "|---|---|---|---|---|"]
+        lines += ["", "## Hyperparameter search (Optuna; search scores, selection-biased)", "", "| Model | Default params RMSE | Tuned RMSE | Trials | CV during search |", "|---|---|---|---|---|"]
         for path in studies:
             s = json.loads(path.read_text())
             name = path.name.replace(".study.json", "")

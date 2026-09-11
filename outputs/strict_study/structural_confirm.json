@@ -1,0 +1,671 @@
+[
+  {
+    "model": "hierarchical_store_rate",
+    "scheme": "stratified",
+    "oof_rmse": 1071.56,
+    "fold_rmse_mean": 1071.46,
+    "fold_rmse_std": 18.87,
+    "n_folds": 15,
+    "seconds": 0.7,
+    "fold_rmse": [
+      1062.7980779770978,
+      1044.5822159415904,
+      1102.8559897351222,
+      1102.6223819909387,
+      1046.442741014146,
+      1083.1147252519736,
+      1051.581023906532,
+      1064.392927181843,
+      1091.5890439635928,
+      1064.7299982633217,
+      1081.4196233934524,
+      1056.0086815789048,
+      1066.3920636681594,
+      1092.6621548245414,
+      1060.6982894754362
+    ],
+    "oof_rmse_full_precision": 1071.5615208669956,
+    "raw_oof_rmse": 1071.5615208669956,
+    "best_iterations": [],
+    "config": {
+      "model": "hierarchical_store_rate",
+      "params": {
+        "smoothing": 150.0,
+        "rate_smoothing": 500.0,
+        "weight_power": 0.0,
+        "integer_units": true
+      },
+      "repeats": 3,
+      "seed": 42,
+      "scheme": "stratified",
+      "drop": [],
+      "fold_fit": true,
+      "protocol": "strict-inner-preprocessing-v1"
+    },
+    "provenance": {
+      "train_sha256": "5dbfa5ab3f42474402d19cee093f3874bfd11846bd15d314425581bfdb9c9a17",
+      "test_sha256": "f35a8617e02d32564894c8672412580d9079c03bfb91f30d887dbf56e5ad1190",
+      "source_sha256": {
+        "cv.py": "b5c49098cb7d6a1c3e515b3a816bba746f10e61f72f8b48cde43d727a0d22a8e",
+        "data.py": "6e1f5e58e6a88f42a79baa76006b525c15ad269743c9d206714e0d361e72baf8",
+        "features.py": "fa922c508e6e0a03f915e84def9b57f3ad2d87e0647646f7877b9170c8adf955",
+        "models.py": "b22b31c685bb66cee05d70d6f66d994281612f84c74fe234979c9be414c4010e",
+        "structure.py": "984c2cea1bae43bf5f398d8feb017f97d8d95af91ebe524f63fd558472194ca4",
+        "targets.py": "25072f430ca3a261ca6d4018c662235514df59f33d3101cd7b790f0af543b95b"
+      },
+      "git_commit_at_run": "6720e0a15c204da92ebf5eca1e9f49cbe1b26bc0",
+      "python": "3.14.6",
+      "platform": "macOS-26.5.2-arm64-arm-64bit-Mach-O",
+      "packages": {
+        "numpy": "2.5.3",
+        "pandas": "3.0.5",
+        "scikit-learn": "1.9.1",
+        "scipy": "1.18.1",
+        "catboost": "1.2.10",
+        "lightgbm": "4.7.0",
+        "xgboost": "3.4.1",
+        "optuna": "5.0.0"
+      }
+    },
+    "artifacts_sha256": {
+      "folds.npz": "8ab37c061e9fba6f36f95cd02760c96d714deb5e3ba196aee2df67629b38c7a2",
+      "oof.npy": "fa80015c6c0e3df499c12a4a745af646805e1272dd1bb534c8135785110ef067",
+      "raw_oof.npy": "fa80015c6c0e3df499c12a4a745af646805e1272dd1bb534c8135785110ef067",
+      "test.npy": "4b354bb440da63cb7479f6e6ee2c52bba7fbfe7786d9fd6e9206b003c77a1dca"
+    }
+  },
+  {
+    "model": "hierarchical_store_rate",
+    "scheme": "stratified",
+    "oof_rmse": 1071.84,
+    "fold_rmse_mean": 1071.46,
+    "fold_rmse_std": 31.32,
+    "n_folds": 15,
+    "seconds": 0.9,
+    "fold_rmse": [
+      1079.6675884204312,
+      1069.4974316814519,
+      1095.6707782246478,
+      1061.6610192494757,
+      1053.1066896357063,
+      1066.3695198220942,
+      1110.432139354871,
+      1079.5940897972541,
+      1032.589271407214,
+      1070.7771258992477,
+      984.0379105778197,
+      1083.5299431972308,
+      1107.9411004705523,
+      1108.488417045712,
+      1068.4938455751462
+    ],
+    "oof_rmse_full_precision": 1071.841520323435,
+    "raw_oof_rmse": 1071.841520323435,
+    "best_iterations": [],
+    "config": {
+      "model": "hierarchical_store_rate",
+      "params": {
+        "smoothing": 150.0,
+        "rate_smoothing": 500.0,
+        "weight_power": 0.0,
+        "integer_units": true
+      },
+      "repeats": 3,
+      "seed": 137,
+      "scheme": "stratified",
+      "drop": [],
+      "fold_fit": true,
+      "protocol": "strict-inner-preprocessing-v1"
+    },
+    "provenance": {
+      "train_sha256": "5dbfa5ab3f42474402d19cee093f3874bfd11846bd15d314425581bfdb9c9a17",
+      "test_sha256": "f35a8617e02d32564894c8672412580d9079c03bfb91f30d887dbf56e5ad1190",
+      "source_sha256": {
+        "cv.py": "b5c49098cb7d6a1c3e515b3a816bba746f10e61f72f8b48cde43d727a0d22a8e",
+        "data.py": "6e1f5e58e6a88f42a79baa76006b525c15ad269743c9d206714e0d361e72baf8",
+        "features.py": "fa922c508e6e0a03f915e84def9b57f3ad2d87e0647646f7877b9170c8adf955",
+        "models.py": "b22b31c685bb66cee05d70d6f66d994281612f84c74fe234979c9be414c4010e",
+        "structure.py": "984c2cea1bae43bf5f398d8feb017f97d8d95af91ebe524f63fd558472194ca4",
+        "targets.py": "25072f430ca3a261ca6d4018c662235514df59f33d3101cd7b790f0af543b95b"
+      },
+      "git_commit_at_run": "6720e0a15c204da92ebf5eca1e9f49cbe1b26bc0",
+      "python": "3.14.6",
+      "platform": "macOS-26.5.2-arm64-arm-64bit-Mach-O",
+      "packages": {
+        "numpy": "2.5.3",
+        "pandas": "3.0.5",
+        "scikit-learn": "1.9.1",
+        "scipy": "1.18.1",
+        "catboost": "1.2.10",
+        "lightgbm": "4.7.0",
+        "xgboost": "3.4.1",
+        "optuna": "5.0.0"
+      }
+    },
+    "artifacts_sha256": {
+      "folds.npz": "82fcb969756324c4a0c48ec4f896f161f49b5f49be861ea477ff28fce883f99e",
+      "oof.npy": "b35f850fe81ce502c28ae8f069c12828ec7b71445e85859b8d4e1ec8e1e64ca9",
+      "raw_oof.npy": "b35f850fe81ce502c28ae8f069c12828ec7b71445e85859b8d4e1ec8e1e64ca9",
+      "test.npy": "9edf71139bea836dc5c6c9d3c6b8b9d7c1e282a2d7ef34441314c274a6a85ddd"
+    }
+  },
+  {
+    "model": "hierarchical_store_rate",
+    "scheme": "stratified",
+    "oof_rmse": 1071.56,
+    "fold_rmse_mean": 1071.52,
+    "fold_rmse_std": 14.42,
+    "n_folds": 15,
+    "seconds": 1.0,
+    "fold_rmse": [
+      1057.133336071692,
+      1066.933791693733,
+      1067.9520334235635,
+      1071.8777716580646,
+      1093.5520455072476,
+      1096.9979569420066,
+      1064.6455118224817,
+      1042.5399358648751,
+      1076.4626917610383,
+      1077.4508330780518,
+      1066.3578162858735,
+      1087.4206609242929,
+      1064.216037447951,
+      1084.7712366446765,
+      1054.5448404692538
+    ],
+    "oof_rmse_full_precision": 1071.5569092449887,
+    "raw_oof_rmse": 1071.5569092449887,
+    "best_iterations": [],
+    "config": {
+      "model": "hierarchical_store_rate",
+      "params": {
+        "smoothing": 150.0,
+        "rate_smoothing": 500.0,
+        "weight_power": 0.0,
+        "integer_units": true
+      },
+      "repeats": 3,
+      "seed": 2026,
+      "scheme": "stratified",
+      "drop": [],
+      "fold_fit": true,
+      "protocol": "strict-inner-preprocessing-v1"
+    },
+    "provenance": {
+      "train_sha256": "5dbfa5ab3f42474402d19cee093f3874bfd11846bd15d314425581bfdb9c9a17",
+      "test_sha256": "f35a8617e02d32564894c8672412580d9079c03bfb91f30d887dbf56e5ad1190",
+      "source_sha256": {
+        "cv.py": "b5c49098cb7d6a1c3e515b3a816bba746f10e61f72f8b48cde43d727a0d22a8e",
+        "data.py": "6e1f5e58e6a88f42a79baa76006b525c15ad269743c9d206714e0d361e72baf8",
+        "features.py": "fa922c508e6e0a03f915e84def9b57f3ad2d87e0647646f7877b9170c8adf955",
+        "models.py": "b22b31c685bb66cee05d70d6f66d994281612f84c74fe234979c9be414c4010e",
+        "structure.py": "984c2cea1bae43bf5f398d8feb017f97d8d95af91ebe524f63fd558472194ca4",
+        "targets.py": "25072f430ca3a261ca6d4018c662235514df59f33d3101cd7b790f0af543b95b"
+      },
+      "git_commit_at_run": "6720e0a15c204da92ebf5eca1e9f49cbe1b26bc0",
+      "python": "3.14.6",
+      "platform": "macOS-26.5.2-arm64-arm-64bit-Mach-O",
+      "packages": {
+        "numpy": "2.5.3",
+        "pandas": "3.0.5",
+        "scikit-learn": "1.9.1",
+        "scipy": "1.18.1",
+        "catboost": "1.2.10",
+        "lightgbm": "4.7.0",
+        "xgboost": "3.4.1",
+        "optuna": "5.0.0"
+      }
+    },
+    "artifacts_sha256": {
+      "folds.npz": "3c7bc2103656ac201a9f74b6677ef090a1ba2efecdbb75d6851e3309b8837dee",
+      "oof.npy": "68a60e1f03419fd6b7ee1f41d1f446a7b8048561e410be45d0f2008c5bbdca94",
+      "raw_oof.npy": "68a60e1f03419fd6b7ee1f41d1f446a7b8048561e410be45d0f2008c5bbdca94",
+      "test.npy": "95111679109b7b190272e83702b39b4e19b9a49d1474c8c5275d6de8313fa214"
+    }
+  },
+  {
+    "model": "hierarchical_store_rate",
+    "scheme": "stratified",
+    "oof_rmse": 1071.56,
+    "fold_rmse_mean": 1071.46,
+    "fold_rmse_std": 18.87,
+    "n_folds": 15,
+    "seconds": 0.4,
+    "fold_rmse": [
+      1062.7837038481787,
+      1044.5909319119662,
+      1102.8407301007246,
+      1102.669720530765,
+      1046.4570361113122,
+      1083.0582425962211,
+      1051.5699637282219,
+      1064.4220639096498,
+      1091.5907108343029,
+      1064.6933015907857,
+      1081.4018404332915,
+      1056.0180057547786,
+      1066.38058474188,
+      1092.6850099427259,
+      1060.689950998719
+    ],
+    "oof_rmse_full_precision": 1071.559106086385,
+    "raw_oof_rmse": 1071.559106086385,
+    "best_iterations": [],
+    "config": {
+      "model": "hierarchical_store_rate",
+      "params": {
+        "smoothing": 150.0,
+        "rate_smoothing": 500.0,
+        "weight_power": 0.0
+      },
+      "repeats": 3,
+      "seed": 42,
+      "scheme": "stratified",
+      "drop": [],
+      "fold_fit": true,
+      "protocol": "strict-inner-preprocessing-v1"
+    },
+    "provenance": {
+      "train_sha256": "5dbfa5ab3f42474402d19cee093f3874bfd11846bd15d314425581bfdb9c9a17",
+      "test_sha256": "f35a8617e02d32564894c8672412580d9079c03bfb91f30d887dbf56e5ad1190",
+      "source_sha256": {
+        "cv.py": "b5c49098cb7d6a1c3e515b3a816bba746f10e61f72f8b48cde43d727a0d22a8e",
+        "data.py": "6e1f5e58e6a88f42a79baa76006b525c15ad269743c9d206714e0d361e72baf8",
+        "features.py": "fa922c508e6e0a03f915e84def9b57f3ad2d87e0647646f7877b9170c8adf955",
+        "models.py": "b22b31c685bb66cee05d70d6f66d994281612f84c74fe234979c9be414c4010e",
+        "structure.py": "984c2cea1bae43bf5f398d8feb017f97d8d95af91ebe524f63fd558472194ca4",
+        "targets.py": "25072f430ca3a261ca6d4018c662235514df59f33d3101cd7b790f0af543b95b"
+      },
+      "git_commit_at_run": "6720e0a15c204da92ebf5eca1e9f49cbe1b26bc0",
+      "python": "3.14.6",
+      "platform": "macOS-26.5.2-arm64-arm-64bit-Mach-O",
+      "packages": {
+        "numpy": "2.5.3",
+        "pandas": "3.0.5",
+        "scikit-learn": "1.9.1",
+        "scipy": "1.18.1",
+        "catboost": "1.2.10",
+        "lightgbm": "4.7.0",
+        "xgboost": "3.4.1",
+        "optuna": "5.0.0"
+      }
+    },
+    "artifacts_sha256": {
+      "folds.npz": "f92605ad76b70ff7266cbe8d1759aedd02001531c6967dc2d5b7a1e80dc94ba2",
+      "oof.npy": "e67ab94353679aac9564cdef6405054489cd1376f97f41b113488f27dd15d280",
+      "raw_oof.npy": "e67ab94353679aac9564cdef6405054489cd1376f97f41b113488f27dd15d280",
+      "test.npy": "d8b57de238f9cd8a9f207ff28fd80269413d3953221758a537024409c43fcc83"
+    }
+  },
+  {
+    "model": "hierarchical_store_rate",
+    "scheme": "stratified",
+    "oof_rmse": 1071.84,
+    "fold_rmse_mean": 1071.46,
+    "fold_rmse_std": 31.3,
+    "n_folds": 15,
+    "seconds": 0.4,
+    "fold_rmse": [
+      1079.6678650334136,
+      1069.42682660261,
+      1095.6868247968077,
+      1061.7314737780564,
+      1053.1182610312683,
+      1066.3065128656503,
+      1110.400707903454,
+      1079.577737857182,
+      1032.6621341541588,
+      1070.772500544321,
+      984.073442464372,
+      1083.5085369775973,
+      1107.9437822513585,
+      1108.496714524937,
+      1068.4762819451778
+    ],
+    "oof_rmse_full_precision": 1071.840494042761,
+    "raw_oof_rmse": 1071.840494042761,
+    "best_iterations": [],
+    "config": {
+      "model": "hierarchical_store_rate",
+      "params": {
+        "smoothing": 150.0,
+        "rate_smoothing": 500.0,
+        "weight_power": 0.0
+      },
+      "repeats": 3,
+      "seed": 137,
+      "scheme": "stratified",
+      "drop": [],
+      "fold_fit": true,
+      "protocol": "strict-inner-preprocessing-v1"
+    },
+    "provenance": {
+      "train_sha256": "5dbfa5ab3f42474402d19cee093f3874bfd11846bd15d314425581bfdb9c9a17",
+      "test_sha256": "f35a8617e02d32564894c8672412580d9079c03bfb91f30d887dbf56e5ad1190",
+      "source_sha256": {
+        "cv.py": "b5c49098cb7d6a1c3e515b3a816bba746f10e61f72f8b48cde43d727a0d22a8e",
+        "data.py": "6e1f5e58e6a88f42a79baa76006b525c15ad269743c9d206714e0d361e72baf8",
+        "features.py": "fa922c508e6e0a03f915e84def9b57f3ad2d87e0647646f7877b9170c8adf955",
+        "models.py": "b22b31c685bb66cee05d70d6f66d994281612f84c74fe234979c9be414c4010e",
+        "structure.py": "984c2cea1bae43bf5f398d8feb017f97d8d95af91ebe524f63fd558472194ca4",
+        "targets.py": "25072f430ca3a261ca6d4018c662235514df59f33d3101cd7b790f0af543b95b"
+      },
+      "git_commit_at_run": "6720e0a15c204da92ebf5eca1e9f49cbe1b26bc0",
+      "python": "3.14.6",
+      "platform": "macOS-26.5.2-arm64-arm-64bit-Mach-O",
+      "packages": {
+        "numpy": "2.5.3",
+        "pandas": "3.0.5",
+        "scikit-learn": "1.9.1",
+        "scipy": "1.18.1",
+        "catboost": "1.2.10",
+        "lightgbm": "4.7.0",
+        "xgboost": "3.4.1",
+        "optuna": "5.0.0"
+      }
+    },
+    "artifacts_sha256": {
+      "folds.npz": "9ffc5f4c6af1deaeb67aa283f167c87d2e98916ea20cda1c44cfb2d925e0b1c2",
+      "oof.npy": "0e9ad8bade05be5d80392e8b8bfb2b38e7f109f2d7597d9bdd2c2d0f01b1f7ba",
+      "raw_oof.npy": "0e9ad8bade05be5d80392e8b8bfb2b38e7f109f2d7597d9bdd2c2d0f01b1f7ba",
+      "test.npy": "53a847f6d9eb1d25154de1bea208dfcfd2223a2b1ff91b0046467af3baaf3df3"
+    }
+  },
+  {
+    "model": "hierarchical_store_rate",
+    "scheme": "stratified",
+    "oof_rmse": 1071.56,
+    "fold_rmse_mean": 1071.52,
+    "fold_rmse_std": 14.42,
+    "n_folds": 15,
+    "seconds": 0.9,
+    "fold_rmse": [
+      1057.1212469644522,
+      1066.9327670968391,
+      1067.9828038525086,
+      1071.8647812228576,
+      1093.5671681979002,
+      1096.990669951108,
+      1064.6327882448804,
+      1042.5308698056733,
+      1076.4692569533247,
+      1077.4430794802443,
+      1066.363488699817,
+      1087.3777317456766,
+      1064.252178756454,
+      1084.7665025613333,
+      1054.5328146069548
+    ],
+    "oof_rmse_full_precision": 1071.5551748029177,
+    "raw_oof_rmse": 1071.5551748029177,
+    "best_iterations": [],
+    "config": {
+      "model": "hierarchical_store_rate",
+      "params": {
+        "smoothing": 150.0,
+        "rate_smoothing": 500.0,
+        "weight_power": 0.0
+      },
+      "repeats": 3,
+      "seed": 2026,
+      "scheme": "stratified",
+      "drop": [],
+      "fold_fit": true,
+      "protocol": "strict-inner-preprocessing-v1"
+    },
+    "provenance": {
+      "train_sha256": "5dbfa5ab3f42474402d19cee093f3874bfd11846bd15d314425581bfdb9c9a17",
+      "test_sha256": "f35a8617e02d32564894c8672412580d9079c03bfb91f30d887dbf56e5ad1190",
+      "source_sha256": {
+        "cv.py": "b5c49098cb7d6a1c3e515b3a816bba746f10e61f72f8b48cde43d727a0d22a8e",
+        "data.py": "6e1f5e58e6a88f42a79baa76006b525c15ad269743c9d206714e0d361e72baf8",
+        "features.py": "fa922c508e6e0a03f915e84def9b57f3ad2d87e0647646f7877b9170c8adf955",
+        "models.py": "b22b31c685bb66cee05d70d6f66d994281612f84c74fe234979c9be414c4010e",
+        "structure.py": "984c2cea1bae43bf5f398d8feb017f97d8d95af91ebe524f63fd558472194ca4",
+        "targets.py": "25072f430ca3a261ca6d4018c662235514df59f33d3101cd7b790f0af543b95b"
+      },
+      "git_commit_at_run": "6720e0a15c204da92ebf5eca1e9f49cbe1b26bc0",
+      "python": "3.14.6",
+      "platform": "macOS-26.5.2-arm64-arm-64bit-Mach-O",
+      "packages": {
+        "numpy": "2.5.3",
+        "pandas": "3.0.5",
+        "scikit-learn": "1.9.1",
+        "scipy": "1.18.1",
+        "catboost": "1.2.10",
+        "lightgbm": "4.7.0",
+        "xgboost": "3.4.1",
+        "optuna": "5.0.0"
+      }
+    },
+    "artifacts_sha256": {
+      "folds.npz": "f01764cad03fdea6c5d5625288aca73a8279a2eca9d4d19d3bbe8a12fab7d74e",
+      "oof.npy": "1e60010c3a277337c05bfca53e05a5fb2e2f73ad22140be48d0c297672342e0d",
+      "raw_oof.npy": "1e60010c3a277337c05bfca53e05a5fb2e2f73ad22140be48d0c297672342e0d",
+      "test.npy": "a384a381d72e82b326d174441828926fee7f2a38c230cdb877d1e68ee733519c"
+    }
+  },
+  {
+    "model": "hierarchical_store_rate",
+    "scheme": "stratified",
+    "oof_rmse": 1071.34,
+    "fold_rmse_mean": 1071.3,
+    "fold_rmse_std": 19.28,
+    "n_folds": 15,
+    "seconds": 0.5,
+    "fold_rmse": [
+      1062.1344604599733,
+      1043.7087176238967,
+      1103.649609222304,
+      1103.7569653563073,
+      1046.3037674585978,
+      1082.395296746849,
+      1050.0060134068467,
+      1063.4790645763092,
+      1091.8020113492066,
+      1065.2148422812725,
+      1080.5932580809683,
+      1055.5971423788874,
+      1066.630646471964,
+      1092.728028400954,
+      1061.560494127053
+    ],
+    "oof_rmse_full_precision": 1071.336309152611,
+    "raw_oof_rmse": 1071.336309152611,
+    "best_iterations": [],
+    "config": {
+      "model": "hierarchical_store_rate",
+      "params": {
+        "smoothing": 55.0,
+        "rate_smoothing": 500.0,
+        "weight_power": 0.0
+      },
+      "repeats": 3,
+      "seed": 42,
+      "scheme": "stratified",
+      "drop": [],
+      "fold_fit": true,
+      "protocol": "strict-inner-preprocessing-v1"
+    },
+    "provenance": {
+      "train_sha256": "5dbfa5ab3f42474402d19cee093f3874bfd11846bd15d314425581bfdb9c9a17",
+      "test_sha256": "f35a8617e02d32564894c8672412580d9079c03bfb91f30d887dbf56e5ad1190",
+      "source_sha256": {
+        "cv.py": "b5c49098cb7d6a1c3e515b3a816bba746f10e61f72f8b48cde43d727a0d22a8e",
+        "data.py": "6e1f5e58e6a88f42a79baa76006b525c15ad269743c9d206714e0d361e72baf8",
+        "features.py": "fa922c508e6e0a03f915e84def9b57f3ad2d87e0647646f7877b9170c8adf955",
+        "models.py": "b22b31c685bb66cee05d70d6f66d994281612f84c74fe234979c9be414c4010e",
+        "structure.py": "984c2cea1bae43bf5f398d8feb017f97d8d95af91ebe524f63fd558472194ca4",
+        "targets.py": "25072f430ca3a261ca6d4018c662235514df59f33d3101cd7b790f0af543b95b"
+      },
+      "git_commit_at_run": "6720e0a15c204da92ebf5eca1e9f49cbe1b26bc0",
+      "python": "3.14.6",
+      "platform": "macOS-26.5.2-arm64-arm-64bit-Mach-O",
+      "packages": {
+        "numpy": "2.5.3",
+        "pandas": "3.0.5",
+        "scikit-learn": "1.9.1",
+        "scipy": "1.18.1",
+        "catboost": "1.2.10",
+        "lightgbm": "4.7.0",
+        "xgboost": "3.4.1",
+        "optuna": "5.0.0"
+      }
+    },
+    "artifacts_sha256": {
+      "folds.npz": "df5ebea57057c2b1e7acca4e6a20515dfe50ae26a19bc32d94a4a1ea8a0a8c60",
+      "oof.npy": "0c9fd973f018000df6b765ccf64db0d475b772ddb3c350993f8e8747398b08b0",
+      "raw_oof.npy": "0c9fd973f018000df6b765ccf64db0d475b772ddb3c350993f8e8747398b08b0",
+      "test.npy": "2387aa49c57306e7eaf6a5e07fcfa859f8ad7d0af4294af00230715daa227542"
+    }
+  },
+  {
+    "model": "hierarchical_store_rate",
+    "scheme": "stratified",
+    "oof_rmse": 1071.7,
+    "fold_rmse_mean": 1071.39,
+    "fold_rmse_std": 31.33,
+    "n_folds": 15,
+    "seconds": 0.5,
+    "fold_rmse": [
+      1078.6836922203343,
+      1068.3946261546917,
+      1096.3044470298905,
+      1061.7987095811777,
+      1053.0472045108759,
+      1066.3930890192746,
+      1110.4192641133839,
+      1079.4929115062855,
+      1032.9069001555938,
+      1070.8252358246473,
+      984.1508299756198,
+      1083.0327345884598,
+      1108.552242890547,
+      1108.5128615179533,
+      1068.3254695823996
+    ],
+    "oof_rmse_full_precision": 1071.696191814795,
+    "raw_oof_rmse": 1071.696191814795,
+    "best_iterations": [],
+    "config": {
+      "model": "hierarchical_store_rate",
+      "params": {
+        "smoothing": 55.0,
+        "rate_smoothing": 500.0,
+        "weight_power": 0.0
+      },
+      "repeats": 3,
+      "seed": 137,
+      "scheme": "stratified",
+      "drop": [],
+      "fold_fit": true,
+      "protocol": "strict-inner-preprocessing-v1"
+    },
+    "provenance": {
+      "train_sha256": "5dbfa5ab3f42474402d19cee093f3874bfd11846bd15d314425581bfdb9c9a17",
+      "test_sha256": "f35a8617e02d32564894c8672412580d9079c03bfb91f30d887dbf56e5ad1190",
+      "source_sha256": {
+        "cv.py": "b5c49098cb7d6a1c3e515b3a816bba746f10e61f72f8b48cde43d727a0d22a8e",
+        "data.py": "6e1f5e58e6a88f42a79baa76006b525c15ad269743c9d206714e0d361e72baf8",
+        "features.py": "fa922c508e6e0a03f915e84def9b57f3ad2d87e0647646f7877b9170c8adf955",
+        "models.py": "b22b31c685bb66cee05d70d6f66d994281612f84c74fe234979c9be414c4010e",
+        "structure.py": "984c2cea1bae43bf5f398d8feb017f97d8d95af91ebe524f63fd558472194ca4",
+        "targets.py": "25072f430ca3a261ca6d4018c662235514df59f33d3101cd7b790f0af543b95b"
+      },
+      "git_commit_at_run": "6720e0a15c204da92ebf5eca1e9f49cbe1b26bc0",
+      "python": "3.14.6",
+      "platform": "macOS-26.5.2-arm64-arm-64bit-Mach-O",
+      "packages": {
+        "numpy": "2.5.3",
+        "pandas": "3.0.5",
+        "scikit-learn": "1.9.1",
+        "scipy": "1.18.1",
+        "catboost": "1.2.10",
+        "lightgbm": "4.7.0",
+        "xgboost": "3.4.1",
+        "optuna": "5.0.0"
+      }
+    },
+    "artifacts_sha256": {
+      "folds.npz": "9300a6dbd953e73a72190922b25e200c12121caa15ff064776d65ff5e2ba2d5d",
+      "oof.npy": "62b5d87243e00135c608040f9a9c9cc1a05f00da3a3e2e7b271a9159f882555b",
+      "raw_oof.npy": "62b5d87243e00135c608040f9a9c9cc1a05f00da3a3e2e7b271a9159f882555b",
+      "test.npy": "049887482b3c4e0b959255fce9741de92f56940b78d83de56d20a2134b3a57c5"
+    }
+  },
+  {
+    "model": "hierarchical_store_rate",
+    "scheme": "stratified",
+    "oof_rmse": 1071.4,
+    "fold_rmse_mean": 1071.45,
+    "fold_rmse_std": 14.2,
+    "n_folds": 15,
+    "seconds": 0.7,
+    "fold_rmse": [
+      1057.1311131266652,
+      1067.2419630805969,
+      1066.9915363954658,
+      1071.3842508410112,
+      1094.1217452739659,
+      1095.8667993806555,
+      1065.5294924006046,
+      1043.4065582575845,
+      1076.133942765592,
+      1077.2945754951136,
+      1066.3730981242877,
+      1086.7546226409181,
+      1064.8545749578625,
+      1084.8595567518946,
+      1053.764413427678
+    ],
+    "oof_rmse_full_precision": 1071.39640461438,
+    "raw_oof_rmse": 1071.39640461438,
+    "best_iterations": [],
+    "config": {
+      "model": "hierarchical_store_rate",
+      "params": {
+        "smoothing": 55.0,
+        "rate_smoothing": 500.0,
+        "weight_power": 0.0
+      },
+      "repeats": 3,
+      "seed": 2026,
+      "scheme": "stratified",
+      "drop": [],
+      "fold_fit": true,
+      "protocol": "strict-inner-preprocessing-v1"
+    },
+    "provenance": {
+      "train_sha256": "5dbfa5ab3f42474402d19cee093f3874bfd11846bd15d314425581bfdb9c9a17",
+      "test_sha256": "f35a8617e02d32564894c8672412580d9079c03bfb91f30d887dbf56e5ad1190",
+      "source_sha256": {
+        "cv.py": "b5c49098cb7d6a1c3e515b3a816bba746f10e61f72f8b48cde43d727a0d22a8e",
+        "data.py": "6e1f5e58e6a88f42a79baa76006b525c15ad269743c9d206714e0d361e72baf8",
+        "features.py": "fa922c508e6e0a03f915e84def9b57f3ad2d87e0647646f7877b9170c8adf955",
+        "models.py": "b22b31c685bb66cee05d70d6f66d994281612f84c74fe234979c9be414c4010e",
+        "structure.py": "984c2cea1bae43bf5f398d8feb017f97d8d95af91ebe524f63fd558472194ca4",
+        "targets.py": "25072f430ca3a261ca6d4018c662235514df59f33d3101cd7b790f0af543b95b"
+      },
+      "git_commit_at_run": "6720e0a15c204da92ebf5eca1e9f49cbe1b26bc0",
+      "python": "3.14.6",
+      "platform": "macOS-26.5.2-arm64-arm-64bit-Mach-O",
+      "packages": {
+        "numpy": "2.5.3",
+        "pandas": "3.0.5",
+        "scikit-learn": "1.9.1",
+        "scipy": "1.18.1",
+        "catboost": "1.2.10",
+        "lightgbm": "4.7.0",
+        "xgboost": "3.4.1",
+        "optuna": "5.0.0"
+      }
+    },
+    "artifacts_sha256": {
+      "folds.npz": "08d9d8a456793261a53cc8af5cb7163b057396e17e639fbe2011798412525cdb",
+      "oof.npy": "8e616b7f10e3530d4bd973f4461efd0fd639ccc5356fbfbb2bc9ab5b61204046",
+      "raw_oof.npy": "8e616b7f10e3530d4bd973f4461efd0fd639ccc5356fbfbb2bc9ab5b61204046",
+      "test.npy": "15aafd55db39bdec4e3d0d567921fa428be35d5833a9aae65e40248f27209176"
+    }
+  }
+]

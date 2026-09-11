@@ -1,0 +1,92 @@
+{
+  "model": "lattice_xgboost",
+  "scheme": "stratified",
+  "oof_rmse": 1078.3,
+  "fold_rmse_mean": 1079.9,
+  "fold_rmse_std": 18.04,
+  "n_folds": 15,
+  "seconds": 6.6,
+  "fold_rmse": [
+    1074.638632604758,
+    1055.3300489767842,
+    1118.6615415497015,
+    1095.4985638148612,
+    1049.7356055873795,
+    1085.155433905098,
+    1058.7423698232672,
+    1075.7906531886508,
+    1099.585553462099,
+    1081.3146217774747,
+    1085.3431965892132,
+    1069.6250224499597,
+    1084.6418016466364,
+    1098.7501549764972,
+    1065.7597253054341
+  ],
+  "oof_rmse_full_precision": 1078.303241694788,
+  "raw_oof_rmse": 1078.303241694788,
+  "best_iterations": [
+    235,
+    122,
+    119,
+    154,
+    154,
+    119,
+    153,
+    146,
+    116,
+    249,
+    136,
+    92,
+    136,
+    182,
+    120
+  ],
+  "best_iterations_mean": 149,
+  "config": {
+    "model": "lattice_xgboost",
+    "params": {
+      "library": "xgboost",
+      "weighted_training": true
+    },
+    "repeats": 3,
+    "seed": 42,
+    "scheme": "stratified",
+    "drop": [],
+    "fold_fit": true,
+    "protocol": "strict-inner-preprocessing-v1"
+  },
+  "provenance": {
+    "train_sha256": "5dbfa5ab3f42474402d19cee093f3874bfd11846bd15d314425581bfdb9c9a17",
+    "test_sha256": "f35a8617e02d32564894c8672412580d9079c03bfb91f30d887dbf56e5ad1190",
+    "source_sha256": {
+      "cv.py": "4c7841cd79561c4019d12395356e3e9eaea832a8c3b52ba2c4a20e48c727758d",
+      "data.py": "92d8e7f6fd4bc171e38631d1bfdb8e82d91610be75c56ffa0a8800a83bd80e43",
+      "features.py": "df76f6d22afb16078af01dbf0c2304b8e7b825a581b0acb58431c6e67f149c39",
+      "lattice_boost.py": "9948597f8d16e5ec00e48c8b1f96b7a4a341c246ed9b5d6f30f46ecfbb004705",
+      "models.py": "dfe5af13cead751b5f6e2135c8bae778ecdf5c4aaad491059fd7cde20aa846c0",
+      "price_model.py": "698489bbd4cc98d8e9856437c359239f4d363079d2b5c950dfbd4d5c090df144",
+      "structure.py": "f432c1ad5df660cd6a22d640645ce45faa41f2236f6ab871904233ab0f095d1b",
+      "targets.py": "25072f430ca3a261ca6d4018c662235514df59f33d3101cd7b790f0af543b95b"
+    },
+    "git_commit_at_run": "6720e0a15c204da92ebf5eca1e9f49cbe1b26bc0",
+    "python": "3.14.6",
+    "platform": "macOS-26.5.2-arm64-arm-64bit-Mach-O",
+    "packages": {
+      "numpy": "2.5.3",
+      "pandas": "3.0.5",
+      "scikit-learn": "1.9.1",
+      "scipy": "1.18.1",
+      "catboost": "1.2.10",
+      "lightgbm": "4.7.0",
+      "xgboost": "3.4.1",
+      "optuna": "5.0.0"
+    }
+  },
+  "artifacts_sha256": {
+    "folds.npz": "7406e7cb744d6b92c5644feb705629948a267c567ef5cd5d9487d60c44e865a0",
+    "oof.npy": "44ab5e173c54134028128b50fe6e3af87b691ae214bdadb62f7f99d25d16b42a",
+    "raw_oof.npy": "44ab5e173c54134028128b50fe6e3af87b691ae214bdadb62f7f99d25d16b42a",
+    "test.npy": "6b440bd136a61f5e5b6ec06602447fb2a7745777ea38527b59cd3c211369b1fc"
+  }
+}

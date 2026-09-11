@@ -1,0 +1,73 @@
+{
+  "model": "xgboost_raw",
+  "scheme": "stratified",
+  "oof_rmse": 1081.56,
+  "fold_rmse_mean": 1081.14,
+  "fold_rmse_std": 30.03,
+  "n_folds": 5,
+  "seconds": 34.1,
+  "fold_rmse": [
+    1069.220017810699,
+    1055.2212035726866,
+    1131.7609130267865,
+    1097.6697509645771,
+    1051.8374130828904
+  ],
+  "oof_rmse_full_precision": 1081.5603012186787,
+  "raw_oof_rmse": 1081.561193130473,
+  "best_iterations": [
+    138,
+    80,
+    56,
+    63,
+    130
+  ],
+  "best_iterations_mean": 93,
+  "negative_prediction_share": 0.0007,
+  "config": {
+    "params": {
+      "n_estimators": 3000,
+      "learning_rate": 0.05529396157063008,
+      "max_depth": 3,
+      "min_child_weight": 1.022205496156319,
+      "subsample": 0.9286960596974015,
+      "colsample_bytree": 0.6916392573088401,
+      "reg_lambda": 11.5237708292543
+    },
+    "seed": 42,
+    "splits": 5,
+    "repeats": 1,
+    "fold_fit": true
+  },
+  "provenance": {
+    "train_sha256": "5dbfa5ab3f42474402d19cee093f3874bfd11846bd15d314425581bfdb9c9a17",
+    "test_sha256": "f35a8617e02d32564894c8672412580d9079c03bfb91f30d887dbf56e5ad1190",
+    "source_sha256": {
+      "cv.py": "b5c49098cb7d6a1c3e515b3a816bba746f10e61f72f8b48cde43d727a0d22a8e",
+      "data.py": "6e1f5e58e6a88f42a79baa76006b525c15ad269743c9d206714e0d361e72baf8",
+      "features.py": "fa922c508e6e0a03f915e84def9b57f3ad2d87e0647646f7877b9170c8adf955",
+      "models.py": "b22b31c685bb66cee05d70d6f66d994281612f84c74fe234979c9be414c4010e",
+      "structure.py": "984c2cea1bae43bf5f398d8feb017f97d8d95af91ebe524f63fd558472194ca4",
+      "targets.py": "25072f430ca3a261ca6d4018c662235514df59f33d3101cd7b790f0af543b95b"
+    },
+    "git_commit_at_run": "6720e0a15c204da92ebf5eca1e9f49cbe1b26bc0",
+    "python": "3.14.6",
+    "platform": "macOS-26.5.2-arm64-arm-64bit-Mach-O",
+    "packages": {
+      "numpy": "2.5.3",
+      "pandas": "3.0.5",
+      "scikit-learn": "1.9.1",
+      "scipy": "1.18.1",
+      "catboost": "1.2.10",
+      "lightgbm": "4.7.0",
+      "xgboost": "3.4.1",
+      "optuna": "5.0.0"
+    }
+  },
+  "artifacts_sha256": {
+    "folds.npz": "6d3401d2be3d155c8809c84bada1139301c7bb5db3e94ec18449ccd1125933cd",
+    "oof.npy": "896ccba53ee5c77b1bf9ced9bcba934a5e14853b3644cc37cb5826447e24b31a",
+    "raw_oof.npy": "7c28d0db31adb313d4101abc308fa308160c0d94ba78d4b22b28cf1c72df2c47",
+    "test.npy": "b7e1a5711156944a44366fd5c856be77e92df3b393eaf377f48605dd9eb049d6"
+  }
+}

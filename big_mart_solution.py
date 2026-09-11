@@ -1,11 +1,9 @@
 """Big Mart Sales III: single-file solution (CV RMSE 1071.33).
 
-Every sale in the data is exactly whole units x (Item_MRP + an offset of up to
-±2 on a 0.1 grid). The offset is noise. Units depend on the store and, weakly,
-on the product, but not on price, category, fat content or visibility. So each
-sale is predicted as
-
-    Item_MRP x store rate x product popularity
+Historical baseline; use `python -m src.recommend` for the current model.
+The structural model predicts Item_MRP x store rate x product popularity.
+This is a predictive approximation, not proof that other features have no
+business effect. The decoded-price refinement lives in src/price_model.py.
 
 A store's rate is its mean units per row (sales / MRP). A product's popularity
 is how far it beat its stores' rates, shrunk toward 1 by SMOOTHING pseudo-rows.

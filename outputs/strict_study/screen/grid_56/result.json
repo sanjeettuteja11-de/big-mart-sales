@@ -1,0 +1,64 @@
+{
+  "model": "hierarchical_store_rate",
+  "scheme": "stratified",
+  "oof_rmse": 1073.69,
+  "fold_rmse_mean": 1073.36,
+  "fold_rmse_std": 26.71,
+  "n_folds": 5,
+  "seconds": 0.7,
+  "fold_rmse": [
+    1061.882223133557,
+    1048.7903266660878,
+    1107.4579007557818,
+    1103.2035550303308,
+    1045.4541305410673
+  ],
+  "oof_rmse_full_precision": 1073.6896983319773,
+  "raw_oof_rmse": 1073.6896983319773,
+  "best_iterations": [],
+  "config": {
+    "model": "hierarchical_store_rate",
+    "params": {
+      "smoothing": 150.0,
+      "rate_smoothing": Infinity,
+      "weight_power": 2.0
+    },
+    "repeats": 1,
+    "seed": 42,
+    "scheme": "stratified",
+    "drop": [],
+    "fold_fit": true,
+    "protocol": "strict-inner-preprocessing-v1"
+  },
+  "provenance": {
+    "train_sha256": "5dbfa5ab3f42474402d19cee093f3874bfd11846bd15d314425581bfdb9c9a17",
+    "test_sha256": "f35a8617e02d32564894c8672412580d9079c03bfb91f30d887dbf56e5ad1190",
+    "source_sha256": {
+      "cv.py": "b5c49098cb7d6a1c3e515b3a816bba746f10e61f72f8b48cde43d727a0d22a8e",
+      "data.py": "6e1f5e58e6a88f42a79baa76006b525c15ad269743c9d206714e0d361e72baf8",
+      "features.py": "fa922c508e6e0a03f915e84def9b57f3ad2d87e0647646f7877b9170c8adf955",
+      "models.py": "b22b31c685bb66cee05d70d6f66d994281612f84c74fe234979c9be414c4010e",
+      "structure.py": "984c2cea1bae43bf5f398d8feb017f97d8d95af91ebe524f63fd558472194ca4",
+      "targets.py": "25072f430ca3a261ca6d4018c662235514df59f33d3101cd7b790f0af543b95b"
+    },
+    "git_commit_at_run": "6720e0a15c204da92ebf5eca1e9f49cbe1b26bc0",
+    "python": "3.14.6",
+    "platform": "macOS-26.5.2-arm64-arm-64bit-Mach-O",
+    "packages": {
+      "numpy": "2.5.3",
+      "pandas": "3.0.5",
+      "scikit-learn": "1.9.1",
+      "scipy": "1.18.1",
+      "catboost": "1.2.10",
+      "lightgbm": "4.7.0",
+      "xgboost": "3.4.1",
+      "optuna": "5.0.0"
+    }
+  },
+  "artifacts_sha256": {
+    "folds.npz": "902f981c9731db78e57059e4329772a4025630ced37bfc5dfacbd62fec72532d",
+    "oof.npy": "4efd510a725e4b65c7fcfadf738d17f147cf5da86becfc052294e60e1fe860e3",
+    "raw_oof.npy": "4efd510a725e4b65c7fcfadf738d17f147cf5da86becfc052294e60e1fe860e3",
+    "test.npy": "a251573ecf143f9ccf052de953d91bbd43fa5dd3db08109e328e5242ea3d91fa"
+  }
+}

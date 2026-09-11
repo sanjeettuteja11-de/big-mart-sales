@@ -8,7 +8,7 @@ Two kinds of cleaning happen here:
   stores that recorded it, a product's visibility elsewhere, the usual size
   of a store type. `Cleaner.fit` learns these from whichever rows it is
   given, never from sales, so it can be fit on a training fold only, or on
-  train and test features together (the default, see `clean`).
+  train and test features together only with explicit opt-in.
 """
 from __future__ import annotations
 
@@ -79,7 +79,8 @@ class Cleaner:
         self.type_weight_ = df.groupby("Item_Type")["Item_Weight"].median()
         self.global_weight_ = float(df["Item_Weight"].median())
 
-        # A product that sold was on a shelf, so zero visibility means "not recorded".
+        # Treat zero visibility as missing, a modeling assumption tested through
+        # visibility/indicator ablations, not a verified operational explanation.
         visibility = df["Item_Visibility"].replace(0, np.nan)
         self.item_visibility_ = visibility.groupby(df[ITEM_ID]).mean().dropna()
         self.global_visibility_ = float(visibility.median())
@@ -112,14 +113,13 @@ class Cleaner:
 
 
 def clean(
-    train: pd.DataFrame, test: pd.DataFrame, use_test_features: bool = True
+    train: pd.DataFrame, test: pd.DataFrame, use_test_features: bool = False
 ) -> tuple[pd.DataFrame, pd.DataFrame]:
     """Cleaned copies of train and test, keeping row order.
 
-    With `use_test_features` (the default) the imputation statistics come from
-    train and test features together, which lets a weight recorded for a
-    product in a test store fill the gap in a train store. This uses no
-    sales figures; `src/validate.py` measures whether it matters.
+    By default, statistics come from training features only. Production CV
+    additionally fits these statistics within each training fold. Passing
+    use_test_features=True is an explicit transductive experiment.
     """
     cleaner = Cleaner().fit([train, test] if use_test_features else [train])
     return cleaner.transform(train), cleaner.transform(test)

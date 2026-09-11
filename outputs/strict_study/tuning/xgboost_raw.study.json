@@ -1,0 +1,80 @@
+{
+  "cv_rmse": 1081.41,
+  "default_params_rmse": 1081.41,
+  "trials": 3,
+  "splits": 5,
+  "repeats": 1,
+  "seed": 42,
+  "fold_fit": true,
+  "provenance": {
+    "train_sha256": "5dbfa5ab3f42474402d19cee093f3874bfd11846bd15d314425581bfdb9c9a17",
+    "test_sha256": "f35a8617e02d32564894c8672412580d9079c03bfb91f30d887dbf56e5ad1190",
+    "source_sha256": {
+      "cv.py": "b5c49098cb7d6a1c3e515b3a816bba746f10e61f72f8b48cde43d727a0d22a8e",
+      "data.py": "6e1f5e58e6a88f42a79baa76006b525c15ad269743c9d206714e0d361e72baf8",
+      "features.py": "fa922c508e6e0a03f915e84def9b57f3ad2d87e0647646f7877b9170c8adf955",
+      "models.py": "b22b31c685bb66cee05d70d6f66d994281612f84c74fe234979c9be414c4010e",
+      "structure.py": "984c2cea1bae43bf5f398d8feb017f97d8d95af91ebe524f63fd558472194ca4",
+      "targets.py": "25072f430ca3a261ca6d4018c662235514df59f33d3101cd7b790f0af543b95b"
+    },
+    "git_commit_at_run": "6720e0a15c204da92ebf5eca1e9f49cbe1b26bc0",
+    "python": "3.14.6",
+    "platform": "macOS-26.5.2-arm64-arm-64bit-Mach-O",
+    "packages": {
+      "numpy": "2.5.3",
+      "pandas": "3.0.5",
+      "scikit-learn": "1.9.1",
+      "scipy": "1.18.1",
+      "catboost": "1.2.10",
+      "lightgbm": "4.7.0",
+      "xgboost": "3.4.1",
+      "optuna": "5.0.0"
+    }
+  },
+  "selection_bias": "Best of searched configurations; confirm on additional folds.",
+  "elapsed_seconds_this_session": 234.15611208299742,
+  "trial_results": [
+    {
+      "number": 0,
+      "value": 1081.4103981790975,
+      "params": {
+        "n_estimators": 2000,
+        "learning_rate": 0.02,
+        "max_depth": 4,
+        "min_child_weight": 20,
+        "subsample": 0.8,
+        "colsample_bytree": 0.8,
+        "reg_lambda": 5.0
+      },
+      "state": "COMPLETE"
+    },
+    {
+      "number": 1,
+      "value": 1081.5603012186787,
+      "params": {
+        "n_estimators": 3000,
+        "learning_rate": 0.05529396157063008,
+        "max_depth": 3,
+        "min_child_weight": 1.022205496156319,
+        "subsample": 0.9286960596974015,
+        "colsample_bytree": 0.6916392573088401,
+        "reg_lambda": 11.5237708292543
+      },
+      "state": "COMPLETE"
+    },
+    {
+      "number": 2,
+      "value": 1089.897684489995,
+      "params": {
+        "n_estimators": 3000,
+        "learning_rate": 0.015355286838886862,
+        "max_depth": 8,
+        "min_child_weight": 48.343714531846395,
+        "subsample": 0.7993292420985183,
+        "colsample_bytree": 0.4936111842654619,
+        "reg_lambda": 0.0060252157362038605
+      },
+      "state": "COMPLETE"
+    }
+  ]
+}

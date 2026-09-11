@@ -77,7 +77,7 @@ class FeatureBuilder:
 
 
 def build_features(
-    train: pd.DataFrame, test: pd.DataFrame, use_test_features: bool = True
+    train: pd.DataFrame, test: pd.DataFrame, use_test_features: bool = False
 ) -> tuple[pd.DataFrame, pd.DataFrame]:
     builder = FeatureBuilder().fit([train, test] if use_test_features else [train])
     return builder.transform(train), builder.transform(test).drop(columns=TARGET, errors="ignore")
@@ -92,14 +92,14 @@ def tree_matrix(
 ) -> tuple[pd.DataFrame, list[pd.DataFrame]]:
     """Categoricals as pandas `category` dtype (LightGBM, XGBoost, HistGB) or
     integer codes (random forest, extra trees). Every frame shares one
-    encoding, whose levels are the union of all frames' levels: a label-free
-    vocabulary, needed so a model can score a frame it never trained on."""
+    encoding fitted on training rows. Unseen categories become missing (or
+    code -1), without learning a vocabulary from validation/test rows."""
     columns = _select(NUMERIC + INDICATORS + CATEGORICAL, drop)
     frames = [f[columns].copy() for f in [train, *others]]
     for col in _select(CATEGORICAL, drop):
-        dtype = pd.CategoricalDtype(sorted(set().union(*(set(f[col]) for f in frames))))
+        dtype = pd.CategoricalDtype(sorted(train[col].dropna().unique()))
         for f in frames:
-            f[col] = f[col].astype(dtype)
+            f[col] = f[col].where(f[col].isin(dtype.categories)).astype(dtype)
             if as_codes:
                 f[col] = f[col].cat.codes
     return frames[0], frames[1:]
@@ -127,7 +127,10 @@ def linear_matrix(
     price = np.log(both["Item_MRP"]) if log_link else both["Item_MRP"]
 
     cats = _select(CATEGORICAL + ["MRP_Band"], drop)
-    dummies = pd.get_dummies(both[cats].astype(str), prefix=cats, dtype=float)
+    train_dummies = pd.get_dummies(train[cats].astype(str), prefix=cats, dtype=float)
+    dummies = pd.get_dummies(both[cats].astype(str), prefix=cats, dtype=float).reindex(
+        columns=train_dummies.columns, fill_value=0.0
+    )
     numeric = both[_select([c for c in NUMERIC + INDICATORS if c not in ("Item_MRP", "MRP_Band")], drop)].astype(float)
     parts = [numeric, price.rename("Price"), dummies]
     if not drop or OUTLET_ID not in drop:

@@ -1,0 +1,287 @@
+{
+  "data_audit": {
+    "train_rows": 8523,
+    "test_rows": 5681,
+    "products_train": 1559,
+    "outlets_train": 10,
+    "unseen_test_products": 0,
+    "unseen_test_outlets": 0,
+    "duplicate_train_pairs": 0,
+    "duplicate_test_pairs": 0,
+    "train_test_pair_overlap": 0,
+    "target_min": 33.29,
+    "missing_train": {
+      "Item_Identifier": 0,
+      "Item_Weight": 1463,
+      "Item_Fat_Content": 0,
+      "Item_Visibility": 0,
+      "Item_Type": 0,
+      "Item_MRP": 0,
+      "Outlet_Identifier": 0,
+      "Outlet_Establishment_Year": 0,
+      "Outlet_Size": 2410,
+      "Outlet_Location_Type": 0,
+      "Outlet_Type": 0,
+      "Item_Outlet_Sales": 0
+    },
+    "missing_test": {
+      "Item_Identifier": 0,
+      "Item_Weight": 976,
+      "Item_Fat_Content": 0,
+      "Item_Visibility": 0,
+      "Item_Type": 0,
+      "Item_MRP": 0,
+      "Outlet_Identifier": 0,
+      "Outlet_Establishment_Year": 0,
+      "Outlet_Size": 1606,
+      "Outlet_Location_Type": 0,
+      "Outlet_Type": 0
+    }
+  },
+  "fixed_blend_rmse": 1071.2030996293581,
+  "boosting_average_rmse": 1073.7908468897117,
+  "comparisons": {
+    "fixed_75_25_vs_structural": {
+      "delta_rmse": -0.12871931720405883,
+      "delta_95pct_percentile_interval": [
+        -0.9192459754824938,
+        0.6120147550332257
+      ],
+      "baseline_95pct_percentile_interval": [
+        1042.349958693105,
+        1100.6291113569944
+      ],
+      "bootstrap_replicates": 2000,
+      "seed": 918,
+      "caveat": "Conditional on fixed OOF predictions, resampling entire products. Excludes retraining/selection uncertainty and new-outlet variation; not a leaderboard interval."
+    },
+    "catboost_vs_structural": {
+      "delta_rmse": 1.9202523902554276,
+      "delta_95pct_percentile_interval": [
+        -0.17028669065048802,
+        3.8986665006960877
+      ],
+      "baseline_95pct_percentile_interval": [
+        1042.349958693105,
+        1100.6291113569944
+      ],
+      "bootstrap_replicates": 2000,
+      "seed": 918,
+      "caveat": "Conditional on fixed OOF predictions, resampling entire products. Excludes retraining/selection uncertainty and new-outlet variation; not a leaderboard interval."
+    }
+  },
+  "segments": {
+    "Outlet_Identifier": [
+      {
+        "Outlet_Identifier": "OUT010",
+        "rows": 555,
+        "bias": -12.312486571224934,
+        "rmse": 218.19583479594957
+      },
+      {
+        "Outlet_Identifier": "OUT013",
+        "rows": 932,
+        "bias": 26.426902805119127,
+        "rmse": 1087.3932183293014
+      },
+      {
+        "Outlet_Identifier": "OUT017",
+        "rows": 926,
+        "bias": 23.9409808263154,
+        "rmse": 1124.5902863557951
+      },
+      {
+        "Outlet_Identifier": "OUT018",
+        "rows": 928,
+        "bias": 18.540043258221285,
+        "rmse": 1023.538941505508
+      },
+      {
+        "Outlet_Identifier": "OUT019",
+        "rows": 528,
+        "bias": -15.172913709253606,
+        "rmse": 206.0286465281539
+      },
+      {
+        "Outlet_Identifier": "OUT027",
+        "rows": 935,
+        "bias": -3.8289181433418893,
+        "rmse": 1437.5934240578651
+      },
+      {
+        "Outlet_Identifier": "OUT035",
+        "rows": 930,
+        "bias": 19.516480131837106,
+        "rmse": 1108.7593151887918
+      },
+      {
+        "Outlet_Identifier": "OUT045",
+        "rows": 929,
+        "bias": -14.367441029834007,
+        "rmse": 1094.2113512734811
+      },
+      {
+        "Outlet_Identifier": "OUT046",
+        "rows": 930,
+        "bias": -23.33576276847413,
+        "rmse": 1138.450456316484
+      },
+      {
+        "Outlet_Identifier": "OUT049",
+        "rows": 930,
+        "bias": 16.923570329488463,
+        "rmse": 1083.8488200828047
+      }
+    ],
+    "Outlet_Type": [
+      {
+        "Outlet_Type": "Grocery Store",
+        "rows": 1083,
+        "bias": -13.707043846274924,
+        "rmse": 212.35101664223058
+      },
+      {
+        "Outlet_Type": "Supermarket Type1",
+        "rows": 5577,
+        "bias": 8.183406221476623,
+        "rmse": 1106.3705785696384
+      },
+      {
+        "Outlet_Type": "Supermarket Type2",
+        "rows": 928,
+        "bias": 18.540043258221285,
+        "rmse": 1023.538941505508
+      },
+      {
+        "Outlet_Type": "Supermarket Type3",
+        "rows": 935,
+        "bias": -3.8289181433418893,
+        "rmse": 1437.5934240578651
+      }
+    ],
+    "Item_Type": [
+      {
+        "Item_Type": "Baking Goods",
+        "rows": 648,
+        "bias": 4.320778936395716,
+        "rmse": 943.603100065386
+      },
+      {
+        "Item_Type": "Breads",
+        "rows": 251,
+        "bias": 12.173362483526944,
+        "rmse": 1054.8624795415935
+      },
+      {
+        "Item_Type": "Breakfast",
+        "rows": 110,
+        "bias": 27.257914227806587,
+        "rmse": 1137.500647396477
+      },
+      {
+        "Item_Type": "Canned",
+        "rows": 649,
+        "bias": 33.199043339721484,
+        "rmse": 1018.5140780107681
+      },
+      {
+        "Item_Type": "Dairy",
+        "rows": 682,
+        "bias": -24.246493370665203,
+        "rmse": 1182.3695777312346
+      },
+      {
+        "Item_Type": "Frozen Foods",
+        "rows": 856,
+        "bias": -15.97802222001415,
+        "rmse": 1020.7152659044465
+      },
+      {
+        "Item_Type": "Fruits and Vegetables",
+        "rows": 1232,
+        "bias": 35.16453675239534,
+        "rmse": 1112.5632779278624
+      },
+      {
+        "Item_Type": "Hard Drinks",
+        "rows": 214,
+        "bias": -28.255597334455413,
+        "rmse": 1049.3674167154838
+      },
+      {
+        "Item_Type": "Health and Hygiene",
+        "rows": 520,
+        "bias": -7.195003970544239,
+        "rmse": 969.5804525798075
+      },
+      {
+        "Item_Type": "Household",
+        "rows": 910,
+        "bias": -23.428223256095386,
+        "rmse": 1086.4325655844764
+      },
+      {
+        "Item_Type": "Meat",
+        "rows": 425,
+        "bias": 13.228301446910892,
+        "rmse": 1007.1249924207827
+      },
+      {
+        "Item_Type": "Others",
+        "rows": 169,
+        "bias": -18.62590312363082,
+        "rmse": 875.8343985485284
+      },
+      {
+        "Item_Type": "Seafood",
+        "rows": 64,
+        "bias": 211.9446288795603,
+        "rmse": 1291.7581661600846
+      },
+      {
+        "Item_Type": "Snack Foods",
+        "rows": 1200,
+        "bias": 6.589885088764171,
+        "rmse": 1131.5399885689992
+      },
+      {
+        "Item_Type": "Soft Drinks",
+        "rows": 445,
+        "bias": 3.2186837145668323,
+        "rmse": 1077.1700589072673
+      },
+      {
+        "Item_Type": "Starchy Foods",
+        "rows": 148,
+        "bias": 44.8568070758094,
+        "rmse": 1216.3178123945065
+      }
+    ],
+    "mrp_band": [
+      {
+        "mrp_band": "(-inf, 69.0]",
+        "rows": 1341,
+        "bias": -15.659831831611257,
+        "rmse": 346.1508356071095
+      },
+      {
+        "mrp_band": "(136.0, 203.0]",
+        "rows": 3002,
+        "bias": 18.56950954754642,
+        "rmse": 1181.207018930585
+      },
+      {
+        "mrp_band": "(203.0, inf]",
+        "rows": 1429,
+        "bias": 13.02899741682934,
+        "rmse": 1654.3418375946792
+      },
+      {
+        "mrp_band": "(69.0, 136.0]",
+        "rows": 2751,
+        "bias": -3.2515524510827722,
+        "rmse": 743.2636213387932
+      }
+    ]
+  }
+}

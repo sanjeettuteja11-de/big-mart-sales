@@ -8,8 +8,8 @@ Cross-validated test predictions (src/train.py) average 15 models that each
 saw 80% of the rows. A refit trains on all 8,523 rows instead. A boosting
 model has no validation set left to stop on, so its round count is the mean
 early-stopping round recorded in outputs/cv_results.json, scaled by
---rounds-scale (default 1.2): early stopping ran on 68% of the data (85% of
-an 80% fold), and more data supports more rounds. Several seeds are averaged
+--rounds-scale (default 1.0). Scaling rounds is an optional heuristic,
+not a validated improvement. Several seeds are averaged
 to reduce the boosting models' run-to-run variance.
 """
 from __future__ import annotations
@@ -45,14 +45,16 @@ def refit_predict(
     test_raw: pd.DataFrame,
     seeds: int = 1,
     rounds: int | None = None,
-    rounds_scale: float = 1.2,
+    rounds_scale: float = 1.0,
     outputs: Path = OUTPUTS,
 ) -> np.ndarray:
     spec = SPECS_BY_NAME[name]
     if spec.item_popularity:
         raise NotImplementedError(f"{name} needs out-of-fold encodings; refit is not supported for it")
-    prepared = prepare(train_raw, test_raw, matrices=[spec.matrix])
-    X, X_test = prepared.matrices[spec.matrix]
+    prepared = prepare(train_raw, test_raw, matrices=[spec.matrix]) if spec.matrix != "raw" else None
+    X, X_test = prepared.matrices[spec.matrix] if prepared is not None else (train_raw.drop(columns=TARGET), test_raw)
+    rows_train = prepared.train if prepared is not None else train_raw
+    rows_test = prepared.test if prepared is not None else test_raw
 
     params = dict(load_tuned(name, outputs / "params"))
     if spec.iterations_param:
@@ -62,13 +64,13 @@ def refit_predict(
         params[spec.iterations_param] = max(1, round(rounds * rounds_scale))
 
     transform = TRANSFORMS[spec.target]
-    y = prepared.train[TARGET].to_numpy(dtype=float)
-    z, w = transform.forward(y, prepared.train), transform.weight(prepared.train)
+    y = rows_train[TARGET].to_numpy(dtype=float)
+    z, w = transform.forward(y, rows_train), transform.weight(rows_train)
     predictions = []
     for s in range(seeds):
         model = spec.make(params, SEED + s)
         model.fit(X, z, **_fit_kwargs(spec, model, X, w))
-        predictions.append(np.clip(transform.inverse(model.predict(X_test), prepared.test), 0, None))
+        predictions.append(np.clip(transform.inverse(model.predict(X_test), rows_test), 0, None))
     return np.mean(predictions, axis=0)
 
 
@@ -77,7 +79,7 @@ def main() -> None:
     parser.add_argument("models", nargs="+", choices=sorted(SPECS_BY_NAME))
     parser.add_argument("--weights", nargs="+", type=float, help="blend weights, one per model (normalised to sum to 1)")
     parser.add_argument("--seeds", type=int, default=1)
-    parser.add_argument("--rounds-scale", type=float, default=1.2)
+    parser.add_argument("--rounds-scale", type=float, default=1.0)
     parser.add_argument("--name", help="submission file name without .csv")
     parser.add_argument("--out-dir", type=Path, default=SUBMISSIONS)
     parser.add_argument("--data", type=Path, default=DATA_RAW)

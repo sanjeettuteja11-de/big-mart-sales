@@ -1,0 +1,72 @@
+{
+  "model": "catboost_units_unweighted",
+  "scheme": "stratified",
+  "oof_rmse": 1074.57,
+  "fold_rmse_mean": 1074.24,
+  "fold_rmse_std": 26.37,
+  "n_folds": 5,
+  "seconds": 12.8,
+  "fold_rmse": [
+    1062.745466941068,
+    1049.5084661723326,
+    1107.6294171647405,
+    1104.0719011066485,
+    1047.2631098723048
+  ],
+  "oof_rmse_full_precision": 1074.5668834915205,
+  "raw_oof_rmse": 1074.5668834915205,
+  "best_iterations": [
+    190,
+    176,
+    231,
+    284,
+    146
+  ],
+  "best_iterations_mean": 205,
+  "config": {
+    "model": "catboost_units_unweighted",
+    "params": {
+      "iterations": 3000,
+      "learning_rate": 0.03,
+      "depth": 5,
+      "l2_leaf_reg": 6.0
+    },
+    "repeats": 1,
+    "seed": 42,
+    "scheme": "stratified",
+    "drop": [],
+    "fold_fit": true,
+    "protocol": "strict-inner-preprocessing-v1"
+  },
+  "provenance": {
+    "train_sha256": "5dbfa5ab3f42474402d19cee093f3874bfd11846bd15d314425581bfdb9c9a17",
+    "test_sha256": "f35a8617e02d32564894c8672412580d9079c03bfb91f30d887dbf56e5ad1190",
+    "source_sha256": {
+      "cv.py": "b5c49098cb7d6a1c3e515b3a816bba746f10e61f72f8b48cde43d727a0d22a8e",
+      "data.py": "6e1f5e58e6a88f42a79baa76006b525c15ad269743c9d206714e0d361e72baf8",
+      "features.py": "fa922c508e6e0a03f915e84def9b57f3ad2d87e0647646f7877b9170c8adf955",
+      "models.py": "b22b31c685bb66cee05d70d6f66d994281612f84c74fe234979c9be414c4010e",
+      "structure.py": "984c2cea1bae43bf5f398d8feb017f97d8d95af91ebe524f63fd558472194ca4",
+      "targets.py": "25072f430ca3a261ca6d4018c662235514df59f33d3101cd7b790f0af543b95b"
+    },
+    "git_commit_at_run": "6720e0a15c204da92ebf5eca1e9f49cbe1b26bc0",
+    "python": "3.14.6",
+    "platform": "macOS-26.5.2-arm64-arm-64bit-Mach-O",
+    "packages": {
+      "numpy": "2.5.3",
+      "pandas": "3.0.5",
+      "scikit-learn": "1.9.1",
+      "scipy": "1.18.1",
+      "catboost": "1.2.10",
+      "lightgbm": "4.7.0",
+      "xgboost": "3.4.1",
+      "optuna": "5.0.0"
+    }
+  },
+  "artifacts_sha256": {
+    "folds.npz": "753e3676b0ca87899b743e4cdae7de80374070d840f6ccf7c7f17aa7f7e5f8a5",
+    "oof.npy": "87a49ee6198254840252705d142997ae7cdbdbe8f1bd5ab696f4daecf558ea31",
+    "raw_oof.npy": "87a49ee6198254840252705d142997ae7cdbdbe8f1bd5ab696f4daecf558ea31",
+    "test.npy": "bce323655fca981258bae621f8821da7468ed86f82510ebe9211af40c5ba50c2"
+  }
+}

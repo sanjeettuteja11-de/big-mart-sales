@@ -1,0 +1,74 @@
+{
+  "model": "catboost_units_unweighted",
+  "scheme": "stratified",
+  "oof_rmse": 1075.31,
+  "fold_rmse_mean": 1074.97,
+  "fold_rmse_std": 26.96,
+  "n_folds": 5,
+  "seconds": 22.8,
+  "fold_rmse": [
+    1063.1985634248458,
+    1048.914576175932,
+    1109.5231718997231,
+    1105.0506649446477,
+    1048.168252777273
+  ],
+  "oof_rmse_full_precision": 1075.3087062154752,
+  "raw_oof_rmse": 1075.3087062154752,
+  "best_iterations": [
+    192,
+    138,
+    287,
+    244,
+    214
+  ],
+  "best_iterations_mean": 215,
+  "config": {
+    "model": "catboost_units_unweighted",
+    "params": {
+      "iterations": 3000,
+      "learning_rate": 0.03,
+      "depth": 5,
+      "l2_leaf_reg": 6.0
+    },
+    "repeats": 1,
+    "seed": 42,
+    "scheme": "stratified",
+    "drop": [
+      "Outlet_Identifier"
+    ],
+    "fold_fit": true,
+    "protocol": "strict-inner-preprocessing-v1"
+  },
+  "provenance": {
+    "train_sha256": "5dbfa5ab3f42474402d19cee093f3874bfd11846bd15d314425581bfdb9c9a17",
+    "test_sha256": "f35a8617e02d32564894c8672412580d9079c03bfb91f30d887dbf56e5ad1190",
+    "source_sha256": {
+      "cv.py": "4c7841cd79561c4019d12395356e3e9eaea832a8c3b52ba2c4a20e48c727758d",
+      "data.py": "6e1f5e58e6a88f42a79baa76006b525c15ad269743c9d206714e0d361e72baf8",
+      "features.py": "df76f6d22afb16078af01dbf0c2304b8e7b825a581b0acb58431c6e67f149c39",
+      "models.py": "e77d9ba288be1ca00caf2d2966c2a3e978e0506a24eb0246c56ad5a8e3a27ba6",
+      "structure.py": "984c2cea1bae43bf5f398d8feb017f97d8d95af91ebe524f63fd558472194ca4",
+      "targets.py": "25072f430ca3a261ca6d4018c662235514df59f33d3101cd7b790f0af543b95b"
+    },
+    "git_commit_at_run": "6720e0a15c204da92ebf5eca1e9f49cbe1b26bc0",
+    "python": "3.14.6",
+    "platform": "macOS-26.5.2-arm64-arm-64bit-Mach-O",
+    "packages": {
+      "numpy": "2.5.3",
+      "pandas": "3.0.5",
+      "scikit-learn": "1.9.1",
+      "scipy": "1.18.1",
+      "catboost": "1.2.10",
+      "lightgbm": "4.7.0",
+      "xgboost": "3.4.1",
+      "optuna": "5.0.0"
+    }
+  },
+  "artifacts_sha256": {
+    "folds.npz": "a24bedff80fc7e1a5ba8662391d1f8bd272ab892054d32c65a5614a849fee11a",
+    "oof.npy": "0af51a9a4ee262e4266ff3c3f58dbb21cede943b7bfc94d64d95ed41e04d1b5c",
+    "raw_oof.npy": "0af51a9a4ee262e4266ff3c3f58dbb21cede943b7bfc94d64d95ed41e04d1b5c",
+    "test.npy": "5ee84c4de1bfd05a24ef194277a46500c54de1e6de3bd01b34b3400912f6036f"
+  }
+}

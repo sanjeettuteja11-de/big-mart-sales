@@ -1,0 +1,75 @@
+{
+  "model": "catboost_units_unweighted",
+  "scheme": "stratified",
+  "oof_rmse": 1074.7,
+  "fold_rmse_mean": 1074.36,
+  "fold_rmse_std": 26.99,
+  "n_folds": 5,
+  "seconds": 13.7,
+  "fold_rmse": [
+    1062.360961909677,
+    1048.3993203264251,
+    1107.5836018649425,
+    1105.9635437828435,
+    1047.48294893177
+  ],
+  "oof_rmse_full_precision": 1074.6965296473702,
+  "raw_oof_rmse": 1074.6965296473702,
+  "best_iterations": [
+    197,
+    118,
+    169,
+    416,
+    171
+  ],
+  "best_iterations_mean": 214,
+  "config": {
+    "model": "catboost_units_unweighted",
+    "params": {
+      "iterations": 3000,
+      "learning_rate": 0.03,
+      "depth": 5,
+      "l2_leaf_reg": 6.0
+    },
+    "repeats": 1,
+    "seed": 42,
+    "scheme": "stratified",
+    "drop": [
+      "Item_Fat_Content",
+      "Item_Type"
+    ],
+    "fold_fit": true,
+    "protocol": "strict-inner-preprocessing-v1"
+  },
+  "provenance": {
+    "train_sha256": "5dbfa5ab3f42474402d19cee093f3874bfd11846bd15d314425581bfdb9c9a17",
+    "test_sha256": "f35a8617e02d32564894c8672412580d9079c03bfb91f30d887dbf56e5ad1190",
+    "source_sha256": {
+      "cv.py": "4c7841cd79561c4019d12395356e3e9eaea832a8c3b52ba2c4a20e48c727758d",
+      "data.py": "6e1f5e58e6a88f42a79baa76006b525c15ad269743c9d206714e0d361e72baf8",
+      "features.py": "df76f6d22afb16078af01dbf0c2304b8e7b825a581b0acb58431c6e67f149c39",
+      "models.py": "e77d9ba288be1ca00caf2d2966c2a3e978e0506a24eb0246c56ad5a8e3a27ba6",
+      "structure.py": "984c2cea1bae43bf5f398d8feb017f97d8d95af91ebe524f63fd558472194ca4",
+      "targets.py": "25072f430ca3a261ca6d4018c662235514df59f33d3101cd7b790f0af543b95b"
+    },
+    "git_commit_at_run": "6720e0a15c204da92ebf5eca1e9f49cbe1b26bc0",
+    "python": "3.14.6",
+    "platform": "macOS-26.5.2-arm64-arm-64bit-Mach-O",
+    "packages": {
+      "numpy": "2.5.3",
+      "pandas": "3.0.5",
+      "scikit-learn": "1.9.1",
+      "scipy": "1.18.1",
+      "catboost": "1.2.10",
+      "lightgbm": "4.7.0",
+      "xgboost": "3.4.1",
+      "optuna": "5.0.0"
+    }
+  },
+  "artifacts_sha256": {
+    "folds.npz": "70584ec451d0654a378a46cc8b3da61e5ad57be70179e07c32ddca16afd82047",
+    "oof.npy": "90e0f2370b673c86f47798bc7d7a8fecffd2b1b3dcb6343933f045c50c3a741d",
+    "raw_oof.npy": "90e0f2370b673c86f47798bc7d7a8fecffd2b1b3dcb6343933f045c50c3a741d",
+    "test.npy": "c740591cbb6fb15a579aead65d5adb309d778e90faa09d1127c24d74ba467d3a"
+  }
+}

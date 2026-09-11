@@ -5,11 +5,10 @@ Every training row splits exactly as
     Item_Outlet_Sales = units x (Item_MRP + offset)
 
 where units is a whole number and offset is a multiple of 0.1 between -2 and
-+2. The offset behaves like random noise, unrelated to product, store or
-price. Units depend on the store and, very weakly, on the product. Nothing
-else (category, fat content, visibility, price band) moves them. So the best
-prediction is Item_MRP x expected units, which is what `StoreRatePopularity`
-estimates.
++2. The descriptive association is strongest with store, with a small product
+effect in CV. This does not establish independence or causation. The baseline
+predicts Item_MRP x expected units. src.price_model separately tests decoding
+a consistent unit price from the learned training-sales currency lattice.
 """
 from __future__ import annotations
 
@@ -109,3 +108,62 @@ class StoreRatePopularity(RegressorMixin, BaseEstimator):
         rate = X[self.RATE_COLUMNS[self.rate_level]].map(self.rates_).fillna(self.default_rate_)
         popularity = X[ITEM_ID].map(self.popularity_).fillna(1.0)
         return (rate * popularity).to_numpy(dtype=float)
+
+
+class HierarchicalStoreRate(StoreRatePopularity):
+    """Store-to-type shrinkage plus a smoothed product factor.
+
+    rate_smoothing is the number of prior observations at the store-type
+    mean. weight_power=0 uses equal row weights; 2 corresponds to sales
+    squared loss. Optionally recover integer units from training targets.
+    These are parameters of a supervised regressor, not encoded features
+    passed to a second model; no inner target encoding is needed here.
+    """
+
+    def __init__(self, smoothing=55.0, rate_smoothing=0.0, weight_power=0.0,
+                 integer_units=False, interaction_smoothing=float("inf")):
+        self.smoothing = smoothing
+        self.rate_smoothing = rate_smoothing
+        self.weight_power = weight_power
+        self.integer_units = integer_units
+        self.interaction_smoothing = interaction_smoothing
+        self.rate_level = "store"
+
+    def fit(self, X, y, sample_weight=None):
+        y = np.asarray(y, dtype=float)
+        if self.integer_units:
+            units, _ = recover_units(y * X.Item_MRP.to_numpy(), X.Item_MRP)
+            y = np.where(np.isfinite(units), units, y)
+        w = (X.Item_MRP.to_numpy() / X.Item_MRP.mean()) ** self.weight_power
+        if sample_weight is not None:
+            w *= np.asarray(sample_weight)
+        w /= w.mean()
+        df = pd.DataFrame({"y": y, "w": w, "wy": w * y,
+                           "store": X[OUTLET_ID].to_numpy(), "type": X.Outlet_Type.to_numpy()})
+        st = df.groupby("store")[["wy", "w"]].sum()
+        ty = df.groupby("type")[["wy", "w"]].sum()
+        self.type_rates_ = ty.wy / ty.w
+        prior = df.drop_duplicates("store").set_index("store")["type"].map(self.type_rates_)
+        if np.isinf(self.rate_smoothing):
+            self.rates_ = prior
+        else:
+            self.rates_ = (st.wy + self.rate_smoothing * prior) / (st.w + self.rate_smoothing)
+        self.default_rate_ = float(np.average(y, weights=w))
+        rate = df.store.map(self.rates_).to_numpy()
+        relative = y / rate
+        st = pd.DataFrame({"wr": relative * w, "w": w}).groupby(X[ITEM_ID].to_numpy()).sum()
+        self.popularity_ = ((st.wr + self.smoothing) / (st.w + self.smoothing)
+                            if np.isfinite(self.smoothing) else pd.Series(dtype=float))
+        self.interactions_ = pd.Series(dtype=float)
+        if np.isfinite(self.interaction_smoothing):
+            base = rate * X[ITEM_ID].map(self.popularity_).fillna(1).to_numpy()
+            keys = X.Outlet_Type.astype(str) + ":" + X.MRP_Band.astype(str)
+            st = pd.DataFrame({"wr": y / base * w, "w": w}).groupby(keys.to_numpy()).sum()
+            self.interactions_ = (st.wr + self.interaction_smoothing) / (st.w + self.interaction_smoothing)
+        return self
+
+    def predict(self, X):
+        rate = X[OUTLET_ID].map(self.rates_).fillna(X.Outlet_Type.map(self.type_rates_)).fillna(self.default_rate_)
+        pop = X[ITEM_ID].map(self.popularity_).fillna(1.0)
+        keys = X.Outlet_Type.astype(str) + ":" + X.MRP_Band.astype(str)
+        return (rate * pop * keys.map(self.interactions_).fillna(1.0)).to_numpy(dtype=float)

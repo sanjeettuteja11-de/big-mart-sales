@@ -1,0 +1,526 @@
+{
+  "outer_fold": 4,
+  "params": {
+    "rate_smoothing": 100.0,
+    "smoothing": Infinity,
+    "weight_power": 1.0
+  },
+  "boosting_weight": 0.0,
+  "catboost_params": {
+    "iterations": 3000,
+    "learning_rate": 0.03,
+    "depth": 5,
+    "l2_leaf_reg": 6.0
+  },
+  "inner_candidates": [
+    {
+      "rmse": 1081.5704870405896,
+      "params": {
+        "rate_smoothing": 0.0,
+        "smoothing": 20.0,
+        "weight_power": 0.0
+      }
+    },
+    {
+      "rmse": 1084.810052016664,
+      "params": {
+        "rate_smoothing": 0.0,
+        "smoothing": 20.0,
+        "weight_power": 1.0
+      }
+    },
+    {
+      "rmse": 1088.386354351643,
+      "params": {
+        "rate_smoothing": 0.0,
+        "smoothing": 20.0,
+        "weight_power": 2.0
+      }
+    },
+    {
+      "rmse": 1078.5485541597025,
+      "params": {
+        "rate_smoothing": 0.0,
+        "smoothing": 55.0,
+        "weight_power": 0.0
+      }
+    },
+    {
+      "rmse": 1079.3807352297536,
+      "params": {
+        "rate_smoothing": 0.0,
+        "smoothing": 55.0,
+        "weight_power": 1.0
+      }
+    },
+    {
+      "rmse": 1080.7414572047746,
+      "params": {
+        "rate_smoothing": 0.0,
+        "smoothing": 55.0,
+        "weight_power": 2.0
+      }
+    },
+    {
+      "rmse": 1078.079591242982,
+      "params": {
+        "rate_smoothing": 0.0,
+        "smoothing": 150.0,
+        "weight_power": 0.0
+      }
+    },
+    {
+      "rmse": 1078.260683975751,
+      "params": {
+        "rate_smoothing": 0.0,
+        "smoothing": 150.0,
+        "weight_power": 1.0
+      }
+    },
+    {
+      "rmse": 1078.885918761632,
+      "params": {
+        "rate_smoothing": 0.0,
+        "smoothing": 150.0,
+        "weight_power": 2.0
+      }
+    },
+    {
+      "rmse": 1078.022949282245,
+      "params": {
+        "rate_smoothing": 0.0,
+        "smoothing": Infinity,
+        "weight_power": 0.0
+      }
+    },
+    {
+      "rmse": 1077.955088342249,
+      "params": {
+        "rate_smoothing": 0.0,
+        "smoothing": Infinity,
+        "weight_power": 1.0
+      }
+    },
+    {
+      "rmse": 1078.2715368213203,
+      "params": {
+        "rate_smoothing": 0.0,
+        "smoothing": Infinity,
+        "weight_power": 2.0
+      }
+    },
+    {
+      "rmse": 1081.5489939229294,
+      "params": {
+        "rate_smoothing": 100.0,
+        "smoothing": 20.0,
+        "weight_power": 0.0
+      }
+    },
+    {
+      "rmse": 1084.7165952004061,
+      "params": {
+        "rate_smoothing": 100.0,
+        "smoothing": 20.0,
+        "weight_power": 1.0
+      }
+    },
+    {
+      "rmse": 1088.2063321987102,
+      "params": {
+        "rate_smoothing": 100.0,
+        "smoothing": 20.0,
+        "weight_power": 2.0
+      }
+    },
+    {
+      "rmse": 1078.5395497181385,
+      "params": {
+        "rate_smoothing": 100.0,
+        "smoothing": 55.0,
+        "weight_power": 0.0
+      }
+    },
+    {
+      "rmse": 1079.3126927222224,
+      "params": {
+        "rate_smoothing": 100.0,
+        "smoothing": 55.0,
+        "weight_power": 1.0
+      }
+    },
+    {
+      "rmse": 1080.5963093732623,
+      "params": {
+        "rate_smoothing": 100.0,
+        "smoothing": 55.0,
+        "weight_power": 2.0
+      }
+    },
+    {
+      "rmse": 1078.0749336198826,
+      "params": {
+        "rate_smoothing": 100.0,
+        "smoothing": 150.0,
+        "weight_power": 0.0
+      }
+    },
+    {
+      "rmse": 1078.2020939070508,
+      "params": {
+        "rate_smoothing": 100.0,
+        "smoothing": 150.0,
+        "weight_power": 1.0
+      }
+    },
+    {
+      "rmse": 1078.7537679068535,
+      "params": {
+        "rate_smoothing": 100.0,
+        "smoothing": 150.0,
+        "weight_power": 2.0
+      }
+    },
+    {
+      "rmse": 1078.0207202069332,
+      "params": {
+        "rate_smoothing": 100.0,
+        "smoothing": Infinity,
+        "weight_power": 0.0
+      }
+    },
+    {
+      "rmse": 1077.9019415410924,
+      "params": {
+        "rate_smoothing": 100.0,
+        "smoothing": Infinity,
+        "weight_power": 1.0
+      }
+    },
+    {
+      "rmse": 1078.1468190611245,
+      "params": {
+        "rate_smoothing": 100.0,
+        "smoothing": Infinity,
+        "weight_power": 2.0
+      }
+    },
+    {
+      "rmse": 1081.7545505032285,
+      "params": {
+        "rate_smoothing": 500.0,
+        "smoothing": 20.0,
+        "weight_power": 0.0
+      }
+    },
+    {
+      "rmse": 1084.8223467850569,
+      "params": {
+        "rate_smoothing": 500.0,
+        "smoothing": 20.0,
+        "weight_power": 1.0
+      }
+    },
+    {
+      "rmse": 1088.1841689390642,
+      "params": {
+        "rate_smoothing": 500.0,
+        "smoothing": 20.0,
+        "weight_power": 2.0
+      }
+    },
+    {
+      "rmse": 1078.7660704455138,
+      "params": {
+        "rate_smoothing": 500.0,
+        "smoothing": 55.0,
+        "weight_power": 0.0
+      }
+    },
+    {
+      "rmse": 1079.4640419187945,
+      "params": {
+        "rate_smoothing": 500.0,
+        "smoothing": 55.0,
+        "weight_power": 1.0
+      }
+    },
+    {
+      "rmse": 1080.6374263268685,
+      "params": {
+        "rate_smoothing": 500.0,
+        "smoothing": 55.0,
+        "weight_power": 2.0
+      }
+    },
+    {
+      "rmse": 1078.3088601021316,
+      "params": {
+        "rate_smoothing": 500.0,
+        "smoothing": 150.0,
+        "weight_power": 0.0
+      }
+    },
+    {
+      "rmse": 1078.3706526441829,
+      "params": {
+        "rate_smoothing": 500.0,
+        "smoothing": 150.0,
+        "weight_power": 1.0
+      }
+    },
+    {
+      "rmse": 1078.818628644892,
+      "params": {
+        "rate_smoothing": 500.0,
+        "smoothing": 150.0,
+        "weight_power": 2.0
+      }
+    },
+    {
+      "rmse": 1078.2588272212145,
+      "params": {
+        "rate_smoothing": 500.0,
+        "smoothing": Infinity,
+        "weight_power": 0.0
+      }
+    },
+    {
+      "rmse": 1078.080525932276,
+      "params": {
+        "rate_smoothing": 500.0,
+        "smoothing": Infinity,
+        "weight_power": 1.0
+      }
+    },
+    {
+      "rmse": 1078.225379728433,
+      "params": {
+        "rate_smoothing": 500.0,
+        "smoothing": Infinity,
+        "weight_power": 2.0
+      }
+    },
+    {
+      "rmse": 1082.3068253800684,
+      "params": {
+        "rate_smoothing": 2000.0,
+        "smoothing": 20.0,
+        "weight_power": 0.0
+      }
+    },
+    {
+      "rmse": 1085.3531466541324,
+      "params": {
+        "rate_smoothing": 2000.0,
+        "smoothing": 20.0,
+        "weight_power": 1.0
+      }
+    },
+    {
+      "rmse": 1088.671891776159,
+      "params": {
+        "rate_smoothing": 2000.0,
+        "smoothing": 20.0,
+        "weight_power": 2.0
+      }
+    },
+    {
+      "rmse": 1079.3311201016372,
+      "params": {
+        "rate_smoothing": 2000.0,
+        "smoothing": 55.0,
+        "weight_power": 0.0
+      }
+    },
+    {
+      "rmse": 1080.0277243823932,
+      "params": {
+        "rate_smoothing": 2000.0,
+        "smoothing": 55.0,
+        "weight_power": 1.0
+      }
+    },
+    {
+      "rmse": 1081.1716806440902,
+      "params": {
+        "rate_smoothing": 2000.0,
+        "smoothing": 55.0,
+        "weight_power": 2.0
+      }
+    },
+    {
+      "rmse": 1078.878474082448,
+      "params": {
+        "rate_smoothing": 2000.0,
+        "smoothing": 150.0,
+        "weight_power": 0.0
+      }
+    },
+    {
+      "rmse": 1078.9469857420409,
+      "params": {
+        "rate_smoothing": 2000.0,
+        "smoothing": 150.0,
+        "weight_power": 1.0
+      }
+    },
+    {
+      "rmse": 1079.370416766567,
+      "params": {
+        "rate_smoothing": 2000.0,
+        "smoothing": 150.0,
+        "weight_power": 2.0
+      }
+    },
+    {
+      "rmse": 1078.831040755215,
+      "params": {
+        "rate_smoothing": 2000.0,
+        "smoothing": Infinity,
+        "weight_power": 0.0
+      }
+    },
+    {
+      "rmse": 1078.6643379035888,
+      "params": {
+        "rate_smoothing": 2000.0,
+        "smoothing": Infinity,
+        "weight_power": 1.0
+      }
+    },
+    {
+      "rmse": 1078.7873709038142,
+      "params": {
+        "rate_smoothing": 2000.0,
+        "smoothing": Infinity,
+        "weight_power": 2.0
+      }
+    },
+    {
+      "rmse": 1082.9280544560281,
+      "params": {
+        "rate_smoothing": Infinity,
+        "smoothing": 20.0,
+        "weight_power": 0.0
+      }
+    },
+    {
+      "rmse": 1086.0089647047323,
+      "params": {
+        "rate_smoothing": Infinity,
+        "smoothing": 20.0,
+        "weight_power": 1.0
+      }
+    },
+    {
+      "rmse": 1089.351949361278,
+      "params": {
+        "rate_smoothing": Infinity,
+        "smoothing": 20.0,
+        "weight_power": 2.0
+      }
+    },
+    {
+      "rmse": 1079.9564792099773,
+      "params": {
+        "rate_smoothing": Infinity,
+        "smoothing": 55.0,
+        "weight_power": 0.0
+      }
+    },
+    {
+      "rmse": 1080.6994548254734,
+      "params": {
+        "rate_smoothing": Infinity,
+        "smoothing": 55.0,
+        "weight_power": 1.0
+      }
+    },
+    {
+      "rmse": 1081.874928487793,
+      "params": {
+        "rate_smoothing": Infinity,
+        "smoothing": 55.0,
+        "weight_power": 2.0
+      }
+    },
+    {
+      "rmse": 1079.5053124211975,
+      "params": {
+        "rate_smoothing": Infinity,
+        "smoothing": 150.0,
+        "weight_power": 0.0
+      }
+    },
+    {
+      "rmse": 1079.6249862241318,
+      "params": {
+        "rate_smoothing": Infinity,
+        "smoothing": 150.0,
+        "weight_power": 1.0
+      }
+    },
+    {
+      "rmse": 1080.08239512552,
+      "params": {
+        "rate_smoothing": Infinity,
+        "smoothing": 150.0,
+        "weight_power": 2.0
+      }
+    },
+    {
+      "rmse": 1079.458726920081,
+      "params": {
+        "rate_smoothing": Infinity,
+        "smoothing": Infinity,
+        "weight_power": 0.0
+      }
+    },
+    {
+      "rmse": 1079.3461104401176,
+      "params": {
+        "rate_smoothing": Infinity,
+        "smoothing": Infinity,
+        "weight_power": 1.0
+      }
+    },
+    {
+      "rmse": 1079.5044614966982,
+      "params": {
+        "rate_smoothing": Infinity,
+        "smoothing": Infinity,
+        "weight_power": 2.0
+      }
+    }
+  ],
+  "inner_boosting_rmse": 1080.5615241679423,
+  "boosting_rounds": [
+    380
+  ],
+  "provenance": {
+    "train_sha256": "5dbfa5ab3f42474402d19cee093f3874bfd11846bd15d314425581bfdb9c9a17",
+    "test_sha256": "f35a8617e02d32564894c8672412580d9079c03bfb91f30d887dbf56e5ad1190",
+    "source_sha256": {
+      "cv.py": "b5c49098cb7d6a1c3e515b3a816bba746f10e61f72f8b48cde43d727a0d22a8e",
+      "data.py": "6e1f5e58e6a88f42a79baa76006b525c15ad269743c9d206714e0d361e72baf8",
+      "features.py": "fa922c508e6e0a03f915e84def9b57f3ad2d87e0647646f7877b9170c8adf955",
+      "models.py": "b22b31c685bb66cee05d70d6f66d994281612f84c74fe234979c9be414c4010e",
+      "structure.py": "984c2cea1bae43bf5f398d8feb017f97d8d95af91ebe524f63fd558472194ca4",
+      "targets.py": "25072f430ca3a261ca6d4018c662235514df59f33d3101cd7b790f0af543b95b"
+    },
+    "git_commit_at_run": "6720e0a15c204da92ebf5eca1e9f49cbe1b26bc0",
+    "python": "3.14.6",
+    "platform": "macOS-26.5.2-arm64-arm-64bit-Mach-O",
+    "packages": {
+      "numpy": "2.5.3",
+      "pandas": "3.0.5",
+      "scikit-learn": "1.9.1",
+      "scipy": "1.18.1",
+      "catboost": "1.2.10",
+      "lightgbm": "4.7.0",
+      "xgboost": "3.4.1",
+      "optuna": "5.0.0"
+    }
+  }
+}

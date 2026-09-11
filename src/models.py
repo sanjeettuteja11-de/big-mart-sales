@@ -124,11 +124,32 @@ def _store_rate(p, seed):
     return StoreRatePopularity(**p)
 
 
+def _hierarchical_rate(p, seed):
+    from src.structure import HierarchicalStoreRate
+    return HierarchicalStoreRate(**p)
+
+
+def _lattice_rate(p, seed):
+    from src.price_model import LatticeStoreRate
+    return LatticeStoreRate(**p)
+
+
+def _lattice_boost(p, seed):
+    from src.lattice_boost import LatticeBoostRegressor
+    return LatticeBoostRegressor(seed=seed, **p)
+
+
 SPECS = [
+    ModelSpec("lattice_catboost", "raw", "raw", _lattice_boost, dict(library="catboost")),
+    ModelSpec("lattice_lightgbm", "raw", "raw", _lattice_boost, dict(library="lightgbm")),
+    ModelSpec("lattice_xgboost", "raw", "raw", _lattice_boost, dict(library="xgboost")),
+    ModelSpec("lattice_store_rate", "structural", "raw", _lattice_rate,
+              dict(smoothing=55.234948951954145)),
+    ModelSpec("hierarchical_store_rate", "structural", "units_unweighted", _hierarchical_rate,
+              dict(smoothing=55.0, rate_smoothing=0.0)),
     # Sales = whole units x price, and units depend on little but the store
-    # (src/structure.py). Units are independent of price, so the plain mean
-    # ("units_unweighted") estimates each store's rate more efficiently than
-    # an MRP^2-weighted one.
+    # (src/structure.py). Equal-weight units is an empirical candidate; compare
+    # it with MRP^2 weighting using original-scale RMSE.
     ModelSpec("store_rate_popularity", "catboost", "units_unweighted", _store_rate, dict(smoothing=50.0)),
     # Variants that test which part of it carries over to the test set.
     ModelSpec("store_rate_plain", "catboost", "units_unweighted", _store_rate,
@@ -153,8 +174,8 @@ SPECS = [
     ModelSpec("lightgbm_raw", "tree", "raw", _lightgbm, LIGHTGBM, **_LGB),
     ModelSpec("lightgbm_log1p", "tree", "log1p", _lightgbm, LIGHTGBM, **_LGB),
     ModelSpec("lightgbm_units", "tree", "units", _lightgbm, LIGHTGBM, **_LGB),
-    # Units are independent of price (src/structure.py), so the unweighted
-    # mean estimates them more efficiently than MRP^2 weights.
+    # Equal-weight units is retained because of measured CV results, not an
+    # assertion that price and units are independent.
     ModelSpec("lightgbm_units_unweighted", "tree", "units_unweighted", _lightgbm, LIGHTGBM, **_LGB),
     ModelSpec("lightgbm_units_popularity", "tree", "units", _lightgbm, LIGHTGBM, item_popularity=True, **_LGB),
     ModelSpec("xgboost_raw", "tree", "raw", _xgboost, XGBOOST, **_XGB),
