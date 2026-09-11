@@ -143,28 +143,51 @@ The structural model is the best single model, and its whole fit takes about
 general-purpose models lose a few points because their extra flexibility
 mostly fits noise, and log1p loses badly because it optimises the wrong scale.
 Blends that mix in boosting are statistically tied with the structural model
-under cross-validation (within 0.3). On the leaderboard, round 1 suggests the
-feature-based models do a few points better than cross-validation predicts,
-and round 2 tests the blends. The full table with fold standard deviations,
-round counts, residual correlations and the tuning history is in
-[reports/experiments.md](reports/experiments.md); the validation checks are in
-[reports/validation.md](reports/validation.md) and the ablations in
-[reports/ablations.md](reports/ablations.md).
+under cross-validation (within 0.3), and the leaderboard separated them in the
+order cross-validation predicted (below). **The final model is the 75/25 blend
+of StoreRatePopularity with the six-model boosting average**, a weight chosen
+by nested cross-validation before any leaderboard feedback. The full table
+with fold standard deviations, round counts, residual correlations and the
+tuning history is in [reports/experiments.md](reports/experiments.md); the
+validation checks are in [reports/validation.md](reports/validation.md) and
+the ablations in [reports/ablations.md](reports/ablations.md).
+
+### Final submission
+
+```bash
+~/.venvs/big-mart-sales/bin/python -m src.refit store_rate_popularity catboost_units_unweighted catboost_units catboost_raw xgboost_units_unweighted xgboost_raw lightgbm_raw --weights 18 1 1 1 1 1 1 --seeds 3 --name final_blend_structural75_boosting25_refit
+```
+
+Weights 18:1:…:1 give the structural model 75% and each boosting model
+25%/6. The refit trains every component on all 8,523 rows, using the tuned
+parameters in `outputs/params/` and the early-stopping round counts in
+`outputs/cv_results.json` (both committed), and checks the file before
+writing it. Its predictions differ from the fold-averaged file that was
+scored (`python -m src.export --average --weights …`) by an RMS of 9.3.
 
 ### Leaderboard
 
-`store_rate_popularity_cv1071.csv` scored **1148.28** on the Analytics Vidhya
-leaderboard (rank 566 of all submissions on 2026-09-11; rank 1 was 1126.03,
-rank 40 was 1138.81).
+| Submission | CV RMSE | Leaderboard RMSE |
+|---|---|---|
+| Structural model (round 0) | 1,071.33 | 1,148.28 |
+| Best single boosting model | 1,073.51 | 1,150.90 |
+| Six-model boosting average | 1,073.32 | 1,149.49 |
+| 50/50 structural + boosting | 1,071.36 | 1,147.90 |
+| **75/25 structural + boosting (final)** | **1,071.10** | **1,147.85** |
 
-The leaderboard score is 77 points worse than the cross-validated one, far
-more than sampling noise: a random subset of training rows the size of the
-test set scores 1071 ± 9 with this model. Train and test features are
-indistinguishable (adversarial validation AUC 0.495, i.e. chance), so the
-difference lies in the test sales themselves: they are noisier, or unit rates
-differ from train in some way. Genuinely different models, each testing one
-explanation, are logged with their scores in
-[reports/leaderboard_log.md](reports/leaderboard_log.md).
+All ten submissions, with what each tested, are in
+[reports/leaderboard_log.md](reports/leaderboard_log.md). For reference, the
+visible top of the leaderboard on 2026-09-11 ranged from 1126.03 (#1) to
+1138.81 (#40).
+
+Leaderboard scores are about 77 points worse than cross-validation, far more
+than sampling noise: a random subset of training rows the size of the test
+set scores 1071 ± 9. Train and test features are indistinguishable
+(adversarial validation AUC 0.495, i.e. chance), so the difference lies in
+the test sales themselves. Even so, 7 of the 9 follow-up files landed within
+one point of the score cross-validation predicted (the two exceptions both
+contained the untuned round 1 CatBoost), so cross-validation was a sound
+basis for choosing the model.
 
 ## How to run
 
@@ -187,7 +210,7 @@ $PY -m src.train                                             # 5x3 CV for every 
 $PY -m src.report                                            # reports/experiments.md from the saved results
 $PY -m src.refit store_rate_popularity                       # refit on all rows, write and check the final submission
 $PY -m src.export catboost_raw --average --name mix          # extra submission files from saved CV predictions
-$PY big_mart_solution.py                                     # single-file version of the recommended model
+$PY big_mart_solution.py                                     # single-file version of the structural model only (round 0, leaderboard 1148.28)
 ```
 
 `src.refit` trains on all 8,523 rows (boosting models use the mean

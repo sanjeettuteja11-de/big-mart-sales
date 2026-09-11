@@ -75,11 +75,22 @@ separate them.
 
 | File | Model | CV | Expected | Leaderboard | vs expected |
 |---|---|---|---|---|---|
-| `blend_structural75_boosting25_cv1071.csv` | 75% structural + 25% boosting average (weight from nested CV: 0.24 ± 0.09) | 1071.10 | 1148.07 | | |
-| `blend_structural50_boosting50_cv1071.csv` | 50% structural + 50% boosting average | 1071.36 | 1148.31 | | |
-| `boosting_avg6_cv1073.csv` | Boosting average | 1073.32 | 1150.14 | | |
-| `catboost_units_unweighted_cv1074.csv` | Best single boosting model | 1073.51 | 1150.32 | | |
+| `blend_structural75_boosting25_cv1071.csv` | 75% structural + 25% boosting average (weight from nested CV: 0.24 ± 0.09) | 1071.10 | 1148.07 | **1147.85** | −0.2 |
+| `blend_structural50_boosting50_cv1071.csv` | 50% structural + 50% boosting average | 1071.36 | 1148.31 | **1147.90** | −0.4 |
+| `boosting_avg6_cv1073.csv` | Boosting average | 1073.32 | 1150.14 | **1149.49** | −0.7 |
+| `catboost_units_unweighted_cv1074.csv` | Best single boosting model | 1073.51 | 1150.32 | **1150.90** | +0.6 |
 
-If round 1's pattern holds, the files with more boosting beat their expected
-score by more. The best of these, or of round 0 if none improves, becomes the
-final submission, refit on all training rows.
+Submitted 11 Sep 2026, 11:00–11:01, in the order 50/50 blend, 75/25 blend,
+boosting average, CatBoost; scores matched to files by submission time.
+
+### Round 2 results
+
+Every file landed within 0.7 of its expected score, in the order
+cross-validation predicted. Round 1's CatBoost result (5.1 better than
+expected) did not repeat: the stronger CatBoost scored 0.6 worse than
+expected. The likeliest reading is that round 1's gap was luck and that
+cross-validation ranks these models correctly.
+
+The 75/25 blend, whose weight was chosen by nested cross-validation before
+any leaderboard feedback, scored **1147.85**: the best so far, 0.43 better
+than round 0. It is the final model.

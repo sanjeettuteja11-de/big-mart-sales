@@ -72,35 +72,37 @@ their store's norm, and even that has to be shrunk heavily to be useful.
 
 ## 5. The models
 
-Fourteen models were compared, from linear regression to gradient boosting
-(CatBoost, LightGBM, XGBoost) and random forests. The best is the simplest one
-that matches the structure above:
+Twenty model variants were compared, from linear regression to gradient
+boosting (CatBoost, LightGBM, XGBoost) and random forests. The best single
+model is the simplest one that matches the structure above:
 
 > predicted sales = MRP × the store's average units per product × a small
 > product adjustment
 
-| Model | CV RMSE |
-|---|---|
-| Always predict the average | 1,706 |
-| Best gradient boosting (CatBoost, early-stopped) | 1,074 |
-| Ridge regression with a price slope per store | 1,075 |
-| **Structural model (above)** | **1,071** |
+| Model | CV RMSE | Leaderboard RMSE |
+|---|---|---|
+| Always predict the average | 1,706 | – |
+| Best gradient boosting (CatBoost on units, early-stopped) | 1,074 | 1,150.90 |
+| Average of six gradient-boosting models | 1,073 | 1,149.49 |
+| Structural model (above) | 1,071 | 1,148.28 |
+| **Final: 75% structural + 25% boosting average** | **1,071** | **1,147.85** |
 
-The boosting models can see every column, yet they score slightly worse:
-the extra columns carry no signal about units, so the flexibility only fits
-noise. Predicting log(sales), a common default for skewed targets, scored
-about 40 points worse because the competition measures error on the raw
-scale. Combining models did not beat the best single model.
+The boosting models can see every column, yet alone they score slightly
+worse: the extra columns carry almost no signal about units, so most of the
+flexibility fits noise. Mixing a quarter of their prediction into the
+structural model, with the weight chosen by cross-validation before any
+leaderboard feedback, tied in cross-validation and scored best on the
+leaderboard. Predicting log(sales), a common default for skewed targets,
+scored about 35–40 points worse because the competition measures error on the
+raw scale.
 
-The leaderboard score of the structural model was **1,148.28** (rank 566 at
-submission time), against 1,071 in cross-validation. The gap is far larger
+Leaderboard scores run about 77 points worse than cross-validation, far more
 than sampling noise, while train and test features are statistically
-indistinguishable, so the test sales behave differently from the training
-sales in a way the features cannot explain. Five follow-up submissions
-(`leaderboard_log.md`) did not beat 1,148.28, but the models that use every
-column scored 1–5 points better than cross-validation predicted: suggestive,
-though within 1.4–3.5 standard deviations of luck. A second round tests
-blends of the structural model with gradient boosting.
+indistinguishable: the test sales behave differently from the training sales
+in a way the features cannot explain. Even so, 7 of the 9 follow-up
+submissions (`leaderboard_log.md`) landed within one point of the score
+cross-validation predicted, and the leaderboard ordered the final candidates
+the same way, so cross-validation was a sound basis for choosing the model.
 
 ## 6. Limitations
 
