@@ -177,9 +177,18 @@ $PY -m src.validate                                          # holdout / K-fold 
 $PY -m src.ablate                                            # feature-group and target ablations -> reports/ablations.md
 $PY -m src.tune --model catboost_raw --trials 30             # optional Optuna search; train.py picks the result up
 $PY -m src.train                                             # 5x3 CV for every model, blend, submissions/, outputs/cv_results.json
-$PY -m src.export catboost_raw --average --name mix          # extra submission files from saved predictions
+$PY -m src.report                                            # reports/experiments.md from the saved results
+$PY -m src.refit store_rate_popularity                       # refit on all rows, write and check the final submission
+$PY -m src.export catboost_raw --average --name mix          # extra submission files from saved CV predictions
 $PY big_mart_solution.py                                     # single-file version of the recommended model
 ```
+
+`src.refit` trains on all 8,523 rows (boosting models use the mean
+early-stopping round from CV, scaled by 1.2, averaged over `--seeds`) and
+refuses to finish unless the file has exactly the columns
+`Item_Identifier, Outlet_Identifier, Item_Outlet_Sales` with no index column,
+5,681 rows whose identifiers match the test file row by row, no blanks,
+infinities or negatives, and no prediction far above the largest training sale.
 
 Every script accepts `--data <folder>` to point at another copy of the CSVs.
 

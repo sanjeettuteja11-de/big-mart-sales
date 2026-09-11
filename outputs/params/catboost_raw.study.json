@@ -1,0 +1,7 @@
+{
+  "cv_rmse": 1077.81,
+  "default_params_rmse": 1077.81,
+  "trials": 25,
+  "splits": 5,
+  "repeats": 1
+}
