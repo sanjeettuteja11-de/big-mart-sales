@@ -52,6 +52,9 @@ class ModelSpec:
     params: dict
     library: str | None = None
     item_popularity: bool = False
+    # Name of the boosting-rounds parameter; set on models that support
+    # early stopping, which src/cv.py then uses to pick the round count.
+    iterations_param: str | None = None
 
     def make(self, overrides: dict | None = None, seed: int = SEED):
         return self.build({**self.params, **(overrides or {})}, seed)
@@ -105,16 +108,21 @@ def _catboost(p, seed):
 
 
 # Defaults lean shallow and heavily regularised: 8.5k rows of very noisy sales
-# reward caution far more than capacity. `src/tune.py` refines them.
+# reward caution far more than capacity. The round counts are ceilings; early
+# stopping picks the actual count per fold. `src/tune.py` refines the rest.
 LIGHTGBM = dict(
-    n_estimators=500, learning_rate=0.02, num_leaves=12, min_child_samples=60,
+    n_estimators=2000, learning_rate=0.02, num_leaves=12, min_child_samples=60,
     subsample=0.8, subsample_freq=1, colsample_bytree=0.8, reg_lambda=5.0,
 )
 XGBOOST = dict(
-    n_estimators=500, learning_rate=0.02, max_depth=4, min_child_weight=20,
+    n_estimators=2000, learning_rate=0.02, max_depth=4, min_child_weight=20,
     subsample=0.8, colsample_bytree=0.8, reg_lambda=5.0,
 )
-CATBOOST = dict(iterations=1000, learning_rate=0.03, depth=5, l2_leaf_reg=6.0)
+CATBOOST = dict(iterations=3000, learning_rate=0.03, depth=5, l2_leaf_reg=6.0)
+
+_LGB = dict(library="lightgbm", iterations_param="n_estimators")
+_XGB = dict(library="xgboost", iterations_param="n_estimators")
+_CAT = dict(library="catboost", iterations_param="iterations")
 
 def _store_rate(p, seed):
     from src.structure import StoreRatePopularity
@@ -148,15 +156,15 @@ SPECS = [
         "extra_trees_units", "codes", "units", _extra_trees,
         dict(n_estimators=400, max_depth=10, min_samples_leaf=20, max_features=0.6),
     ),
-    ModelSpec("lightgbm_raw", "tree", "raw", _lightgbm, LIGHTGBM, library="lightgbm"),
-    ModelSpec("lightgbm_units", "tree", "units", _lightgbm, LIGHTGBM, library="lightgbm"),
-    ModelSpec(
-        "lightgbm_units_popularity", "tree", "units", _lightgbm, LIGHTGBM,
-        library="lightgbm", item_popularity=True,
-    ),
-    ModelSpec("xgboost_units", "tree", "units", _xgboost, XGBOOST, library="xgboost"),
-    ModelSpec("catboost_raw", "catboost", "raw", _catboost, CATBOOST, library="catboost"),
-    ModelSpec("catboost_units", "catboost", "units", _catboost, CATBOOST, library="catboost"),
+    ModelSpec("lightgbm_raw", "tree", "raw", _lightgbm, LIGHTGBM, **_LGB),
+    ModelSpec("lightgbm_log1p", "tree", "log1p", _lightgbm, LIGHTGBM, **_LGB),
+    ModelSpec("lightgbm_units", "tree", "units", _lightgbm, LIGHTGBM, **_LGB),
+    ModelSpec("lightgbm_units_popularity", "tree", "units", _lightgbm, LIGHTGBM, item_popularity=True, **_LGB),
+    ModelSpec("xgboost_raw", "tree", "raw", _xgboost, XGBOOST, **_XGB),
+    ModelSpec("xgboost_units", "tree", "units", _xgboost, XGBOOST, **_XGB),
+    ModelSpec("catboost_raw", "catboost", "raw", _catboost, CATBOOST, **_CAT),
+    ModelSpec("catboost_log1p", "catboost", "log1p", _catboost, CATBOOST, **_CAT),
+    ModelSpec("catboost_units", "catboost", "units", _catboost, CATBOOST, **_CAT),
 ]
 
 SPECS_BY_NAME = {spec.name: spec for spec in SPECS}

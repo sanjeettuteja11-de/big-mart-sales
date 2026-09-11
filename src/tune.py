@@ -17,15 +17,16 @@ from pathlib import Path
 import optuna
 
 from src.config import DATA_RAW, N_SPLITS, SEED
-from src.cv import build_matrices, run_cv
-from src.data import clean, load_raw
-from src.features import build_features
+from src.cv import prepare, run_cv
+from src.data import load_raw
 from src.models import PARAMS_DIR, SPECS_BY_NAME
 
 
+# Boosting round counts are not searched: early stopping in src/cv.py sets
+# them per fold, so the ceilings below only need to be high enough.
 def lightgbm_space(t: optuna.Trial) -> dict:
     return dict(
-        n_estimators=t.suggest_int("n_estimators", 200, 2000, log=True),
+        n_estimators=3000,
         learning_rate=t.suggest_float("learning_rate", 0.005, 0.1, log=True),
         num_leaves=t.suggest_int("num_leaves", 4, 64, log=True),
         min_child_samples=t.suggest_int("min_child_samples", 10, 300, log=True),
@@ -38,7 +39,7 @@ def lightgbm_space(t: optuna.Trial) -> dict:
 
 def xgboost_space(t: optuna.Trial) -> dict:
     return dict(
-        n_estimators=t.suggest_int("n_estimators", 200, 2000, log=True),
+        n_estimators=3000,
         learning_rate=t.suggest_float("learning_rate", 0.005, 0.1, log=True),
         max_depth=t.suggest_int("max_depth", 2, 8),
         min_child_weight=t.suggest_float("min_child_weight", 1, 200, log=True),
@@ -50,7 +51,7 @@ def xgboost_space(t: optuna.Trial) -> dict:
 
 def catboost_space(t: optuna.Trial) -> dict:
     return dict(
-        iterations=t.suggest_int("iterations", 300, 3000, log=True),
+        iterations=4000,
         learning_rate=t.suggest_float("learning_rate", 0.01, 0.15, log=True),
         depth=t.suggest_int("depth", 3, 8),
         l2_leaf_reg=t.suggest_float("l2_leaf_reg", 1, 50, log=True),
@@ -115,14 +116,14 @@ def main() -> None:
     parser.add_argument("--data", type=Path, default=DATA_RAW)
     args = parser.parse_args()
 
-    train, test = build_features(*clean(*load_raw(args.data)))
-    matrices = build_matrices(train, test)
+    train_raw, test_raw = load_raw(args.data)
     spec = SPECS_BY_NAME[args.model]
+    prepared = prepare(train_raw, test_raw, matrices=[spec.matrix])
     space = space_for(spec.name)
 
     def objective(trial: optuna.Trial) -> float:
         params = space(trial)
-        return run_cv(spec, train, test, matrices, params, args.splits, args.repeats, args.seed).oof_rmse
+        return run_cv(spec, train_raw, test_raw, prepared, params, args.splits, args.repeats, args.seed).oof_rmse
 
     def report(study: optuna.Study, trial: optuna.trial.FrozenTrial) -> None:
         print(f"  trial {trial.number:3d}   RMSE {trial.value:8.2f}   best so far {study.best_value:8.2f}")

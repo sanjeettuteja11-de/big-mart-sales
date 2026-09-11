@@ -5,9 +5,9 @@ import pytest
 from src import train as train_script
 from src.blend import fit_weights
 from src.config import TARGET
-from src.cv import build_matrices, rmse, run_cv
-from src.data import clean
-from src.features import build_features, item_popularity
+from src.cv import prepare, rmse, run_cv
+from src.data import Cleaner, clean
+from src.features import FeatureBuilder, build_features, item_popularity
 from src.models import SPECS_BY_NAME, library_status
 from src.targets import TRANSFORMS
 from tests.synthetic import make_synthetic
@@ -21,8 +21,8 @@ def data():
 @pytest.fixture(scope="module")
 def prepared(data):
     train, test, _ = data
-    tr, te = build_features(*clean(train, test))
-    return tr, te, build_matrices(tr, te)
+    p = prepare(train, test)
+    return p.train, p.test, p.matrices
 
 
 def test_clean_fixes_every_quirk(data):
@@ -42,6 +42,28 @@ def test_missing_weight_borrowed_from_same_product(data):
     assert both.groupby("Item_Identifier")["Item_Weight"].nunique().max() == 1
 
 
+def test_cleaner_fit_on_train_only_never_reads_test(data):
+    train, test, _ = data
+    cleaner = Cleaner().fit([train])
+    # Weights come only from train rows: a product weighed only in test stays at the type median.
+    assert set(cleaner.item_weight_.index) <= set(train["Item_Identifier"])
+    out = cleaner.transform(test)
+    assert out["Item_Weight"].notna().all() and (out["Item_Visibility"] > 0).all()
+    assert out["Item_Weight_Missing"].sum() == test["Item_Weight"].isna().sum()
+    assert out["Visibility_Was_Zero"].sum() == test["Item_Visibility"].eq(0).sum()
+
+
+def test_feature_builder_handles_unseen_products(data):
+    train, test, _ = data
+    cleaner = Cleaner().fit([train])
+    tr, te = cleaner.transform(train), cleaner.transform(test)
+    builder = FeatureBuilder().fit([tr])
+    te = te.assign(Item_Identifier="ZZZ99")  # every product unseen
+    out = builder.transform(te)
+    assert (out["Visibility_vs_Item_Mean"] == 1).all() and (out["Item_Store_Count"] == 1).all()
+    assert np.isfinite(out["MRP_vs_Type_Median"]).all()
+
+
 def test_features_do_not_depend_on_sales(data):
     train, test, _ = data
     shuffled = train.assign(
@@ -58,6 +80,17 @@ def test_matrices_align_and_are_finite(prepared):
         assert list(X_tr.columns) == list(X_te.columns), name
         assert (len(X_tr), len(X_te)) == (len(tr), len(te)), name
         assert np.isfinite(X_tr.select_dtypes("number").to_numpy()).all(), name
+
+
+def test_dropping_a_feature_group_removes_its_columns(data):
+    from src.features import FEATURE_GROUPS
+
+    train, test, _ = data
+    drop = set(FEATURE_GROUPS["visibility"]) | set(FEATURE_GROUPS["outlet_id"])
+    p = prepare(train, test, drop=drop)
+    for name, (X_tr, _) in p.matrices.items():
+        assert not any(c in X_tr.columns for c in ("Item_Visibility", "Visibility_vs_Item_Mean")), name
+        assert not any(c.startswith("Outlet_Identifier") or c.startswith("Price_x_") for c in X_tr.columns), name
 
 
 @pytest.mark.parametrize("name", sorted(TRANSFORMS))
@@ -86,20 +119,47 @@ def test_item_popularity_never_sees_its_own_row(prepared):
     assert np.isfinite(test_values).all()
 
 
-QUICK = {"lightgbm": {"n_estimators": 150}, "xgboost": {"n_estimators": 150},
-         "catboost": {"iterations": 200}}
+QUICK = {"lightgbm": {"n_estimators": 300}, "xgboost": {"n_estimators": 300},
+         "catboost": {"iterations": 300}}
 
 
 @pytest.mark.parametrize("name", sorted(SPECS_BY_NAME))
-def test_every_model_beats_the_mean(prepared, name):
+def test_every_model_beats_the_mean(data, name):
     spec = SPECS_BY_NAME[name]
     if problem := library_status(spec.library):
         pytest.skip(problem)
-    tr, te, matrices = prepared
-    result = run_cv(spec, tr, te, matrices, QUICK.get(spec.library), n_splits=3, n_repeats=1)
-    y = tr[TARGET].to_numpy()
+    train, test, _ = data
+    result = run_cv(spec, train, test, params=QUICK.get(spec.library), n_splits=3, n_repeats=1)
+    y = train[TARGET].to_numpy()
     assert result.oof_rmse < 0.8 * rmse(y, np.full_like(y, y.mean()))
-    assert result.test.shape == (len(te),) and (result.test >= 0).all()
+    assert result.test.shape == (len(test),) and (result.test >= 0).all()
+    if spec.iterations_param:
+        assert len(result.best_iterations) == 3 and all(1 <= b <= 300 for b in result.best_iterations)
+
+
+@pytest.mark.parametrize("scheme", ["holdout", "grouped"])
+def test_other_validation_schemes(data, scheme):
+    train, test, _ = data
+    spec = SPECS_BY_NAME["ridge_interactions"]
+    result = run_cv(spec, train, test, n_splits=3, n_repeats=1, scheme=scheme)
+    y = train[TARGET].to_numpy()
+    covered = ~np.isnan(result.oof)
+    expected = len(train) if scheme == "grouped" else 0.2 * len(train)
+    assert abs(covered.sum() - expected) <= 3  # stratified splits round per store
+    assert result.oof_rmse < 0.85 * rmse(y, np.full_like(y, y.mean()))
+    if scheme == "grouped":
+        # Every product's rows fall in the same fold, so folds never share a product.
+        items = train["Item_Identifier"]
+        for tr_idx, va_idx in __import__("src.cv", fromlist=["folds"]).folds("grouped", train, 3, 1, 42):
+            assert not set(items.iloc[tr_idx]) & set(items.iloc[va_idx])
+
+
+def test_fold_fit_preprocessing_matches_prebuilt_closely(data):
+    train, test, _ = data
+    spec = SPECS_BY_NAME["ridge_interactions"]
+    a = run_cv(spec, train, test, n_splits=3, n_repeats=1)
+    b = run_cv(spec, train, test, n_splits=3, n_repeats=1, fold_fit=True)
+    assert abs(a.oof_rmse - b.oof_rmse) < 0.05 * a.oof_rmse
 
 
 def test_blend_weights_favour_the_better_model():
