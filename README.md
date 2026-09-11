@@ -43,9 +43,10 @@ What that shows ([reports/eda_summary.md](reports/eda_summary.md)):
   Only the product's identity has a small effect, and it has to be shrunk hard
   to help.
 
-So the best prediction is **MRP × the store's expected units × a heavily shrunk
-product factor**. That is `StoreRatePopularity`, and it beats every
-general-purpose model below. What's left is randomness in units that no column
+So the best prediction is **unit price × the store's expected units × a
+heavily shrunk product factor**. `StoreRatePopularity` does this with MRP and
+beats every general-purpose model below; `LatticeStoreRate` uses the decoded
+unit price and does slightly better still. What's left is randomness in units that no column
 explains: at a Type1 supermarket, units have a variance of about 50.
 
 **Business reading:** price sets how much revenue each unit brings in, and the
@@ -65,7 +66,9 @@ product price.
 | `Item_Visibility` is 0 for some rows | A product that sold was on a shelf, so 0 means "not recorded"; replaced by the product's visibility elsewhere |
 | `Outlet_Size` blank for three whole stores | Most common size among stores of the same type |
 
-Cleaning looks at train and test together, but never at sales.
+Cleaning never uses sales. Its learned statistics are fitted on the training
+rows of each cross-validation fold by default; fitting them on train and test
+features together is an explicit option kept only for comparison.
 
 ### 2. Features ([src/features.py](src/features.py))
 
@@ -112,10 +115,11 @@ average of all 15 fold models.
 ### 6. Blending ([src/blend.py](src/blend.py))
 
 The blend uses non-negative weights that sum to one, fitted on the
-out-of-fold predictions. The score it reports is *honest*: weights are fitted
-on some rows and scored on others, so the blend doesn't get credit for fitting
-the rows it is scored on. `src/train.py` recommends whichever of the blend
-and the best single model scores better.
+out-of-fold predictions. Its score fits the weights on some out-of-fold rows
+and scores them on others. That is only a second-stage check, not a fully
+nested one, because the base predictions and model choices used every row, so
+`src/train.py` always recommends the best single model. `src/nested_study.py`
+evaluates blending with outer folds.
 
 ## Results
 
