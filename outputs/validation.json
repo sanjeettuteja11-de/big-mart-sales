@@ -1,0 +1,215 @@
+{
+  "baseline_rmse": 1706.4,
+  "runs": [
+    {
+      "model": "store_rate_popularity",
+      "validation": "holdout 80/20",
+      "oof_rmse": 1044.65,
+      "fold_rmse_mean": 1044.65,
+      "fold_rmse_std": 0.0,
+      "n_folds": 1,
+      "seconds": 0.1,
+      "negative_prediction_share": 0.0
+    },
+    {
+      "model": "store_rate_popularity",
+      "validation": "5-fold x 3 stratified",
+      "oof_rmse": 1071.33,
+      "fold_rmse_mean": 1071.34,
+      "fold_rmse_std": 19.43,
+      "n_folds": 15,
+      "seconds": 0.1,
+      "negative_prediction_share": 0.0
+    },
+    {
+      "model": "store_rate_popularity",
+      "validation": "5-fold x 3 grouped by product",
+      "oof_rmse": 1071.96,
+      "fold_rmse_mean": 1071.71,
+      "fold_rmse_std": 31.08,
+      "n_folds": 15,
+      "seconds": 0.7,
+      "negative_prediction_share": 0.0
+    },
+    {
+      "model": "store_rate_popularity",
+      "validation": "5-fold x 3, preprocessing fit on train only",
+      "oof_rmse": 1071.33,
+      "fold_rmse_mean": 1071.34,
+      "fold_rmse_std": 19.43,
+      "n_folds": 15,
+      "seconds": 0.1,
+      "negative_prediction_share": 0.0
+    },
+    {
+      "model": "store_rate_popularity",
+      "validation": "5-fold x 3, preprocessing refit in fold",
+      "oof_rmse": 1071.33,
+      "fold_rmse_mean": 1071.34,
+      "fold_rmse_std": 19.43,
+      "n_folds": 15,
+      "seconds": 0.8,
+      "negative_prediction_share": 0.0
+    },
+    {
+      "model": "ridge_interactions",
+      "validation": "holdout 80/20",
+      "oof_rmse": 1046.18,
+      "fold_rmse_mean": 1046.18,
+      "fold_rmse_std": 0.0,
+      "n_folds": 1,
+      "seconds": 0.0,
+      "negative_prediction_share": 0.0018
+    },
+    {
+      "model": "ridge_interactions",
+      "validation": "5-fold x 3 stratified",
+      "oof_rmse": 1075.14,
+      "fold_rmse_mean": 1075.55,
+      "fold_rmse_std": 17.45,
+      "n_folds": 15,
+      "seconds": 0.2,
+      "negative_prediction_share": 0.0014
+    },
+    {
+      "model": "ridge_interactions",
+      "validation": "5-fold x 3 grouped by product",
+      "oof_rmse": 1074.91,
+      "fold_rmse_mean": 1075.09,
+      "fold_rmse_std": 30.86,
+      "n_folds": 15,
+      "seconds": 0.8,
+      "negative_prediction_share": 0.002
+    },
+    {
+      "model": "ridge_interactions",
+      "validation": "5-fold x 3, preprocessing fit on train only",
+      "oof_rmse": 1075.27,
+      "fold_rmse_mean": 1075.68,
+      "fold_rmse_std": 17.49,
+      "n_folds": 15,
+      "seconds": 0.2,
+      "negative_prediction_share": 0.0013
+    },
+    {
+      "model": "ridge_interactions",
+      "validation": "5-fold x 3, preprocessing refit in fold",
+      "oof_rmse": 1075.24,
+      "fold_rmse_mean": 1075.7,
+      "fold_rmse_std": 17.56,
+      "n_folds": 15,
+      "seconds": 1.1,
+      "negative_prediction_share": 0.0011
+    },
+    {
+      "model": "lightgbm_units",
+      "validation": "holdout 80/20",
+      "oof_rmse": 1052.39,
+      "fold_rmse_mean": 1052.39,
+      "fold_rmse_std": 0.0,
+      "n_folds": 1,
+      "seconds": 0.7,
+      "best_iterations_mean": 198,
+      "negative_prediction_share": 0.0
+    },
+    {
+      "model": "lightgbm_units",
+      "validation": "5-fold x 3 stratified",
+      "oof_rmse": 1079.79,
+      "fold_rmse_mean": 1081.31,
+      "fold_rmse_std": 18.66,
+      "n_folds": 15,
+      "seconds": 8.9,
+      "best_iterations_mean": 152,
+      "negative_prediction_share": 0.0
+    },
+    {
+      "model": "lightgbm_units",
+      "validation": "5-fold x 3 grouped by product",
+      "oof_rmse": 1080.39,
+      "fold_rmse_mean": 1081.52,
+      "fold_rmse_std": 31.51,
+      "n_folds": 15,
+      "seconds": 10.9,
+      "best_iterations_mean": 154,
+      "negative_prediction_share": 0.0
+    },
+    {
+      "model": "lightgbm_units",
+      "validation": "5-fold x 3, preprocessing fit on train only",
+      "oof_rmse": 1080.8,
+      "fold_rmse_mean": 1082.35,
+      "fold_rmse_std": 18.16,
+      "n_folds": 15,
+      "seconds": 10.2,
+      "best_iterations_mean": 150,
+      "negative_prediction_share": 0.0
+    },
+    {
+      "model": "lightgbm_units",
+      "validation": "5-fold x 3, preprocessing refit in fold",
+      "oof_rmse": 1081.17,
+      "fold_rmse_mean": 1082.75,
+      "fold_rmse_std": 18.58,
+      "n_folds": 15,
+      "seconds": 11.7,
+      "best_iterations_mean": 147,
+      "negative_prediction_share": 0.0
+    },
+    {
+      "model": "catboost_raw",
+      "validation": "holdout 80/20",
+      "oof_rmse": 1042.36,
+      "fold_rmse_mean": 1042.36,
+      "fold_rmse_std": 0.0,
+      "n_folds": 1,
+      "seconds": 2.7,
+      "best_iterations_mean": 287,
+      "negative_prediction_share": 0.0
+    },
+    {
+      "model": "catboost_raw",
+      "validation": "5-fold x 3 stratified",
+      "oof_rmse": 1075.35,
+      "fold_rmse_mean": 1076.14,
+      "fold_rmse_std": 19.52,
+      "n_folds": 15,
+      "seconds": 24.4,
+      "best_iterations_mean": 250,
+      "negative_prediction_share": 0.0
+    },
+    {
+      "model": "catboost_raw",
+      "validation": "5-fold x 3 grouped by product",
+      "oof_rmse": 1075.99,
+      "fold_rmse_mean": 1076.74,
+      "fold_rmse_std": 31.37,
+      "n_folds": 15,
+      "seconds": 25.9,
+      "best_iterations_mean": 255,
+      "negative_prediction_share": 0.0
+    },
+    {
+      "model": "catboost_raw",
+      "validation": "5-fold x 3, preprocessing fit on train only",
+      "oof_rmse": 1076.31,
+      "fold_rmse_mean": 1077.16,
+      "fold_rmse_std": 20.43,
+      "n_folds": 15,
+      "seconds": 32.8,
+      "best_iterations_mean": 246,
+      "negative_prediction_share": 0.0
+    },
+    {
+      "model": "catboost_raw",
+      "validation": "5-fold x 3, preprocessing refit in fold",
+      "oof_rmse": 1075.3,
+      "fold_rmse_mean": 1076.12,
+      "fold_rmse_std": 20.06,
+      "n_folds": 15,
+      "seconds": 24.9,
+      "best_iterations_mean": 242,
+      "negative_prediction_share": 0.0
+    }
+  ]
+}
