@@ -128,6 +128,11 @@ SPECS = [
     # ("units_unweighted") estimates each store's rate more efficiently than
     # an MRP^2-weighted one.
     ModelSpec("store_rate_popularity", "catboost", "units_unweighted", _store_rate, dict(smoothing=50.0)),
+    # Variants that test which part of it carries over to the test set.
+    ModelSpec("store_rate_plain", "catboost", "units_unweighted", _store_rate,
+              dict(smoothing=float("inf"))),
+    ModelSpec("store_type_rate_popularity", "catboost", "units_unweighted", _store_rate,
+              dict(smoothing=55.0, rate_level="type")),
     ModelSpec("ridge_interactions", "linear", "raw", _ridge, dict(alpha=3.0)),
     ModelSpec("poisson_glm", "glm", "raw", _poisson, dict(alpha=1e-4, max_iter=3000)),
     ModelSpec(

@@ -74,30 +74,38 @@ def units_findings(train: pd.DataFrame) -> list[str]:
 class StoreRatePopularity(RegressorMixin, BaseEstimator):
     """Units sold = store rate x product popularity.
 
-    Each store sells at its own average rate. A product that beat its stores'
-    rates elsewhere gets a factor above 1, shrunk toward 1 by `smoothing`
-    pseudo-rows, because the product effect is small next to the noise.
-    Expects a units target (sales / MRP) and a frame with the store and
-    product codes.
+    Each store sells at its own average rate; with rate_level="type", all
+    stores of one type share a rate. A product that beat its stores' rates
+    elsewhere gets a factor above 1, shrunk toward 1 by `smoothing`
+    pseudo-rows, because the product effect is small next to the noise;
+    smoothing=inf drops the product factor. Expects a units target
+    (sales / MRP) and a frame with the store, store type and product codes.
     """
 
-    def __init__(self, smoothing: float = 50.0):
+    RATE_COLUMNS = {"store": OUTLET_ID, "type": "Outlet_Type"}
+
+    def __init__(self, smoothing: float = 50.0, rate_level: str = "store"):
         self.smoothing = smoothing
+        self.rate_level = rate_level
 
     def fit(self, X: pd.DataFrame, y, sample_weight=None):
         y = np.asarray(y, dtype=float)
         w = np.ones(len(y)) if sample_weight is None else np.asarray(sample_weight, dtype=float)
-        stores, items = X[OUTLET_ID].to_numpy(), X[ITEM_ID].to_numpy()
+        keys = X[self.RATE_COLUMNS[self.rate_level]].to_numpy()
 
-        self.rates_ = pd.Series(y * w).groupby(stores).sum() / pd.Series(w).groupby(stores).sum()
-        relative = y / pd.Series(stores).map(self.rates_).to_numpy()
-        prior = self.smoothing * w.mean()
-        sums = pd.DataFrame({"wr": relative * w, "w": w}).groupby(items).sum()
-        self.popularity_ = (sums["wr"] + prior) / (sums["w"] + prior)
+        self.rates_ = pd.Series(y * w).groupby(keys).sum() / pd.Series(w).groupby(keys).sum()
         self.default_rate_ = float(np.average(y, weights=w))
+        if np.isinf(self.smoothing):
+            self.popularity_ = pd.Series(dtype=float)
+            return self
+
+        relative = y / pd.Series(keys).map(self.rates_).to_numpy()
+        prior = self.smoothing * w.mean()
+        sums = pd.DataFrame({"wr": relative * w, "w": w}).groupby(X[ITEM_ID].to_numpy()).sum()
+        self.popularity_ = (sums["wr"] + prior) / (sums["w"] + prior)
         return self
 
     def predict(self, X: pd.DataFrame) -> np.ndarray:
-        rate = X[OUTLET_ID].map(self.rates_).fillna(self.default_rate_)
+        rate = X[self.RATE_COLUMNS[self.rate_level]].map(self.rates_).fillna(self.default_rate_)
         popularity = X[ITEM_ID].map(self.popularity_).fillna(1.0)
         return (rate * popularity).to_numpy(dtype=float)

@@ -146,13 +146,14 @@ StoreRatePopularity and scores no better, so the recommended submission is
 leaderboard (rank 566 of all submissions on 2026-09-11; rank 1 was 1126.03,
 rank 40 was 1138.81).
 
-The leaderboard score is 77 points worse than the cross-validated one. That
-is not a modelling problem: train and test features are indistinguishable
-(adversarial validation AUC 0.495, i.e. chance), and a random subset of
-training rows the size of the test set scores 1071 ± 9 with this model. The
-scored test rows are simply noisier than the training rows, which hits every
-competitor equally. Published write-ups of this problem report the same gap
-(CV around 1080–1090, leaderboard around 1150–1155).
+The leaderboard score is 77 points worse than the cross-validated one, far
+more than sampling noise: a random subset of training rows the size of the
+test set scores 1071 ± 9 with this model. Train and test features are
+indistinguishable (adversarial validation AUC 0.495, i.e. chance), so the
+difference lies in the test sales themselves: they are noisier, or unit rates
+differ from train in some way. Genuinely different models, each testing one
+explanation, are logged with their scores in
+[reports/leaderboard_log.md](reports/leaderboard_log.md).
 
 ## How to run
 
