@@ -88,13 +88,15 @@ model is the simplest one that matches the structure above:
 | Best gradient boosting (CatBoost on units, early-stopped) | 1,074 | 1,150.90 |
 | Average of six gradient-boosting models | 1,073 | 1,149.49 |
 | Structural model (above) | 1,071.3 | 1,148.28 |
-| 75% structural + 25% boosting average | 1,071.1 | **1,147.85** (best submitted) |
-| **Structural model using the recovered unit price** | **1,070.9** (3-seed mean, strict validation; 1,071.4 for the MRP version on the same folds) | not yet submitted |
+| 75% structural + 25% boosting average | 1,071.1 | 1,147.85 |
+| **Final: structural model using the recovered unit price** | **1,070.9** (3-seed mean, strict validation; 1,071.4 for the MRP version on the same folds) | **1,147.83** (best submitted) |
 
 Replacing MRP with the recovered unit price (section 4) is the one refinement
 that improved the structural model consistently: 0.49 lower error on identical
 validation folds for each of three random seeds, winning 12–13 of 15 folds
-each time. Blending gradient-boosting models into it did not help further.
+each time, and 0.45 lower on the leaderboard (1,147.83 vs 1,148.28), close to
+the cross-validation estimate. Blending gradient-boosting models into it did not
+help further (1,148.18 on the leaderboard).
 
 The boosting models can see every column, yet alone they score slightly
 worse: the extra columns carry almost no signal about units, so most of the
@@ -108,7 +110,7 @@ raw scale.
 Leaderboard scores run about 77 points worse than cross-validation, far more
 than sampling noise, while train and test features are statistically
 indistinguishable: the test sales behave differently from the training sales
-in a way the features cannot explain. Even so, 7 of the 9 follow-up
+in a way the features cannot explain. Even so, 9 of the 11 follow-up
 submissions (`leaderboard_log.md`) landed within one point of the score
 cross-validation predicted, and the leaderboard ordered the final candidates
 the same way, so cross-validation was a sound basis for choosing the model.
