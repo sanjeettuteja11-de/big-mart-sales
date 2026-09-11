@@ -1,0 +1,274 @@
+{
+  "features": [
+    {
+      "model": "lightgbm_units",
+      "dropped": "(none)",
+      "rmse": 1079.79,
+      "delta": 0.0
+    },
+    {
+      "model": "lightgbm_units",
+      "dropped": "product_family",
+      "columns": [
+        "Item_Category"
+      ],
+      "rmse": 1079.85,
+      "delta": 0.06
+    },
+    {
+      "model": "lightgbm_units",
+      "dropped": "store_age",
+      "columns": [
+        "Outlet_Age"
+      ],
+      "rmse": 1079.92,
+      "delta": 0.13
+    },
+    {
+      "model": "lightgbm_units",
+      "dropped": "indicators",
+      "columns": [
+        "Item_Weight_Missing",
+        "Outlet_Size_Missing",
+        "Visibility_Was_Zero"
+      ],
+      "rmse": 1079.89,
+      "delta": 0.1
+    },
+    {
+      "model": "lightgbm_units",
+      "dropped": "weight",
+      "columns": [
+        "Item_Weight",
+        "MRP_per_Weight"
+      ],
+      "rmse": 1080.45,
+      "delta": 0.67
+    },
+    {
+      "model": "lightgbm_units",
+      "dropped": "visibility",
+      "columns": [
+        "Item_Visibility",
+        "Visibility_vs_Item_Mean"
+      ],
+      "rmse": 1080.42,
+      "delta": 0.63
+    },
+    {
+      "model": "lightgbm_units",
+      "dropped": "aggregates",
+      "columns": [
+        "Item_Store_Count",
+        "MRP_vs_Type_Median"
+      ],
+      "rmse": 1079.22,
+      "delta": -0.57
+    },
+    {
+      "model": "lightgbm_units",
+      "dropped": "mrp_band",
+      "columns": [
+        "MRP_Band"
+      ],
+      "rmse": 1079.74,
+      "delta": -0.05
+    },
+    {
+      "model": "lightgbm_units",
+      "dropped": "outlet_id",
+      "columns": [
+        "Outlet_Identifier"
+      ],
+      "rmse": 1081.56,
+      "delta": 1.77
+    },
+    {
+      "model": "lightgbm_units",
+      "dropped": "store_attributes",
+      "columns": [
+        "Outlet_Size",
+        "Outlet_Location_Type",
+        "Outlet_Type"
+      ],
+      "rmse": 1080.46,
+      "delta": 0.67
+    },
+    {
+      "model": "lightgbm_units",
+      "dropped": "item_attributes",
+      "columns": [
+        "Item_Fat_Content",
+        "Item_Type"
+      ],
+      "rmse": 1077.83,
+      "delta": -1.96
+    },
+    {
+      "model": "catboost_raw",
+      "dropped": "(none)",
+      "rmse": 1074.93,
+      "delta": 0.0
+    },
+    {
+      "model": "catboost_raw",
+      "dropped": "product_family",
+      "columns": [
+        "Item_Category"
+      ],
+      "rmse": 1075.27,
+      "delta": 0.34
+    },
+    {
+      "model": "catboost_raw",
+      "dropped": "store_age",
+      "columns": [
+        "Outlet_Age"
+      ],
+      "rmse": 1075.36,
+      "delta": 0.44
+    },
+    {
+      "model": "catboost_raw",
+      "dropped": "indicators",
+      "columns": [
+        "Item_Weight_Missing",
+        "Outlet_Size_Missing",
+        "Visibility_Was_Zero"
+      ],
+      "rmse": 1074.94,
+      "delta": 0.01
+    },
+    {
+      "model": "catboost_raw",
+      "dropped": "weight",
+      "columns": [
+        "Item_Weight",
+        "MRP_per_Weight"
+      ],
+      "rmse": 1075.09,
+      "delta": 0.16
+    },
+    {
+      "model": "catboost_raw",
+      "dropped": "visibility",
+      "columns": [
+        "Item_Visibility",
+        "Visibility_vs_Item_Mean"
+      ],
+      "rmse": 1075.44,
+      "delta": 0.51
+    },
+    {
+      "model": "catboost_raw",
+      "dropped": "aggregates",
+      "columns": [
+        "Item_Store_Count",
+        "MRP_vs_Type_Median"
+      ],
+      "rmse": 1075.14,
+      "delta": 0.22
+    },
+    {
+      "model": "catboost_raw",
+      "dropped": "mrp_band",
+      "columns": [
+        "MRP_Band"
+      ],
+      "rmse": 1076.0,
+      "delta": 1.07
+    },
+    {
+      "model": "catboost_raw",
+      "dropped": "outlet_id",
+      "columns": [
+        "Outlet_Identifier"
+      ],
+      "rmse": 1075.8,
+      "delta": 0.87
+    },
+    {
+      "model": "catboost_raw",
+      "dropped": "store_attributes",
+      "columns": [
+        "Outlet_Size",
+        "Outlet_Location_Type",
+        "Outlet_Type"
+      ],
+      "rmse": 1075.45,
+      "delta": 0.52
+    },
+    {
+      "model": "catboost_raw",
+      "dropped": "item_attributes",
+      "columns": [
+        "Item_Fat_Content",
+        "Item_Type"
+      ],
+      "rmse": 1075.43,
+      "delta": 0.5
+    }
+  ],
+  "targets": [
+    {
+      "model": "lightgbm_units",
+      "target": "raw",
+      "rmse": 1078.69,
+      "negative_prediction_share": 0.0
+    },
+    {
+      "model": "lightgbm_units",
+      "target": "sqrt",
+      "rmse": 1086.14,
+      "negative_prediction_share": 0.0
+    },
+    {
+      "model": "lightgbm_units",
+      "target": "log1p",
+      "rmse": 1113.24,
+      "negative_prediction_share": 0.0
+    },
+    {
+      "model": "lightgbm_units",
+      "target": "units",
+      "rmse": 1079.79,
+      "negative_prediction_share": 0.0
+    },
+    {
+      "model": "lightgbm_units",
+      "target": "units_unweighted",
+      "rmse": 1077.42,
+      "negative_prediction_share": 0.0
+    },
+    {
+      "model": "catboost_raw",
+      "target": "raw",
+      "rmse": 1074.93,
+      "negative_prediction_share": 0.0
+    },
+    {
+      "model": "catboost_raw",
+      "target": "sqrt",
+      "rmse": 1084.12,
+      "negative_prediction_share": 0.0
+    },
+    {
+      "model": "catboost_raw",
+      "target": "log1p",
+      "rmse": 1109.75,
+      "negative_prediction_share": 0.0
+    },
+    {
+      "model": "catboost_raw",
+      "target": "units",
+      "rmse": 1074.22,
+      "negative_prediction_share": 0.0
+    },
+    {
+      "model": "catboost_raw",
+      "target": "units_unweighted",
+      "rmse": 1073.61,
+      "negative_prediction_share": 0.0
+    }
+  ]
+}
