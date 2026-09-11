@@ -194,6 +194,38 @@ def test_end_to_end_writes_a_valid_submission(data, tmp_path):
     assert rmse(truth, sub["Item_Outlet_Sales"]) < 0.8 * baseline
 
 
+def test_check_submission_accepts_good_files_and_names_problems(data, tmp_path):
+    from src.submission import check_submission
+
+    train, test, _ = data
+    max_sales = float(train[TARGET].max())
+    good = train_script.write_submission(test, np.full(len(test), 1000.0), tmp_path / "good.csv")
+    assert check_submission(good, test, max_sales) == []
+
+    bad = pd.read_csv(good).iloc[:-1]
+    bad.loc[0, TARGET] = np.nan
+    bad.to_csv(tmp_path / "bad.csv", index=True)  # index column, a missing row, a blank prediction
+    problems = " | ".join(check_submission(tmp_path / "bad.csv", test, max_sales))
+    assert "columns" in problems and "rows" in problems and "missing" in problems
+
+    shuffled = pd.read_csv(good).sample(frac=1, random_state=0)
+    shuffled.to_csv(tmp_path / "shuffled.csv", index=False)
+    assert any("identifiers" in p for p in check_submission(tmp_path / "shuffled.csv", test, max_sales))
+
+
+def test_refit_predicts_every_test_row(data, tmp_path):
+    from src.refit import refit_predict
+
+    train, test, _ = data
+    pred = refit_predict("store_rate_popularity", train, test, outputs=tmp_path)
+    assert pred.shape == (len(test),) and np.isfinite(pred).all() and (pred >= 0).all()
+    if not library_status("catboost"):
+        boosted = refit_predict("catboost_raw", train, test, seeds=2, rounds=50, outputs=tmp_path)
+        assert boosted.shape == (len(test),) and np.isfinite(boosted).all()
+    with pytest.raises(ValueError, match="rounds"):
+        refit_predict("lightgbm_raw", train, test, outputs=tmp_path)
+
+
 def test_recover_units_rebuilds_every_sale():
     from src.structure import recover_units
 
