@@ -7,6 +7,10 @@ after its predictions are converted back.
 at splitting on price but poor at multiplying by it. Training on units with
 sample weight MRP^2 minimises exactly the same squared error as raw sales,
 because (sales - p)^2 = MRP^2 * (units - p / MRP)^2.
+
+`log1p` is the usual choice for skewed targets. It optimises squared error
+in log space, which is not the competition metric, so it has to earn its
+place through validation on the sales scale.
 """
 from __future__ import annotations
 
@@ -43,6 +47,7 @@ TRANSFORMS = {
     "sqrt": TargetTransform(
         "sqrt", lambda y, r: np.sqrt(y), lambda z, r: np.square(np.clip(z, 0, None)), _no_weight
     ),
+    "log1p": TargetTransform("log1p", lambda y, r: np.log1p(y), lambda z, r: np.expm1(z), _no_weight),
     "units": TargetTransform(
         "units", lambda y, r: y / _mrp(r), lambda z, r: z * _mrp(r), _mrp_squared
     ),

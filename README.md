@@ -120,25 +120,29 @@ is better). Always predicting the mean scores 1,706.4. Full details are in
 | Model | CV RMSE |
 |---|---|
 | **StoreRatePopularity** (tuned smoothing = 55) | **1,071.33** |
-| Ridge, price slope per store | 1,075.10 |
-| Poisson GLM | 1,075.98 |
-| CatBoost (sales) | 1,078.64 |
-| CatBoost (units) | 1,078.94 |
-| Extra Trees (units) | 1,079.07 |
-| Random Forest (units) | 1,079.19 |
-| LightGBM (sales) | 1,083.87 |
-| LightGBM (units + popularity) | 1,086.12 |
-| LightGBM (units) | 1,087.27 |
-| XGBoost (units) | 1,088.14 |
-| HistGradientBoosting (units) | 1,091.81 |
-| Blend of all, honest CV | 1,071.46 |
+| StoreRatePopularity, no product factor | 1,071.95 |
+| StoreRatePopularity, rates pooled by store type | 1,072.32 |
+| CatBoost (units target, early-stopped) | 1,074.07 |
+| Ridge, price slope per store | 1,075.14 |
+| CatBoost (sales) | 1,075.35 |
+| Poisson GLM | 1,076.12 |
+| XGBoost (sales) | 1,077.82 |
+| LightGBM (sales) | 1,078.69 |
+| Random Forest / Extra Trees (units) | 1,078.96 / 1,079.56 |
+| LightGBM (units) | 1,079.79 |
+| CatBoost / LightGBM on log1p(sales) | 1,111.18 / 1,113.24 |
+| Nested blend of everything | 1,071.77 |
 
 The structural model wins, and its whole fit takes about 0.1 seconds: 10 store
-rates plus 1,559 shrunk product factors. Without the product factor (smoothing
-→ ∞) it scores 1,071.95. The general-purpose models lose because their extra
-flexibility mostly fits noise. The blend puts 96% of its weight on
-StoreRatePopularity and scores no better, so the recommended submission is
-`submissions/store_rate_popularity_cv1071.csv`.
+rates plus 1,559 shrunk product factors. The general-purpose models lose
+because their extra flexibility mostly fits noise; the log1p target loses
+badly because it optimises the wrong scale. The blend cannot beat the best
+single model, so the recommended submission is
+`submissions/store_rate_popularity_cv1071.csv`. The full table with fold
+standard deviations, round counts, residual correlations and the tuning
+history is in [reports/experiments.md](reports/experiments.md); the
+validation checks are in [reports/validation.md](reports/validation.md) and
+the ablations in [reports/ablations.md](reports/ablations.md).
 
 ### Leaderboard
 
@@ -165,29 +169,44 @@ Download `train` and `test` from the competition page into `data/raw/`
 (any filenames containing "train" and "test").
 
 ```bash
-~/.venvs/big-mart-sales/bin/python -m src.eda                                        # figures + reports/eda_summary.md
-~/.venvs/big-mart-sales/bin/python -m src.train                                      # CV every model, blend, write submissions/
-~/.venvs/big-mart-sales/bin/python -m src.tune --model catboost_units --trials 50    # optional: tune, then re-run train
-~/.venvs/big-mart-sales/bin/python -m pytest                                         # runs on synthetic data, no download needed
+PY=~/.venvs/big-mart-sales/bin/python
+$PY -m pytest                                                # 39 tests on synthetic data; no download needed
+$PY -m src.eda                                               # figures + reports/eda_summary.md
+$PY notebooks/build_eda_notebook.py --execute                # notebooks/01_eda.ipynb with outputs
+$PY -m src.validate                                          # holdout / K-fold / grouped CV, preprocessing checks -> reports/validation.md
+$PY -m src.ablate                                            # feature-group and target ablations -> reports/ablations.md
+$PY -m src.tune --model catboost_raw --trials 30             # optional Optuna search; train.py picks the result up
+$PY -m src.train                                             # 5x3 CV for every model, blend, submissions/, outputs/cv_results.json
+$PY -m src.export catboost_raw --average --name mix          # extra submission files from saved predictions
+$PY big_mart_solution.py                                     # single-file version of the recommended model
 ```
+
+Every script accepts `--data <folder>` to point at another copy of the CSVs.
 
 ## Project layout
 
 ```
 src/
-  config.py      paths and constants
-  data.py        load + clean
-  features.py    feature engineering and model matrices
-  targets.py     sales / sqrt / units target transforms
-  models.py      the model zoo
-  cv.py          repeated stratified CV, out-of-fold predictions
-  blend.py       simplex-weighted blending with an honest score
+  config.py      paths, constants, CV settings (seed 42, 5 folds x 3 repeats)
+  data.py        load; row-wise fixes; Cleaner (learned imputation, fit/transform)
+  features.py    row-wise features; FeatureBuilder (learned aggregates); model matrices; feature groups
+  targets.py     raw / sqrt / log1p / units target transforms
+  structure.py   the whole-units finding and the StoreRatePopularity model
+  models.py      the model zoo and default parameters
+  cv.py          stratified / holdout / grouped CV, early stopping, fold-refit preprocessing
+  blend.py       simplex-weighted blending with a nested (honest) score
   train.py       end-to-end: CV -> blend -> submission CSVs
   tune.py        Optuna hyperparameter search
-  eda.py         figures and findings for the report
-tests/
-  synthetic.py   fake data with the real schema and its quirks
-  test_pipeline.py
+  validate.py    validation study
+  ablate.py      feature and target ablations
+  export.py      submission files from saved predictions
+  eda.py         figures and findings
+notebooks/
+  01_eda.ipynb   executed EDA notebook (regenerate with build_eda_notebook.py)
+reports/         eda_summary, validation, ablations, experiments, leaderboard_log, amba_summary, figures/
+outputs/         cv_results.json, params/, oof/ and test_preds/ (.npy, not committed)
+submissions/     CSVs (not committed)
+tests/           synthetic data with the real schema and quirks; 39 tests
 ```
 
 ## Notes

@@ -17,9 +17,8 @@ from src.blend import blend_cv_rmse, fit_weights
 from src.config import (
     DATA_RAW, ITEM_ID, N_REPEATS, N_SPLITS, OUTLET_ID, OUTPUTS, SEED, SUBMISSIONS, TARGET,
 )
-from src.cv import build_matrices, rmse, run_cv
-from src.data import clean, load_raw
-from src.features import build_features
+from src.cv import prepare, rmse, run_cv
+from src.data import load_raw
 from src.models import SPECS, SPECS_BY_NAME, library_status, load_tuned
 
 
@@ -43,8 +42,8 @@ def run(
     outputs: Path = OUTPUTS,
     submissions: Path = SUBMISSIONS,
 ) -> dict:
-    train, test = build_features(*clean(train_raw, test_raw))
-    matrices = build_matrices(train, test)
+    prepared = prepare(train_raw, test_raw)
+    train, test = prepared.train, prepared.test
     y = train[TARGET].to_numpy(dtype=float)
     for folder in (outputs / "oof", outputs / "test_preds"):
         folder.mkdir(parents=True, exist_ok=True)
@@ -61,14 +60,15 @@ def run(
             print(f"  skipped {spec.name}: {problem}")
             continue
         tuned = load_tuned(spec.name, outputs / "params")
-        result = run_cv(spec, train, test, matrices, tuned, n_splits, n_repeats, seed)
+        result = run_cv(spec, train_raw, test_raw, prepared, tuned, n_splits, n_repeats, seed)
         np.save(outputs / "oof" / f"{spec.name}.npy", result.oof)
         np.save(outputs / "test_preds" / f"{spec.name}.npy", result.test)
         results.append(result)
         s = result.summary()
+        rounds = f", {s['best_iterations_mean']} rounds" if "best_iterations_mean" in s else ""
         print(f"  {spec.name:27s} OOF RMSE {s['oof_rmse']:8.2f}   "
               f"folds {s['fold_rmse_mean']:.1f} ± {s['fold_rmse_std']:.1f}   "
-              f"{'tuned' if tuned else 'default'} params, {s['seconds']}s")
+              f"{'tuned' if tuned else 'default'} params{rounds}, {s['seconds']}s")
     if not results:
         raise RuntimeError("No model could run; see the skipped reasons above.")
 
