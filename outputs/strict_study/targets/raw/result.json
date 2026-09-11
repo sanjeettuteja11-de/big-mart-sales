@@ -1,0 +1,68 @@
+{
+  "model": "catboost_units_unweighted",
+  "scheme": "stratified",
+  "oof_rmse": 1077.0,
+  "fold_rmse_mean": 1076.61,
+  "fold_rmse_std": 29.22,
+  "n_folds": 5,
+  "seconds": 10.6,
+  "fold_rmse": [
+    1059.4303545252114,
+    1053.230357952726,
+    1121.0664314595797,
+    1101.5172536193932,
+    1047.7941959364396
+  ],
+  "oof_rmse_full_precision": 1077.0046263517136,
+  "raw_oof_rmse": 1077.0046263517136,
+  "best_iterations": [
+    304,
+    199,
+    118,
+    214,
+    305
+  ],
+  "best_iterations_mean": 228,
+  "config": {
+    "target": "raw",
+    "params": {
+      "iterations": 3000,
+      "learning_rate": 0.03,
+      "depth": 5,
+      "l2_leaf_reg": 6.0
+    },
+    "seed": 42,
+    "repeats": 1
+  },
+  "provenance": {
+    "train_sha256": "5dbfa5ab3f42474402d19cee093f3874bfd11846bd15d314425581bfdb9c9a17",
+    "test_sha256": "f35a8617e02d32564894c8672412580d9079c03bfb91f30d887dbf56e5ad1190",
+    "source_sha256": {
+      "cv.py": "4c7841cd79561c4019d12395356e3e9eaea832a8c3b52ba2c4a20e48c727758d",
+      "data.py": "92d8e7f6fd4bc171e38631d1bfdb8e82d91610be75c56ffa0a8800a83bd80e43",
+      "features.py": "df76f6d22afb16078af01dbf0c2304b8e7b825a581b0acb58431c6e67f149c39",
+      "models.py": "dfe5af13cead751b5f6e2135c8bae778ecdf5c4aaad491059fd7cde20aa846c0",
+      "structure.py": "f432c1ad5df660cd6a22d640645ce45faa41f2236f6ab871904233ab0f095d1b",
+      "targets.py": "25072f430ca3a261ca6d4018c662235514df59f33d3101cd7b790f0af543b95b"
+    },
+    "git_commit_at_run": "6720e0a15c204da92ebf5eca1e9f49cbe1b26bc0",
+    "python": "3.14.6",
+    "platform": "macOS-26.5.2-arm64-arm-64bit-Mach-O",
+    "packages": {
+      "numpy": "2.5.3",
+      "pandas": "3.0.5",
+      "scikit-learn": "1.9.1",
+      "scipy": "1.18.1",
+      "catboost": "1.2.10",
+      "lightgbm": "4.7.0",
+      "xgboost": "3.4.1",
+      "optuna": "5.0.0"
+    }
+  },
+  "artifacts_sha256": {
+    "folds.npz": "ce1d649b85b4b8793eece0b469ceb5e05c29d15428b240c1dfe52f009142332c",
+    "oof.npy": "1ba17d5da4370b2b1f9c553e8561e0439eb21c37f4dbc6a68bc43a8f94c4fb9f",
+    "raw_oof.npy": "1ba17d5da4370b2b1f9c553e8561e0439eb21c37f4dbc6a68bc43a8f94c4fb9f",
+    "test.npy": "185ed2aca4f4708ab40c566d68e89d1533d6ed0448c56417267b321a315a0315"
+  }
+}

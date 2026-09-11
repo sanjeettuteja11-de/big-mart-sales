@@ -31,10 +31,12 @@ def fit_weights(P: np.ndarray, y: np.ndarray) -> np.ndarray:
 
 
 def blend_cv_rmse(P: np.ndarray, y: np.ndarray, n_splits: int = 5, seed: int = SEED) -> float:
-    """Blend score with weights fitted on other rows than the ones scored.
+    """Second-stage OOF-row crossfit diagnostic, NOT a fully nested score.
 
-    Fitting weights on all out-of-fold rows and scoring on the same rows
-    flatters the blend slightly; this is the number to trust.
+    The base predictions were generated globally, and their training labels
+    can cross this meta split. Model/hyperparameter selection also used the
+    full data. For an isolated blending evaluation, regenerate base OOF
+    predictions inside each outer training fold (src.nested_study).
     """
     pred = np.zeros(len(y))
     for tr, va in KFold(n_splits, shuffle=True, random_state=seed).split(P):

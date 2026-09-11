@@ -1,0 +1,78 @@
+{
+  "model": "lightgbm_raw",
+  "scheme": "stratified",
+  "oof_rmse": 1079.97,
+  "fold_rmse_mean": 1079.63,
+  "fold_rmse_std": 27.22,
+  "n_folds": 5,
+  "seconds": 2.3,
+  "fold_rmse": [
+    1067.8963458000385,
+    1056.6410392330956,
+    1124.3631112111127,
+    1096.842243357272,
+    1052.4096792874163
+  ],
+  "oof_rmse_full_precision": 1079.9747475197244,
+  "raw_oof_rmse": 1079.9747475197244,
+  "best_iterations": [
+    311,
+    260,
+    174,
+    220,
+    394
+  ],
+  "best_iterations_mean": 272,
+  "config": {
+    "model": "lightgbm_raw",
+    "params": {
+      "n_estimators": 3000,
+      "learning_rate": 0.02076081474661829,
+      "num_leaves": 6,
+      "min_child_samples": 34,
+      "subsample": 0.9656628769932615,
+      "subsample_freq": 1,
+      "colsample_bytree": 0.86410942291409,
+      "reg_lambda": 55.675769202290844
+    },
+    "repeats": 1,
+    "seed": 42,
+    "scheme": "stratified",
+    "drop": [
+      "MRP_Band"
+    ],
+    "fold_fit": true,
+    "protocol": "strict-inner-preprocessing-v1"
+  },
+  "provenance": {
+    "train_sha256": "5dbfa5ab3f42474402d19cee093f3874bfd11846bd15d314425581bfdb9c9a17",
+    "test_sha256": "f35a8617e02d32564894c8672412580d9079c03bfb91f30d887dbf56e5ad1190",
+    "source_sha256": {
+      "cv.py": "4c7841cd79561c4019d12395356e3e9eaea832a8c3b52ba2c4a20e48c727758d",
+      "data.py": "92d8e7f6fd4bc171e38631d1bfdb8e82d91610be75c56ffa0a8800a83bd80e43",
+      "features.py": "df76f6d22afb16078af01dbf0c2304b8e7b825a581b0acb58431c6e67f149c39",
+      "models.py": "dfe5af13cead751b5f6e2135c8bae778ecdf5c4aaad491059fd7cde20aa846c0",
+      "structure.py": "f432c1ad5df660cd6a22d640645ce45faa41f2236f6ab871904233ab0f095d1b",
+      "targets.py": "25072f430ca3a261ca6d4018c662235514df59f33d3101cd7b790f0af543b95b"
+    },
+    "git_commit_at_run": "6720e0a15c204da92ebf5eca1e9f49cbe1b26bc0",
+    "python": "3.14.6",
+    "platform": "macOS-26.5.2-arm64-arm-64bit-Mach-O",
+    "packages": {
+      "numpy": "2.5.3",
+      "pandas": "3.0.5",
+      "scikit-learn": "1.9.1",
+      "scipy": "1.18.1",
+      "catboost": "1.2.10",
+      "lightgbm": "4.7.0",
+      "xgboost": "3.4.1",
+      "optuna": "5.0.0"
+    }
+  },
+  "artifacts_sha256": {
+    "folds.npz": "90522aa702d54490402422df56ad1ca48d9cdac7ebe1952c428c38de84582970",
+    "oof.npy": "129449a0da81b761c7c476fc83473fe9afe8f2f835eeca2bcfcb6020f767672b",
+    "raw_oof.npy": "129449a0da81b761c7c476fc83473fe9afe8f2f835eeca2bcfcb6020f767672b",
+    "test.npy": "f96687dd3e2e34045a0d0207a8b7c50ea1dbc4865fa9422efb9b95f0f3d5580a"
+  }
+}

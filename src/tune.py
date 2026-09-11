@@ -15,11 +15,13 @@ import json
 from pathlib import Path
 
 import optuna
+import time
 
 from src.config import DATA_RAW, N_SPLITS, SEED
-from src.cv import prepare, run_cv
+from src.cv import run_cv
+from src.artifacts import provenance, save_result
 from src.data import load_raw
-from src.models import PARAMS_DIR, SPECS_BY_NAME
+from src.models import PARAMS_DIR, SPECS_BY_NAME, load_tuned
 
 
 # Boosting round counts are not searched: early stopping in src/cv.py sets
@@ -114,37 +116,60 @@ def main() -> None:
     parser.add_argument("--repeats", type=int, default=1)
     parser.add_argument("--seed", type=int, default=SEED)
     parser.add_argument("--data", type=Path, default=DATA_RAW)
+    parser.add_argument("--out-dir", type=Path, default=PARAMS_DIR)
     args = parser.parse_args()
 
     train_raw, test_raw = load_raw(args.data)
     spec = SPECS_BY_NAME[args.model]
-    prepared = prepare(train_raw, test_raw, matrices=[spec.matrix])
+    prov = provenance(train_raw, test_raw)
+    args.out_dir.mkdir(parents=True, exist_ok=True)
     space = space_for(spec.name)
 
     def objective(trial: optuna.Trial) -> float:
-        params = space(trial)
-        return run_cv(spec, train_raw, test_raw, prepared, params, args.splits, args.repeats, args.seed).oof_rmse
+        # Trial 0 evaluates the actual defaults, including their round ceiling;
+        # trial 1 benchmarks the historical tuned configuration.
+        params = (dict(spec.params) if trial.number == 0 else
+                  load_tuned(spec.name) if trial.number == 1 and load_tuned(spec.name) else space(trial))
+        trial.set_user_attr("effective_params", params)
+        result = run_cv(spec, train_raw, test_raw, params=params, n_splits=args.splits,
+                        n_repeats=args.repeats, seed=args.seed, fold_fit=True)
+        save_result(result, args.out_dir / f"{spec.name}_trials" / str(trial.number),
+                    {"params": params, "seed": args.seed, "splits": args.splits,
+                     "repeats": args.repeats, "fold_fit": True}, prov)
+        return result.oof_rmse
 
     def report(study: optuna.Study, trial: optuna.trial.FrozenTrial) -> None:
         print(f"  trial {trial.number:3d}   RMSE {trial.value:8.2f}   best so far {study.best_value:8.2f}")
 
     optuna.logging.set_verbosity(optuna.logging.WARNING)
-    study = optuna.create_study(direction="minimize", sampler=optuna.samplers.TPESampler(seed=args.seed))
-    study.enqueue_trial(spec.params, skip_if_exists=True)
-    study.optimize(objective, n_trials=args.trials, timeout=args.timeout, callbacks=[report])
+    study = optuna.create_study(direction="minimize", sampler=optuna.samplers.TPESampler(seed=args.seed),
+                               storage=f"sqlite:///{(args.out_dir / (spec.name + '.sqlite3')).resolve()}",
+                               study_name=f"{spec.name}-strict-{args.seed}-{args.splits}-{args.repeats}",
+                               load_if_exists=True)
+    previous = study.user_attrs.get("provenance")
+    if previous and previous != prov:
+        raise ValueError("Saved study has different data/code/environment; use a new --out-dir")
+    study.set_user_attr("provenance", prov)
+    start = time.perf_counter()
+    study.optimize(objective, n_trials=max(0, args.trials - len(study.trials)), timeout=args.timeout, callbacks=[report])
 
-    best = space(optuna.trial.FixedTrial(study.best_params))
-    PARAMS_DIR.mkdir(parents=True, exist_ok=True)
-    (PARAMS_DIR / f"{spec.name}.json").write_text(json.dumps(best, indent=2))
-    (PARAMS_DIR / f"{spec.name}.study.json").write_text(json.dumps({
+    best = study.best_trial.user_attrs["effective_params"]
+    (args.out_dir / f"{spec.name}.json").write_text(json.dumps(best, indent=2))
+    (args.out_dir / f"{spec.name}.study.json").write_text(json.dumps({
         "cv_rmse": round(study.best_value, 2),
         "default_params_rmse": round(study.trials[0].value, 2),
         "trials": len(study.trials),
         "splits": args.splits,
         "repeats": args.repeats,
+        "seed": args.seed, "fold_fit": True, "provenance": prov,
+        "selection_bias": "Best of searched configurations; confirm on additional folds.",
+        "elapsed_seconds_this_session": time.perf_counter() - start,
+        "trial_results": [{"number": t.number, "value": t.value,
+                           "params": t.user_attrs.get("effective_params"),
+                           "state": t.state.name} for t in study.trials],
     }, indent=2))
     print(f"\n{spec.name}: {study.trials[0].value:.2f} with defaults -> {study.best_value:.2f} tuned")
-    print(f"Saved {PARAMS_DIR / (spec.name + '.json')}")
+    print(f"Saved {args.out_dir / (spec.name + '.json')}")
 
 
 if __name__ == "__main__":

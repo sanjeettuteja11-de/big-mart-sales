@@ -1,0 +1,64 @@
+{
+  "model": "hierarchical_store_rate",
+  "scheme": "stratified",
+  "oof_rmse": 1072.39,
+  "fold_rmse_mean": 1072.08,
+  "fold_rmse_std": 26.08,
+  "n_folds": 5,
+  "seconds": 0.1,
+  "fold_rmse": [
+    1063.828014476645,
+    1043.3256656510864,
+    1102.5049193588595,
+    1103.2822894619705,
+    1047.443023960641
+  ],
+  "oof_rmse_full_precision": 1072.3932011512659,
+  "raw_oof_rmse": 1072.3932011512659,
+  "best_iterations": [],
+  "config": {
+    "model": "hierarchical_store_rate",
+    "params": {
+      "smoothing": 150.0,
+      "rate_smoothing": 0.0,
+      "weight_power": 0.0
+    },
+    "repeats": 1,
+    "seed": 42,
+    "scheme": "stratified",
+    "drop": [],
+    "fold_fit": true,
+    "protocol": "strict-inner-preprocessing-v1"
+  },
+  "provenance": {
+    "train_sha256": "5dbfa5ab3f42474402d19cee093f3874bfd11846bd15d314425581bfdb9c9a17",
+    "test_sha256": "f35a8617e02d32564894c8672412580d9079c03bfb91f30d887dbf56e5ad1190",
+    "source_sha256": {
+      "cv.py": "b5c49098cb7d6a1c3e515b3a816bba746f10e61f72f8b48cde43d727a0d22a8e",
+      "data.py": "6e1f5e58e6a88f42a79baa76006b525c15ad269743c9d206714e0d361e72baf8",
+      "features.py": "fa922c508e6e0a03f915e84def9b57f3ad2d87e0647646f7877b9170c8adf955",
+      "models.py": "b22b31c685bb66cee05d70d6f66d994281612f84c74fe234979c9be414c4010e",
+      "structure.py": "984c2cea1bae43bf5f398d8feb017f97d8d95af91ebe524f63fd558472194ca4",
+      "targets.py": "25072f430ca3a261ca6d4018c662235514df59f33d3101cd7b790f0af543b95b"
+    },
+    "git_commit_at_run": "6720e0a15c204da92ebf5eca1e9f49cbe1b26bc0",
+    "python": "3.14.6",
+    "platform": "macOS-26.5.2-arm64-arm-64bit-Mach-O",
+    "packages": {
+      "numpy": "2.5.3",
+      "pandas": "3.0.5",
+      "scikit-learn": "1.9.1",
+      "scipy": "1.18.1",
+      "catboost": "1.2.10",
+      "lightgbm": "4.7.0",
+      "xgboost": "3.4.1",
+      "optuna": "5.0.0"
+    }
+  },
+  "artifacts_sha256": {
+    "folds.npz": "7d483049bb7e6c2760c0a093b9022ba973ccd361b74c09e7bcacdaf5697cda14",
+    "oof.npy": "1701778c55cac8fc966c2cbea853aa1992ce8ca37aa2999623b1f5c8d51b260c",
+    "raw_oof.npy": "1701778c55cac8fc966c2cbea853aa1992ce8ca37aa2999623b1f5c8d51b260c",
+    "test.npy": "4d746bb56a1b706c1c7f71f4a971a93666dacf38c58126645b8ac7a89df676f8"
+  }
+}

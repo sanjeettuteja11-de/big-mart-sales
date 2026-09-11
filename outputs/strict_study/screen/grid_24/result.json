@@ -1,0 +1,64 @@
+{
+  "model": "hierarchical_store_rate",
+  "scheme": "stratified",
+  "oof_rmse": 1074.59,
+  "fold_rmse_mean": 1074.21,
+  "fold_rmse_std": 28.5,
+  "n_folds": 5,
+  "seconds": 0.1,
+  "fold_rmse": [
+    1062.490680610305,
+    1043.6243255877816,
+    1107.8453332763781,
+    1108.7099277524133,
+    1048.3781351522002
+  ],
+  "oof_rmse_full_precision": 1074.586694280707,
+  "raw_oof_rmse": 1074.586694280707,
+  "best_iterations": [],
+  "config": {
+    "model": "hierarchical_store_rate",
+    "params": {
+      "smoothing": 20.0,
+      "rate_smoothing": 500.0,
+      "weight_power": 0.0
+    },
+    "repeats": 1,
+    "seed": 42,
+    "scheme": "stratified",
+    "drop": [],
+    "fold_fit": true,
+    "protocol": "strict-inner-preprocessing-v1"
+  },
+  "provenance": {
+    "train_sha256": "5dbfa5ab3f42474402d19cee093f3874bfd11846bd15d314425581bfdb9c9a17",
+    "test_sha256": "f35a8617e02d32564894c8672412580d9079c03bfb91f30d887dbf56e5ad1190",
+    "source_sha256": {
+      "cv.py": "b5c49098cb7d6a1c3e515b3a816bba746f10e61f72f8b48cde43d727a0d22a8e",
+      "data.py": "6e1f5e58e6a88f42a79baa76006b525c15ad269743c9d206714e0d361e72baf8",
+      "features.py": "fa922c508e6e0a03f915e84def9b57f3ad2d87e0647646f7877b9170c8adf955",
+      "models.py": "b22b31c685bb66cee05d70d6f66d994281612f84c74fe234979c9be414c4010e",
+      "structure.py": "984c2cea1bae43bf5f398d8feb017f97d8d95af91ebe524f63fd558472194ca4",
+      "targets.py": "25072f430ca3a261ca6d4018c662235514df59f33d3101cd7b790f0af543b95b"
+    },
+    "git_commit_at_run": "6720e0a15c204da92ebf5eca1e9f49cbe1b26bc0",
+    "python": "3.14.6",
+    "platform": "macOS-26.5.2-arm64-arm-64bit-Mach-O",
+    "packages": {
+      "numpy": "2.5.3",
+      "pandas": "3.0.5",
+      "scikit-learn": "1.9.1",
+      "scipy": "1.18.1",
+      "catboost": "1.2.10",
+      "lightgbm": "4.7.0",
+      "xgboost": "3.4.1",
+      "optuna": "5.0.0"
+    }
+  },
+  "artifacts_sha256": {
+    "folds.npz": "719f23daebae0e9b99a9e58b381589207216b71aa2f6602eb744ed53a43afce2",
+    "oof.npy": "09f9ae450ffb2f7790f7ed9ad0301231e43cf9b032b62ed581c09cec08362b76",
+    "raw_oof.npy": "09f9ae450ffb2f7790f7ed9ad0301231e43cf9b032b62ed581c09cec08362b76",
+    "test.npy": "3a532da149b56c9f7d23d8a1808ab60f8a8ab41706eaa8af7afc6ce38a52cc42"
+  }
+}

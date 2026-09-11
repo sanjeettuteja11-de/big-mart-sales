@@ -19,7 +19,7 @@ PROJECT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 echo "Creating virtualenv at $VENV"
 "$PYTHON" -m venv "$VENV"
 "$VENV/bin/python" -m pip install --upgrade pip --quiet
-"$VENV/bin/python" -m pip install -r "$PROJECT_DIR/requirements.txt" --quiet
+"$VENV/bin/python" -m pip install -r "${REQUIREMENTS_FILE:-$PROJECT_DIR/requirements-lock.txt}" --quiet
 
 if [[ "$(uname)" == "Darwin" ]]; then
   SITE="$("$VENV/bin/python" -c 'import sysconfig; print(sysconfig.get_paths()["purelib"])')"

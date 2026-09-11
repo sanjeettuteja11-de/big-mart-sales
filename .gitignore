@@ -22,3 +22,9 @@ catboost_info/
 
 # OS
 .DS_Store
+
+# Local reproducible predictions / split arrays and trial database.
+outputs/**/*.npy
+outputs/**/*.npz
+outputs/**/*.sqlite3
+outputs/**/*.log

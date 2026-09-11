@@ -38,7 +38,9 @@ def test_clean_fixes_every_quirk(data):
 
 
 def test_missing_weight_borrowed_from_same_product(data):
-    both = pd.concat(clean(*data[:2]))
+    # This explicitly tests the optional transductive utility. Production
+    # CV learns weights only from each training fold (tested separately).
+    both = pd.concat(clean(*data[:2], use_test_features=True))
     assert both.groupby("Item_Identifier")["Item_Weight"].nunique().max() == 1
 
 

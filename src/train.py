@@ -14,6 +14,7 @@ import numpy as np
 import pandas as pd
 
 from src.blend import blend_cv_rmse, fit_weights
+from src.artifacts import provenance, save_result
 from src.config import (
     DATA_RAW, ITEM_ID, N_REPEATS, N_SPLITS, OUTLET_ID, OUTPUTS, SEED, SUBMISSIONS, TARGET,
 )
@@ -23,6 +24,9 @@ from src.models import SPECS, SPECS_BY_NAME, library_status, load_tuned
 
 
 def write_submission(test: pd.DataFrame, pred: np.ndarray, path: Path) -> Path:
+    pred = np.asarray(pred, dtype=float)
+    if pred.shape != (len(test),) or not np.isfinite(pred).all():
+        raise ValueError("Submission needs one finite prediction per test row")
     path.parent.mkdir(parents=True, exist_ok=True)
     pd.DataFrame({
         ITEM_ID: test[ITEM_ID],
@@ -42,8 +46,8 @@ def run(
     outputs: Path = OUTPUTS,
     submissions: Path = SUBMISSIONS,
 ) -> dict:
-    prepared = prepare(train_raw, test_raw)
-    train, test = prepared.train, prepared.test
+    train, test = train_raw, test_raw
+    prov = provenance(train, test)
     y = train[TARGET].to_numpy(dtype=float)
     for folder in (outputs / "oof", outputs / "test_preds"):
         folder.mkdir(parents=True, exist_ok=True)
@@ -60,7 +64,12 @@ def run(
             print(f"  skipped {spec.name}: {problem}")
             continue
         tuned = load_tuned(spec.name, outputs / "params")
-        result = run_cv(spec, train_raw, test_raw, prepared, tuned, n_splits, n_repeats, seed)
+        result = run_cv(spec, train_raw, test_raw, params=tuned, n_splits=n_splits,
+                        n_repeats=n_repeats, seed=seed, fold_fit=True)
+        save_result(result, outputs / "runs" / spec.name,
+                    {"model": spec.name, "params": {**spec.params, **tuned},
+                     "n_splits": n_splits, "n_repeats": n_repeats, "seed": seed,
+                     "fold_fit": True, "early_stopping_preprocessing": "inner_train_only"}, prov)
         np.save(outputs / "oof" / f"{spec.name}.npy", result.oof)
         np.save(outputs / "test_preds" / f"{spec.name}.npy", result.test)
         results.append(result)
@@ -81,18 +90,24 @@ def run(
 
     best_path = write_submission(test, best.test, submissions / f"{best.name}_cv{best.oof_rmse:.0f}.csv")
     blend_path = write_submission(test, test_matrix @ weights, submissions / f"blend_cv{blend_honest:.0f}.csv")
-    recommended = blend_path if blend_honest < best.oof_rmse else best_path
+    # OOF-row cross-fitting does not isolate base-model training across the
+    # second-stage split. Keep the single model recommendation unless a
+    # separate study establishes a particular blend.
+    recommended = best_path
 
     report = {
         "rows": {"train": len(train), "test": len(test)},
-        "cv": {"n_splits": n_splits, "n_repeats": n_repeats, "seed": seed},
+        "cv": {"n_splits": n_splits, "n_repeats": n_repeats, "seed": seed,
+               "fold_fit": True, "use_test_features": False},
+        "provenance": prov,
         "baseline_rmse": round(baseline, 2),
         "models": [r.summary() for r in results],
         "skipped": skipped,
         "blend": {
             "weights": {r.name: round(float(w), 4) for r, w in zip(results, weights) if w > 1e-4},
             "oof_rmse": round(rmse(y, oof_matrix @ weights), 2),
-            "honest_cv_rmse": round(blend_honest, 2),
+            "row_crossfit_rmse": round(blend_honest, 2),
+            "caveat": "Second-stage crossfit only, not fully nested; model/parameter selection bias remains.",
         },
         "submissions": {
             "best_single": best_path.name,
@@ -103,8 +118,8 @@ def run(
     (outputs / "cv_results.json").write_text(json.dumps(report, indent=2))
 
     print(f"\n  best single: {best.name} ({best.oof_rmse:.2f})")
-    print(f"  blend:       {blend_honest:.2f} honest CV   weights {report['blend']['weights']}")
-    print(f"\nUpload this file: {recommended}")
+    print(f"  blend:       {blend_honest:.2f} OOF-row crossfit (selection-biased)   weights {report['blend']['weights']}")
+    print(f"\nPrepared submission (upload requires approval): {recommended}")
     return report
 
 

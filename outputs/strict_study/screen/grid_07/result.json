@@ -1,0 +1,64 @@
+{
+  "model": "hierarchical_store_rate",
+  "scheme": "stratified",
+  "oof_rmse": 1072.84,
+  "fold_rmse_mean": 1072.52,
+  "fold_rmse_std": 26.4,
+  "n_folds": 5,
+  "seconds": 0.1,
+  "fold_rmse": [
+    1063.618531058801,
+    1045.0243044897823,
+    1104.1669743474292,
+    1103.489978395023,
+    1046.2884956396722
+  ],
+  "oof_rmse_full_precision": 1072.8418816255064,
+  "raw_oof_rmse": 1072.8418816255064,
+  "best_iterations": [],
+  "config": {
+    "model": "hierarchical_store_rate",
+    "params": {
+      "smoothing": 150.0,
+      "rate_smoothing": 0.0,
+      "weight_power": 1.0
+    },
+    "repeats": 1,
+    "seed": 42,
+    "scheme": "stratified",
+    "drop": [],
+    "fold_fit": true,
+    "protocol": "strict-inner-preprocessing-v1"
+  },
+  "provenance": {
+    "train_sha256": "5dbfa5ab3f42474402d19cee093f3874bfd11846bd15d314425581bfdb9c9a17",
+    "test_sha256": "f35a8617e02d32564894c8672412580d9079c03bfb91f30d887dbf56e5ad1190",
+    "source_sha256": {
+      "cv.py": "b5c49098cb7d6a1c3e515b3a816bba746f10e61f72f8b48cde43d727a0d22a8e",
+      "data.py": "6e1f5e58e6a88f42a79baa76006b525c15ad269743c9d206714e0d361e72baf8",
+      "features.py": "fa922c508e6e0a03f915e84def9b57f3ad2d87e0647646f7877b9170c8adf955",
+      "models.py": "b22b31c685bb66cee05d70d6f66d994281612f84c74fe234979c9be414c4010e",
+      "structure.py": "984c2cea1bae43bf5f398d8feb017f97d8d95af91ebe524f63fd558472194ca4",
+      "targets.py": "25072f430ca3a261ca6d4018c662235514df59f33d3101cd7b790f0af543b95b"
+    },
+    "git_commit_at_run": "6720e0a15c204da92ebf5eca1e9f49cbe1b26bc0",
+    "python": "3.14.6",
+    "platform": "macOS-26.5.2-arm64-arm-64bit-Mach-O",
+    "packages": {
+      "numpy": "2.5.3",
+      "pandas": "3.0.5",
+      "scikit-learn": "1.9.1",
+      "scipy": "1.18.1",
+      "catboost": "1.2.10",
+      "lightgbm": "4.7.0",
+      "xgboost": "3.4.1",
+      "optuna": "5.0.0"
+    }
+  },
+  "artifacts_sha256": {
+    "folds.npz": "64b84e72673b82b354f179026c3b0ff4760a84140c528ada170304cd7fbe4464",
+    "oof.npy": "9c5ca600f6f4ec23869177716a48f170531f54ccc9b63f2986432d8a1a62e08d",
+    "raw_oof.npy": "9c5ca600f6f4ec23869177716a48f170531f54ccc9b63f2986432d8a1a62e08d",
+    "test.npy": "53f27e5032ca2a0f7af1de38893e2cc9d5e290773cbbe5102530bb9cf0a0598c"
+  }
+}
