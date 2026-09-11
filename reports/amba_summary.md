@@ -52,8 +52,11 @@ computed strictly out-of-fold, so no row ever informed its own prediction.
 
 **Every sale is a whole number of units times a price within ±2 of the
 listed MRP.** For example, 443.42 = 9 × (48.27 + 1.00). This holds for all
-8,523 training rows. The ±2 price offset is centred on zero and unrelated to
-anything else: it is noise.
+8,523 training rows. The price offset is not random: every sale is a multiple
+of one currency step (0.6658), and for each product exactly one price within
+±2 of its MRP lies on that step. So each product has a single actual unit
+price, which can be recovered from its MRP alone. Using that recovered price
+instead of MRP improves the forecast slightly (section 5).
 
 That turns the question "what drives sales?" into "what drives units sold?",
 and the answer is the store format:
@@ -84,8 +87,14 @@ model is the simplest one that matches the structure above:
 | Always predict the average | 1,706 | – |
 | Best gradient boosting (CatBoost on units, early-stopped) | 1,074 | 1,150.90 |
 | Average of six gradient-boosting models | 1,073 | 1,149.49 |
-| Structural model (above) | 1,071 | 1,148.28 |
-| **Final: 75% structural + 25% boosting average** | **1,071** | **1,147.85** |
+| Structural model (above) | 1,071.3 | 1,148.28 |
+| 75% structural + 25% boosting average | 1,071.1 | **1,147.85** (best submitted) |
+| **Structural model using the recovered unit price** | **1,070.9** (3-seed mean, strict validation; 1,071.4 for the MRP version on the same folds) | not yet submitted |
+
+Replacing MRP with the recovered unit price (section 4) is the one refinement
+that improved the structural model consistently: 0.49 lower error on identical
+validation folds for each of three random seeds, winning 12–13 of 15 folds
+each time. Blending gradient-boosting models into it did not help further.
 
 The boosting models can see every column, yet alone they score slightly
 worse: the extra columns carry almost no signal about units, so most of the
