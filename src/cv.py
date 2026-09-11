@@ -125,12 +125,20 @@ class CVResult:
         return out
 
 
-def _fit_kwargs(model, weight) -> dict:
-    if weight is None:
-        return {}
-    if isinstance(model, Pipeline):
-        return {f"{model.steps[-1][0]}__sample_weight": weight}
-    return {"sample_weight": weight}
+def _catboost_cat_features(X: pd.DataFrame) -> list[str]:
+    return [c for c in X.columns if c in CATEGORICAL or c == ITEM_ID]
+
+
+def _fit_kwargs(spec: ModelSpec, model, X, weight) -> dict:
+    kwargs = {}
+    if spec.library == "catboost":
+        kwargs["cat_features"] = _catboost_cat_features(X)
+    if weight is not None:
+        if isinstance(model, Pipeline):
+            kwargs[f"{model.steps[-1][0]}__sample_weight"] = weight
+        else:
+            kwargs["sample_weight"] = weight
+    return kwargs
 
 
 def _early_stopping_iterations(spec: ModelSpec, params: dict, seed: int, X, z, w, stores) -> int:
@@ -160,8 +168,8 @@ def _early_stopping_iterations(spec: ModelSpec, params: dict, seed: int, X, z, w
         from catboost import Pool
 
         model = spec.make(params, seed)
-        cat = [c for c in X.columns if c in CATEGORICAL or c == ITEM_ID]
-        model.fit(X_a, z_a, sample_weight=w_a,
+        cat = _catboost_cat_features(X)
+        model.fit(X_a, z_a, sample_weight=w_a, cat_features=cat,
                   eval_set=Pool(X_b, z_b, weight=w_b, cat_features=cat),
                   early_stopping_rounds=EARLY_STOPPING_ROUNDS, verbose=False)
         return int(model.get_best_iteration()) + 1
@@ -231,7 +239,7 @@ def run_cv(
             fold_params[spec.iterations_param] = best
 
         model = spec.make(fold_params, seed + fold)
-        model.fit(X_tr, z_tr, **_fit_kwargs(model, w_tr))
+        model.fit(X_tr, z_tr, **_fit_kwargs(spec, model, X_tr, w_tr))
 
         raw_va = transform.inverse(model.predict(X_va), rows_va)
         raw_te = transform.inverse(model.predict(X_te), rows_te)

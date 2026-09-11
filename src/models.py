@@ -21,8 +21,7 @@ from sklearn.linear_model import PoissonRegressor, Ridge
 from sklearn.pipeline import make_pipeline
 from sklearn.preprocessing import StandardScaler
 
-from src.config import ITEM_ID, OUTPUTS, SEED
-from src.features import CATEGORICAL
+from src.config import OUTPUTS, SEED
 
 PARAMS_DIR = OUTPUTS / "params"
 
@@ -97,14 +96,9 @@ def _xgboost(p, seed):
 def _catboost(p, seed):
     from catboost import CatBoostRegressor
 
-    return CatBoostRegressor(
-        random_seed=seed,
-        verbose=0,
-        allow_writing_files=False,
-        thread_count=-1,
-        cat_features=CATEGORICAL + [ITEM_ID],
-        **p,
-    )
+    # cat_features is passed at fit time (src/cv.py) from the columns actually
+    # present, so ablations can drop a categorical column.
+    return CatBoostRegressor(random_seed=seed, verbose=0, allow_writing_files=False, thread_count=-1, **p)
 
 
 # Defaults lean shallow and heavily regularised: 8.5k rows of very noisy sales
@@ -159,12 +153,17 @@ SPECS = [
     ModelSpec("lightgbm_raw", "tree", "raw", _lightgbm, LIGHTGBM, **_LGB),
     ModelSpec("lightgbm_log1p", "tree", "log1p", _lightgbm, LIGHTGBM, **_LGB),
     ModelSpec("lightgbm_units", "tree", "units", _lightgbm, LIGHTGBM, **_LGB),
+    # Units are independent of price (src/structure.py), so the unweighted
+    # mean estimates them more efficiently than MRP^2 weights.
+    ModelSpec("lightgbm_units_unweighted", "tree", "units_unweighted", _lightgbm, LIGHTGBM, **_LGB),
     ModelSpec("lightgbm_units_popularity", "tree", "units", _lightgbm, LIGHTGBM, item_popularity=True, **_LGB),
     ModelSpec("xgboost_raw", "tree", "raw", _xgboost, XGBOOST, **_XGB),
     ModelSpec("xgboost_units", "tree", "units", _xgboost, XGBOOST, **_XGB),
+    ModelSpec("xgboost_units_unweighted", "tree", "units_unweighted", _xgboost, XGBOOST, **_XGB),
     ModelSpec("catboost_raw", "catboost", "raw", _catboost, CATBOOST, **_CAT),
     ModelSpec("catboost_log1p", "catboost", "log1p", _catboost, CATBOOST, **_CAT),
     ModelSpec("catboost_units", "catboost", "units", _catboost, CATBOOST, **_CAT),
+    ModelSpec("catboost_units_unweighted", "catboost", "units_unweighted", _catboost, CATBOOST, **_CAT),
 ]
 
 SPECS_BY_NAME = {spec.name: spec for spec in SPECS}

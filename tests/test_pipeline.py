@@ -82,6 +82,16 @@ def test_matrices_align_and_are_finite(prepared):
         assert np.isfinite(X_tr.select_dtypes("number").to_numpy()).all(), name
 
 
+def test_catboost_runs_with_a_categorical_column_dropped(data):
+    spec = SPECS_BY_NAME["catboost_raw"]
+    if problem := library_status(spec.library):
+        pytest.skip(problem)
+    train, test, _ = data
+    result = run_cv(spec, train, test, params={"iterations": 100}, n_splits=2, n_repeats=1,
+                    drop={"Outlet_Identifier"})
+    assert np.isfinite(result.oof_rmse)
+
+
 def test_dropping_a_feature_group_removes_its_columns(data):
     from src.features import FEATURE_GROUPS
 
