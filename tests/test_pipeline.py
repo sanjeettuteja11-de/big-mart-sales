@@ -149,3 +149,16 @@ def test_store_rate_popularity_learns_rates_and_shrinks():
     np.testing.assert_allclose(unshrunk.predict(X), y)
     shrunk = StoreRatePopularity(smoothing=1000).fit(X, y).predict(X)
     np.testing.assert_allclose(shrunk, [10, 10, 10, 10, 2.5, 2.5, 2.5, 2.5], rtol=0.01)
+
+
+def test_store_rate_variants_pool_by_type_and_drop_the_product_factor():
+    from src.structure import StoreRatePopularity
+
+    X = pd.DataFrame({"Outlet_Identifier": ["A", "A", "B", "B"],
+                      "Outlet_Type": ["T", "T", "T", "T"],
+                      "Item_Identifier": ["x", "y", "x", "y"]})
+    y = np.array([12, 8, 6, 4], dtype=float)
+    plain = StoreRatePopularity(smoothing=float("inf")).fit(X, y)
+    np.testing.assert_allclose(plain.predict(X), [10, 10, 5, 5])
+    pooled = StoreRatePopularity(smoothing=float("inf"), rate_level="type").fit(X, y)
+    np.testing.assert_allclose(pooled.predict(X), [7.5] * 4)

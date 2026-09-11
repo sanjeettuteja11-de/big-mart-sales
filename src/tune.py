@@ -91,7 +91,7 @@ def store_rate_space(t: optuna.Trial) -> dict:
 
 
 SPACES = {
-    "store_rate": store_rate_space,
+    "store_rate": store_rate_space, "store_type_rate": store_rate_space,
     "lightgbm": lightgbm_space, "xgboost": xgboost_space, "catboost": catboost_space,
     "hist_gb": hist_gb_space, "random_forest": forest_space, "extra_trees": forest_space,
     "ridge": ridge_space, "poisson": poisson_space,
