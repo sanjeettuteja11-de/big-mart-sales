@@ -21,10 +21,13 @@ from src.data import load_raw
 from src.train import write_submission
 
 
-def load_predictions(names: list[str], outputs: Path = OUTPUTS) -> tuple[np.ndarray, np.ndarray]:
-    """Out-of-fold and test predictions, averaged over `names`."""
-    oof = np.mean([np.load(outputs / "oof" / f"{n}.npy") for n in names], axis=0)
-    test = np.mean([np.load(outputs / "test_preds" / f"{n}.npy") for n in names], axis=0)
+def load_predictions(
+    names: list[str], outputs: Path = OUTPUTS, weights: list[float] | None = None
+) -> tuple[np.ndarray, np.ndarray]:
+    """Out-of-fold and test predictions, averaged over `names` (weighted if given)."""
+    w = np.full(len(names), 1 / len(names)) if weights is None else np.asarray(weights, float) / np.sum(weights)
+    oof = sum(wi * np.load(outputs / "oof" / f"{n}.npy") for n, wi in zip(names, w))
+    test = sum(wi * np.load(outputs / "test_preds" / f"{n}.npy") for n, wi in zip(names, w))
     return oof, test
 
 
@@ -35,15 +38,20 @@ def main() -> None:
     parser.add_argument("models", nargs="+")
     parser.add_argument("--average", action="store_true", help="write one file averaging all models")
     parser.add_argument("--name", help="file name for --average (default: average_<n>_models)")
+    parser.add_argument("--weights", nargs="+", type=float,
+                        help="with --average: one weight per model. Choose them before looking at the "
+                             "out-of-fold score (e.g. by nested CV), or the score in the file name is optimistic")
     parser.add_argument("--out-dir", type=Path, default=SUBMISSIONS)
     parser.add_argument("--data", type=Path, default=DATA_RAW)
     args = parser.parse_args()
+    if args.weights and (not args.average or len(args.weights) != len(args.models)):
+        parser.error("--weights needs --average and one weight per model")
 
     train, test = load_raw(args.data)
     y = train[TARGET].to_numpy(dtype=float)
     groups = [args.models] if args.average else [[m] for m in args.models]
     for members in groups:
-        oof, pred = load_predictions(members)
+        oof, pred = load_predictions(members, weights=args.weights)
         if (len(oof), len(pred)) != (len(train), len(test)):
             raise ValueError(f"Saved predictions for {members} don't match the data; rerun src.train")
         stem = (args.name or f"average_{len(members)}_models") if args.average else members[0]

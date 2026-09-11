@@ -25,13 +25,17 @@ differently.
 
 ## Round 1: which part of the model carries over to test?
 
-| File | Model | Tests | CV | Expected | Leaderboard |
-|---|---|---|---|---|---|
-| `store_rate_plain_cv1072.csv` | MRP × store rate, no product factor | Does the product factor carry over? | 1071.95 | 1148.9 | |
-| `store_type_rate_popularity_cv1072.csv` | Rates pooled by store type × product factor | Do each store's own rates carry over? | 1072.32 | 1149.2 | |
-| `ridge_interactions_cv1075.csv` | Ridge with a price slope per store, all columns | Do the other columns help on test? | 1075.10 | 1151.8 | |
-| `catboost_raw_cv1079.csv` | CatBoost on sales, all columns | Same, for a tree model | 1078.64 | 1155.1 | |
-| `average_top5_cv1074.csv` | Average of structural, Ridge, Poisson GLM, CatBoost, Extra Trees | Hedge | 1073.96 | 1150.7 | |
+| File | Model | Tests | CV | Expected | Leaderboard | vs expected |
+|---|---|---|---|---|---|---|
+| `store_rate_plain_cv1072.csv` | MRP × store rate, no product factor | Does the product factor carry over? | 1071.95 | 1148.86 | **1148.74** | −0.1 |
+| `store_type_rate_popularity_cv1072.csv` | Rates pooled by store type × product factor | Do each store's own rates carry over? | 1072.32 | 1149.20 | **1150.20** | +1.0 |
+| `ridge_interactions_cv1075.csv` | Ridge with a price slope per store, all columns | Do the other columns help on test? | 1075.10 | 1151.80 | **1150.79** | −1.0 |
+| `catboost_raw_cv1079.csv` | CatBoost on sales, all columns | Same, for a tree model | 1078.64 | 1155.10 | **1149.96** | −5.1 |
+| `average_top5_cv1074.csv` | Average of structural, Ridge, Poisson GLM, CatBoost, Extra Trees | Hedge | 1073.96 | 1150.74 | **1148.60** | −2.1 |
+
+Submitted 11 Sep 2026, 10:50–10:51, in alphabetical file order; scores
+matched to files by submission time (the four 10:50 entries are assumed to
+be listed in upload order).
 
 How to read the results:
 
@@ -39,3 +43,43 @@ How to read the results:
 - **Pooled rates clearly beat expected**: individual store rates don't carry over. Next, shrink each store's rate toward its store type.
 - **Ridge or CatBoost clearly beat expected**: the other columns carry signal on test that they don't on train. Next, tune the machine-learning models and blend them.
 - **Everything lands near expected**: the test sales are just noisier. The structural model is the honest ceiling, and the remaining submissions go to small refinements.
+
+### Round 1 results
+
+No file beat the original 1148.28. The two structural variants landed on
+their expected scores, so neither the product factor nor store-specific rates
+behave differently on test.
+
+The models that use every column did better than expected: Ridge by 1.0, the
+average by 2.1, CatBoost by 5.1. How much of that could be luck? On random
+subsets of training rows, the gap between CatBoost and the structural model
+varies with a standard deviation of about 3.2 points if the public
+leaderboard scores 30% of the test rows, or about 1.5 points if it scores all
+of them. The share isn't published. CatBoost's −5.1 is therefore 1.6 to 3.5
+standard deviations and the average's −2.1 is 1.4 to 3.0. Suggestive, not
+conclusive, and consistent across all three feature-based files.
+
+Round 2 follows that lead without tuning to the leaderboard: the improved
+boosting models (early stopping and tuning moved CatBoost from 1078.64 to
+1073.51 CV) and blends of boosting with the structural model, with blend
+weights chosen by nested cross-validation.
+
+## Round 2: do blends with the stronger boosting models carry over?
+
+All four files come from the final cross-validation run (early stopping,
+tuned parameters). The boosting average is the mean of CatBoost (units
+unweighted, units, sales), XGBoost (units unweighted, sales) and LightGBM
+(sales). Under cross-validation the structural model and both blends are
+tied (within 0.3), yet their test predictions differ, so the leaderboard can
+separate them.
+
+| File | Model | CV | Expected | Leaderboard | vs expected |
+|---|---|---|---|---|---|
+| `blend_structural75_boosting25_cv1071.csv` | 75% structural + 25% boosting average (weight from nested CV: 0.24 ± 0.09) | 1071.10 | 1148.07 | | |
+| `blend_structural50_boosting50_cv1071.csv` | 50% structural + 50% boosting average | 1071.36 | 1148.31 | | |
+| `boosting_avg6_cv1073.csv` | Boosting average | 1073.32 | 1150.14 | | |
+| `catboost_units_unweighted_cv1074.csv` | Best single boosting model | 1073.51 | 1150.32 | | |
+
+If round 1's pattern holds, the files with more boosting beat their expected
+score by more. The best of these, or of round 0 if none improves, becomes the
+final submission, refit on all training rows.

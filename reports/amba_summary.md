@@ -95,9 +95,12 @@ scale. Combining models did not beat the best single model.
 The leaderboard score of the structural model was **1,148.28** (rank 566 at
 submission time), against 1,071 in cross-validation. The gap is far larger
 than sampling noise, while train and test features are statistically
-indistinguishable, so the test sales are noisier than the training sales in
-a way the features cannot explain. The gap affects every competitor; the
-follow-up submissions in `leaderboard_log.md` test which model handles it best.
+indistinguishable, so the test sales behave differently from the training
+sales in a way the features cannot explain. Five follow-up submissions
+(`leaderboard_log.md`) did not beat 1,148.28, but the models that use every
+column scored 1–5 points better than cross-validation predicted: suggestive,
+though within 1.4–3.5 standard deviations of luck. A second round tests
+blends of the structural model with gradient boosting.
 
 ## 6. Limitations
 
