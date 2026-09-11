@@ -1,0 +1,83 @@
+{
+  "candidate": "lattice_store_rate",
+  "baseline": "store_rate_popularity",
+  "evidence": {
+    "per_seed": [
+      {
+        "seed": 42,
+        "candidate_run": "price/candidate_0_seed_42",
+        "baseline_run": "baseline/store_rate_popularity",
+        "candidate_rmse": 1070.8461456912808,
+        "baseline_rmse": 1071.3318189465622,
+        "delta": -0.48567325528142646,
+        "identical_folds": true,
+        "paired_fold_delta_mean": -0.48688605898091736,
+        "paired_fold_delta_std": 0.5334932763356851,
+        "folds_candidate_better": "13/15"
+      },
+      {
+        "seed": 137,
+        "candidate_run": "price/candidate_0_seed_137",
+        "baseline_run": "confirm/baseline_seed_137",
+        "candidate_rmse": 1071.1803663894239,
+        "baseline_rmse": 1071.667573308943,
+        "delta": -0.48720691951916706,
+        "identical_folds": true,
+        "paired_fold_delta_mean": -0.4932548332315946,
+        "paired_fold_delta_std": 0.534840560399014,
+        "folds_candidate_better": "12/15"
+      },
+      {
+        "seed": 2026,
+        "candidate_run": "price/candidate_0_seed_2026",
+        "baseline_run": "confirm/baseline_seed_2026",
+        "candidate_rmse": 1070.8157876567284,
+        "baseline_rmse": 1071.3107210437956,
+        "delta": -0.494933387067249,
+        "identical_folds": true,
+        "paired_fold_delta_mean": -0.49483659974556155,
+        "paired_fold_delta_std": 0.436572123707398,
+        "folds_candidate_better": "13/15"
+      }
+    ],
+    "candidate_mean_rmse": 1070.947433245811,
+    "baseline_mean_rmse": 1071.4367044331002
+  },
+  "selected_because": "lowest mean strict-CV RMSE over the seeds above; blends with boosting models did not improve it",
+  "submission": {
+    "path": "submissions/final_lattice_store_rate_refit.csv",
+    "sha256": "190c0d9da8762f43a50f1875b086d39645df34160d94c35228226309876a4a88",
+    "rows": 5681,
+    "checks_passed": true,
+    "refit": "all training rows"
+  },
+  "leaderboard_score": null,
+  "note": "Not a leaderboard result. The file has no score until it is uploaded and evaluated.",
+  "provenance": {
+    "train_sha256": "5dbfa5ab3f42474402d19cee093f3874bfd11846bd15d314425581bfdb9c9a17",
+    "test_sha256": "f35a8617e02d32564894c8672412580d9079c03bfb91f30d887dbf56e5ad1190",
+    "source_sha256": {
+      "cv.py": "4c7841cd79561c4019d12395356e3e9eaea832a8c3b52ba2c4a20e48c727758d",
+      "data.py": "92d8e7f6fd4bc171e38631d1bfdb8e82d91610be75c56ffa0a8800a83bd80e43",
+      "features.py": "df76f6d22afb16078af01dbf0c2304b8e7b825a581b0acb58431c6e67f149c39",
+      "lattice_boost.py": "9948597f8d16e5ec00e48c8b1f96b7a4a341c246ed9b5d6f30f46ecfbb004705",
+      "models.py": "dfe5af13cead751b5f6e2135c8bae778ecdf5c4aaad491059fd7cde20aa846c0",
+      "price_model.py": "698489bbd4cc98d8e9856437c359239f4d363079d2b5c950dfbd4d5c090df144",
+      "structure.py": "f432c1ad5df660cd6a22d640645ce45faa41f2236f6ab871904233ab0f095d1b",
+      "targets.py": "25072f430ca3a261ca6d4018c662235514df59f33d3101cd7b790f0af543b95b"
+    },
+    "git_commit_at_run": "a2da1be6b058b083a6de95a111725eaf35ecfc50",
+    "python": "3.14.6",
+    "platform": "macOS-26.5.2-arm64-arm-64bit-Mach-O",
+    "packages": {
+      "numpy": "2.5.3",
+      "pandas": "3.0.5",
+      "scikit-learn": "1.9.1",
+      "scipy": "1.18.1",
+      "catboost": "1.2.10",
+      "lightgbm": "4.7.0",
+      "xgboost": "3.4.1",
+      "optuna": "5.0.0"
+    }
+  }
+}

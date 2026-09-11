@@ -27,8 +27,14 @@ where **units** is a whole number and **offset** is a multiple of 0.1 between
 
 What that shows ([reports/eda_summary.md](reports/eda_summary.md)):
 
-- **The offset is noise.** Its mean is −0.015, and it is unrelated to store,
-  category, price band, visibility or units.
+- **The offset is fixed per product, not noise.** Every training sale is a
+  multiple of one currency step, 0.6658. For each MRP, exactly one of the 41
+  candidate prices (MRP − 2.0 … MRP + 2.0) lies on that step, so the exact
+  unit price can be decoded from MRP alone, and every product then has a
+  single unit price ([src/price_model.py](src/price_model.py)). The step is
+  learned from training sales inside each fold; no held-out sales are read.
+  (An earlier version of this README called the offset random noise; that
+  was wrong.)
 - **Units don't depend on price** (correlation +0.01). Grocery stores sell
   about 2.4 units per product, Supermarket Type1 about 16, Type2 about 14 and
   Type3 about 27.
@@ -144,26 +150,48 @@ general-purpose models lose a few points because their extra flexibility
 mostly fits noise, and log1p loses badly because it optimises the wrong scale.
 Blends that mix in boosting are statistically tied with the structural model
 under cross-validation (within 0.3), and the leaderboard separated them in the
-order cross-validation predicted (below). **The final model is the 75/25 blend
-of StoreRatePopularity with the six-model boosting average**, a weight chosen
-by nested cross-validation before any leaderboard feedback. The full table
+order cross-validation predicted (below). The best submitted score came from
+the 75/25 blend of StoreRatePopularity with the six-model boosting average, a
+weight chosen by nested cross-validation before any leaderboard feedback. The
+current best model under strict validation is described in the next section. The full table
 with fold standard deviations, round counts, residual correlations and the
 tuning history is in [reports/experiments.md](reports/experiments.md); the
 validation checks are in [reports/validation.md](reports/validation.md) and
 the ablations in [reports/ablations.md](reports/ablations.md).
 
-### Final submission
+### Current model: decoded unit price (strict validation)
+
+A later study refits every learned preprocessing step inside each training
+fold (no test-set features) and replaces MRP with the decoded unit price
+(see the key finding). Identical folds, 5-fold × 3 repeats:
+
+| Model | Seed 42 | Seed 137 | Seed 2026 | Mean |
+|---|---|---|---|---|
+| StoreRatePopularity (MRP) | 1071.33 | 1071.67 | 1071.31 | 1071.44 |
+| **LatticeStoreRate (decoded unit price)** | **1070.85** | **1071.18** | **1070.82** | **1070.95** |
+
+The decoded price is better by 0.49 on every seed, and in 12–13 of the 15
+paired folds each time. On top of it, blending in boosting models did not
+help (second-stage crossfit 1070.95–1071.05) and weighting a product's rows
+by their store's precision changed the score by only −0.04. A fixed 75/25
+mix with the boosting average, the recipe of the best submitted file, scores
+1070.80 on seed 42: a tie.
+
+```bash
+~/.venvs/big-mart-sales/bin/python -m src.recommend
+```
+
+writes `submissions/final_lattice_store_rate_refit.csv` (refit on all rows,
+checked) and the per-seed evidence to `outputs/strict_study/recommendation.json`.
+Neither this file nor the 75/25 lattice mix has a leaderboard score yet; see
+[reports/leaderboard_log.md](reports/leaderboard_log.md).
+
+The best submitted file (1147.85) was the fold-averaged 75/25 structural blend.
+A version refit on all rows can be rebuilt with
 
 ```bash
 ~/.venvs/big-mart-sales/bin/python -m src.refit store_rate_popularity catboost_units_unweighted catboost_units catboost_raw xgboost_units_unweighted xgboost_raw lightgbm_raw --weights 18 1 1 1 1 1 1 --seeds 3 --name final_blend_structural75_boosting25_refit
 ```
-
-Weights 18:1:…:1 give the structural model 75% and each boosting model
-25%/6. The refit trains every component on all 8,523 rows, using the tuned
-parameters in `outputs/params/` and the early-stopping round counts in
-`outputs/cv_results.json` (both committed), and checks the file before
-writing it. Its predictions differ from the fold-averaged file that was
-scored (`python -m src.export --average --weights …`) by an RMS of 9.3.
 
 ### Leaderboard
 
@@ -208,13 +236,14 @@ $PY -m src.ablate                                            # feature-group and
 $PY -m src.tune --model catboost_raw --trials 30             # optional Optuna search; train.py picks the result up
 $PY -m src.train                                             # 5x3 CV for every model, blend, submissions/, outputs/cv_results.json
 $PY -m src.report                                            # reports/experiments.md from the saved results
-$PY -m src.refit store_rate_popularity                       # refit on all rows, write and check the final submission
+$PY -m src.recommend                                         # current model: per-seed strict-CV evidence, refit, checked CSV
+$PY -m src.refit store_rate_popularity                       # refit any model(s) on all rows and check the file
 $PY -m src.export catboost_raw --average --name mix          # extra submission files from saved CV predictions
 $PY big_mart_solution.py                                     # single-file version of the structural model only (round 0, leaderboard 1148.28)
 ```
 
 `src.refit` trains on all 8,523 rows (boosting models use the mean
-early-stopping round from CV, scaled by 1.2, averaged over `--seeds`) and
+early-stopping round from CV, optionally scaled by `--rounds-scale`, averaged over `--seeds`) and
 refuses to finish unless the file has exactly the columns
 `Item_Identifier, Outlet_Identifier, Item_Outlet_Sales` with no index column,
 5,681 rows whose identifiers match the test file row by row, no blanks,

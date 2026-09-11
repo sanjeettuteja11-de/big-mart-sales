@@ -19,7 +19,8 @@ are retained in Git history and `reports/history/`.
 | 2 | `blend_structural50_boosting50_cv1071.csv` | 1147.90 | Recorded; upload receipt unavailable |
 | 2 | `boosting_avg6_cv1073.csv` | 1149.49 | Recorded; upload receipt unavailable |
 | 2 | `catboost_units_unweighted_cv1074.csv` | 1150.90 | Recorded; upload receipt unavailable |
-| Continuation | See `outputs/strict_study/recommendation.json` | **Not submitted** | Locally validated CSV; no leaderboard score |
+| 3 | `lattice_store_rate_refit_cv1071.csv`: decoded unit price × store rate × product factor, refit on all rows | **Not submitted** | Strict CV 1070.85 (seed 42), 1070.95 mean over seeds 42/137/2026; 0.49 better than the round 0 model on identical folds for every seed (evidence in `outputs/strict_study/recommendation.json`) |
+| 3 | `lattice75_boosting25_cv1071.csv`: 75% lattice model + 25% six-model boosting average (fold-averaged, same fixed weight as the best round 2 file) | **Not submitted** | Strict CV 1070.80 (seed 42) |
 
 Historical CV values were generated using preprocessing fitted on train plus
 test features. Structural predictions have been reproduced exactly with
