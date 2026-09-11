@@ -122,27 +122,34 @@ is better). Always predicting the mean scores 1,706.4. Full details are in
 | **StoreRatePopularity** (tuned smoothing = 55) | **1,071.33** |
 | StoreRatePopularity, no product factor | 1,071.95 |
 | StoreRatePopularity, rates pooled by store type | 1,072.32 |
-| CatBoost (units target, early-stopped) | 1,074.07 |
+| CatBoost, units target, unweighted | 1,073.51 |
+| CatBoost, units target, MRP²-weighted (tuned) | 1,073.80 |
+| CatBoost, sales (tuned) | 1,074.93 |
 | Ridge, price slope per store | 1,075.14 |
-| CatBoost (sales) | 1,075.35 |
 | Poisson GLM | 1,076.12 |
-| XGBoost (sales) | 1,077.82 |
-| LightGBM (sales) | 1,078.69 |
+| XGBoost, units unweighted / sales (tuned) | 1,076.51 / 1,076.60 |
+| LightGBM, sales (tuned) / units unweighted | 1,076.71 / 1,077.42 |
 | Random Forest / Extra Trees (units) | 1,078.96 / 1,079.56 |
-| LightGBM (units) | 1,079.79 |
 | CatBoost / LightGBM on log1p(sales) | 1,111.18 / 1,113.24 |
-| Nested blend of everything | 1,071.77 |
+| Average of the six boosting models above | 1,073.32 |
+| 75% StoreRatePopularity + 25% boosting average | 1,071.10 (weight picked by nested CV, nested score 1,071.36) |
+| Nested simplex blend of all 20 models | 1,071.64 |
 
-The structural model wins, and its whole fit takes about 0.1 seconds: 10 store
-rates plus 1,559 shrunk product factors. The general-purpose models lose
-because their extra flexibility mostly fits noise; the log1p target loses
-badly because it optimises the wrong scale. The blend cannot beat the best
-single model, so the recommended submission is
-`submissions/store_rate_popularity_cv1071.csv`. The full table with fold
-standard deviations, round counts, residual correlations and the tuning
-history is in [reports/experiments.md](reports/experiments.md); the
-validation checks are in [reports/validation.md](reports/validation.md) and
-the ablations in [reports/ablations.md](reports/ablations.md).
+Boosting round counts come from early stopping inside each training fold, and
+the four main boosting models were tuned with Optuna (25 trials each).
+
+The structural model is the best single model, and its whole fit takes about
+0.1 seconds: 10 store rates plus 1,559 shrunk product factors. The
+general-purpose models lose a few points because their extra flexibility
+mostly fits noise, and log1p loses badly because it optimises the wrong scale.
+Blends that mix in boosting are statistically tied with the structural model
+under cross-validation (within 0.3). On the leaderboard, round 1 suggests the
+feature-based models do a few points better than cross-validation predicts,
+and round 2 tests the blends. The full table with fold standard deviations,
+round counts, residual correlations and the tuning history is in
+[reports/experiments.md](reports/experiments.md); the validation checks are in
+[reports/validation.md](reports/validation.md) and the ablations in
+[reports/ablations.md](reports/ablations.md).
 
 ### Leaderboard
 
