@@ -19,8 +19,8 @@ are retained in Git history and `reports/history/`.
 | 2 | `blend_structural50_boosting50_cv1071.csv` | 1147.90 | Recorded; upload receipt unavailable |
 | 2 | `boosting_avg6_cv1073.csv` | 1149.49 | Recorded; upload receipt unavailable |
 | 2 | `catboost_units_unweighted_cv1074.csv` | 1150.90 | Recorded; upload receipt unavailable |
-| 3 | `lattice_store_rate_refit_cv1071.csv`: decoded unit price × store rate × product factor, refit on all rows | **Not submitted** | Strict CV 1070.85 (seed 42), 1070.95 mean over seeds 42/137/2026; 0.49 better than the round 0 model on identical folds for every seed (evidence in `outputs/strict_study/recommendation.json`) |
-| 3 | `lattice75_boosting25_cv1071.csv`: 75% lattice model + 25% six-model boosting average (fold-averaged, same fixed weight as the best round 2 file) | **Not submitted** | Strict CV 1070.80 (seed 42) |
+| 3 | `lattice_store_rate_refit_cv1071.csv`: decoded unit price × store rate × product factor, refit on all rows | **1147.83** | Submitted 11 Sep 2026, 11:45, after the file below; score read from the user's submission history (upload-order association). Strict CV 1070.85 (seed 42), 1070.95 mean over seeds 42/137/2026; 0.49 better than the round 0 model on identical folds for every seed, and 0.45 better on the leaderboard (evidence in `outputs/strict_study/recommendation.json`) |
+| 3 | `lattice75_boosting25_cv1071.csv`: 75% lattice model + 25% six-model boosting average (fold-averaged, same fixed weight as the best round 2 file) | **1148.18** | Submitted 11 Sep 2026, just before 11:45; score read from the user's submission history (upload-order association). Strict CV 1070.80 (seed 42); 0.33 worse on the leaderboard than the structural 75/25 blend |
 
 Historical CV values were generated using preprocessing fitted on train plus
 test features. Structural predictions have been reproduced exactly with
@@ -28,8 +28,8 @@ fold-local fitting; boosting results require the strict reruns in the current
 experiment report. The later full-data refit file differs from the historical
 fold-averaged submission and does **not** inherit its leaderboard score.
 
-The best recorded historical score is 1147.85, but it is not a verified score
-for the current recommended CSV. There is no justified fixed offset mapping
+The best recorded score is 1147.83, for the decoded-price model refit on all
+rows, which is also the model recommended by strict cross-validation. There is no justified fixed offset mapping
 CV to the leaderboard. Public evaluation size, sampled rows, hidden targets,
 and submission provenance are not available here. Model dependence, finite
 samples, selected experiments, different preprocessing or refitting, and

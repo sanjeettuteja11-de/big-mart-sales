@@ -154,10 +154,9 @@ general-purpose models lose a few points because their extra flexibility
 mostly fits noise, and log1p loses badly because it optimises the wrong scale.
 Blends that mix in boosting are statistically tied with the structural model
 under cross-validation (within 0.3), and the leaderboard separated them in the
-order cross-validation predicted (below). The best submitted score came from
-the 75/25 blend of StoreRatePopularity with the six-model boosting average, a
-weight chosen by nested cross-validation before any leaderboard feedback. The
-current best model under strict validation is described in the next section. The full table
+order cross-validation predicted (below). The decoded-price model in the next
+section is both the best model under strict validation and the best submitted
+score. The full table
 with fold standard deviations, round counts, residual correlations and the
 tuning history is in [reports/experiments.md](reports/experiments.md); the
 validation checks are in [reports/validation.md](reports/validation.md) and
@@ -187,11 +186,13 @@ mix with the boosting average, the recipe of the best submitted file, scores
 
 writes `submissions/final_lattice_store_rate_refit.csv` (refit on all rows,
 checked) and the per-seed evidence to `outputs/strict_study/recommendation.json`.
-Neither this file nor the 75/25 lattice mix has a leaderboard score yet; see
+On the leaderboard this file scored **1147.83**, 0.45 better than the MRP
+version (1148.28) and close to the 0.49 that cross-validation predicted. The
+75/25 lattice mix scored 1148.18. See
 [reports/leaderboard_log.md](reports/leaderboard_log.md).
 
-The best submitted file (1147.85) was the fold-averaged 75/25 structural blend.
-A version refit on all rows can be rebuilt with
+The 75/25 structural blend (1147.85 as a fold-averaged file) can be rebuilt,
+refit on all rows, with
 
 ```bash
 ~/.venvs/big-mart-sales/bin/python -m src.refit store_rate_popularity catboost_units_unweighted catboost_units catboost_raw xgboost_units_unweighted xgboost_raw lightgbm_raw --weights 18 1 1 1 1 1 1 --seeds 3 --name final_blend_structural75_boosting25_refit
@@ -205,9 +206,11 @@ A version refit on all rows can be rebuilt with
 | Best single boosting model | 1,073.51 | 1,150.90 |
 | Six-model boosting average | 1,073.32 | 1,149.49 |
 | 50/50 structural + boosting | 1,071.36 | 1,147.90 |
-| **75/25 structural + boosting (final)** | **1,071.10** | **1,147.85** |
+| 75/25 structural + boosting | 1,071.10 | 1,147.85 |
+| 75/25 decoded-price model + boosting | 1,070.80 (strict) | 1,148.18 |
+| **Decoded-price model (final)** | **1,070.85 (strict)** | **1,147.83** |
 
-All ten submissions, with what each tested, are in
+All twelve submissions, with what each tested, are in
 [reports/leaderboard_log.md](reports/leaderboard_log.md). For reference, the
 visible top of the leaderboard on 2026-09-11 ranged from 1126.03 (#1) to
 1138.81 (#40).
@@ -216,7 +219,7 @@ Leaderboard scores are about 77 points worse than cross-validation, far more
 than sampling noise: a random subset of training rows the size of the test
 set scores 1071 ± 9. Train and test features are indistinguishable
 (adversarial validation AUC 0.495, i.e. chance), so the difference lies in
-the test sales themselves. Even so, 7 of the 9 follow-up files landed within
+the test sales themselves. Even so, 9 of the 11 follow-up files landed within
 one point of the score cross-validation predicted (the two exceptions both
 contained the untuned round 1 CatBoost), so cross-validation was a sound
 basis for choosing the model.
