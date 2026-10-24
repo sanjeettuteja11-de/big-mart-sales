@@ -7,9 +7,9 @@ practice problem. Submissions are scored by RMSE on `Item_Outlet_Sales`.
 > **All solutions archive:** every submission file from the project (v1–v81, 74
 > distinct files) is in [`all_solutions/`](all_solutions/README.md), each with its
 > CSV, its leaderboard score and the Python that produced it.
-> Best leaderboard score: `v68_denoised_quantity`, **1122.81** (built on
-> leaderboard-tuned blends; see its folder). Best model chosen by
-> cross-validation alone: `honest_quantity.py`, **CV 1062.83**.
+> Best leaderboard score: `v80_hull_optimum`, **1122.7214** (a blend of earlier
+> scored files weighted by their leaderboard scores; see its folder). Best model
+> chosen by cross-validation alone: `honest_quantity.py`, **CV 1062.83**.
 
 ## The problem
 
