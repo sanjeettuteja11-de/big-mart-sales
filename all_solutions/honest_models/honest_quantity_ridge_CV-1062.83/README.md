@@ -6,7 +6,7 @@ Cross-validation on training data: CV 1062.83 +/- 0.30 (5 folds x 5 seeds) - bes
 
 | | |
 |---|---|
-| Phase | Phase 5 - clean rebuilds / later files |
+| Phase | Phase 5 - later files (Sep-Oct) |
 | Approach | Decode exact unit price from MRP; predict units = fold-local outlet mean units + Ridge(alpha=3000) on spline(product number, 30 knots) + one-hot family/fat/Item_Type, outlet-scaled; sales = units x price. Selected on training CV only. |
 | Uses leaderboard feedback? | No - chosen with training-data cross-validation only |
 | Prediction file | [`honest_quantity_ridge.csv`](honest_quantity_ridge.csv) (5,681 rows) |

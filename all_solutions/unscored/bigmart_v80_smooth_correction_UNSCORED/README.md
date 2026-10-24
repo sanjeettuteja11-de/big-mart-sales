@@ -4,7 +4,7 @@
 
 | | |
 |---|---|
-| Phase | Phase 5 - clean rebuilds / later files |
+| Phase | Phase 5 - later files (Sep-Oct) |
 | Approach | A further correction close to v68q / v80 hull. |
 | Uses leaderboard feedback? | Unknown - no generator script |
 | Prediction file | [`bigmart_v80_smooth_correction_UNSCORED.csv`](bigmart_v80_smooth_correction_UNSCORED.csv) (5,681 rows) |
