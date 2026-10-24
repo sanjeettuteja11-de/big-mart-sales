@@ -1,4 +1,0 @@
--r requirements-submission.txt
-lightgbm==4.7.0
-catboost==1.2.10
-interpret-core==0.7.8
