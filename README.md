@@ -4,6 +4,13 @@ Predicting how much each product sells in each store, for the
 [Analytics Vidhya Big Mart Sales III](https://www.analyticsvidhya.com/datahack/contest/practice-problem-big-mart-sales-iii/)
 practice problem. Submissions are scored by RMSE on `Item_Outlet_Sales`.
 
+> **All solutions archive:** every submission file from the project (v1–v81, 74
+> distinct files) is in [`all_solutions/`](all_solutions/README.md), each with its
+> CSV, its leaderboard score and the Python that produced it.
+> Best leaderboard score: `v68_denoised_quantity`, **1122.81** (built on
+> leaderboard-tuned blends; see its folder). Best model chosen by
+> cross-validation alone: `honest_quantity.py`, **CV 1062.83**.
+
 ## The problem
 
 BigMart recorded 2013 sales for 1,559 products across 10 stores. For each

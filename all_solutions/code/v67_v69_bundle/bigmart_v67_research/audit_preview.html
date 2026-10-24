@@ -1,0 +1,45 @@
+<!doctype html><html lang="en"><meta charset="utf-8"><title>BigMart audit</title>
+<style>body{max-width:1000px;margin:40px auto;font:16px/1.55 system-ui;color:#172033;padding:0 24px}pre{white-space:pre-wrap;background:#f1f5f9;padding:16px;border-radius:8px}.markdown{white-space:pre-wrap;margin:22px 0}h1{font-size:28px}</style>
+<h1>Executed BigMart v67–v69 audit</h1>
+<div class="markdown"># BigMart v67–v69 audit
+
+## tl;dr
+
+v67 has a **calculated**, not newly observed, public RMSE of 1124.1799. v68 and v69 are unscored trained refinements. The v69 recipe improved two fresh-model CV checks by 4.5516 and 3.3099 RMSE points; this is not a public-score forecast.</div>
+<div class="markdown">## Context &amp; Methods
+
+The submission generators `make_submission.py` and `refinement.py` are the training source. The latter retrains old and suffix-only corrections from raw data on 15 folds. `validate.py` rebuilds a fresh proxy baseline inside outer folds.
+
+### Key Assumptions
+
+Reported scores match the hashed CSVs; public rows remain fixed. The historical ensemble is a frozen input. Repeated CV uses the same training dataset and is subject to selection bias. Small exact-value tables are used here because this notebook verifies calculations and artifacts, rather than presenting a trend or a graphical model comparison.</div>
+<div class="markdown">## Data
+
+Raw inputs and frozen scored files are identified by SHA-256, not just filenames.</div>
+<pre>   input  hash_verified
+   train           True
+    test           True
+  sample           True
+baseline           True
+</pre>
+<div class="markdown">## Results
+
+### Exact affine-line score calculation</div>
+<pre>Optimal alpha: 1.135112248150
+Calculated public RMSE: 1124.1798633738
+Observed v67 public RMSE: not supplied
+</pre>
+<div class="markdown">### Fresh-model validation
+
+These are proxy training-data checks, not leaderboard results.</div>
+<pre>            check  baseline  v68_recipe  v69_recipe
+Outlet stratified 1066.5368   1062.7165   1061.9852
+  Product holdout 1065.3137   1062.2886   1062.0038
+</pre>
+<div class="markdown">### Submission integrity</div>
+<pre>Passed: row count, column order, identifiers, hashes, finite/nonnegative values and affine relation.
+</pre>
+<div class="markdown">## Takeaways
+
+Try v69 first and v68 second. AV evaluation is required to establish whether either reaches 1120. No hidden labels or inferred public-row membership were used. See `README.md` for exact generator commands and baseline reproduction limits.</div>
+</html>

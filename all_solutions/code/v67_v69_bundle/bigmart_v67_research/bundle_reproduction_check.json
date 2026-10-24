@@ -1,0 +1,19 @@
+{
+  "fresh_directory": "/var/folders/ts/zj8g_8xx2qd5bqmqwrwgl3r80000gn/T/bigmart-v67-reproduce-kal0bqip",
+  "elapsed_seconds": 1.9482874590321444,
+  "checks": {
+    "bigmart_submission_v67_exact_quantity_optimum.csv": {
+      "sha256": "f1052d3aa5f63bef2972f729fe8c0bb7c8529a251bcb5897c50cb1630649f298",
+      "byte_identical": true
+    },
+    "bigmart_submission_v68_denoised_quantity.csv": {
+      "sha256": "b7d42f01b288c32983778fa1674b664229a4d6f0b52bb9b0e4be41dda32cd01c",
+      "byte_identical": true
+    },
+    "bigmart_submission_v69_denoised_quantity.csv": {
+      "sha256": "70a5341ac308b410efde815954c50f2f967800d39950ff2621e3292feff109e4",
+      "byte_identical": true
+    }
+  },
+  "all_passed": true
+}
