@@ -1,0 +1,70 @@
+{
+  "inputs": {
+    "train": {
+      "path": "/Users/abhimanyunain/Downloads/train_v9rqX0R.csv",
+      "sha256": "6f1b47d794ff393663517a075c3648baf413d0f1d687878b21c806d293ec2e41"
+    },
+    "test": {
+      "path": "/Users/abhimanyunain/Downloads/test_AbJTz2l.csv",
+      "sha256": "2054baa1f31359249047c2f9fefc2c3f6ce702c9ef45a898923d2459c434b23a"
+    },
+    "sample": {
+      "path": "/Users/abhimanyunain/Downloads/sample_submission_8RXa3c6.csv",
+      "sha256": "30a56b38ab2f840c1fd61dd5e2e744fc80dbe6d5ce11a35b5db03c2a308f6898"
+    },
+    "baseline": {
+      "path": "/Users/abhimanyunain/Downloads/bigmart_submission_v67_exact_quantity_optimum.csv",
+      "sha256": "f1052d3aa5f63bef2972f729fe8c0bb7c8529a251bcb5897c50cb1630649f298"
+    }
+  },
+  "recipe": {
+    "seeds": [
+      713,
+      2718,
+      9317
+    ],
+    "folds": 5,
+    "spline_knots": 20,
+    "ridge_alpha": 300,
+    "previous_correction_alpha": 1.135112248149756,
+    "removal_strengths": {
+      "v68": 1.0,
+      "v69": 1.5
+    },
+    "formula": "v67 + strength * alpha * (suffix_only - suffix_with_category_controls)"
+  },
+  "public_rmse": null,
+  "output": {
+    "v68": {
+      "path": "/Users/abhimanyunain/Downloads/bigmart_submission_v68_denoised_quantity.csv",
+      "sha256": "b7d42f01b288c32983778fa1674b664229a4d6f0b52bb9b0e4be41dda32cd01c",
+      "rows": 5681,
+      "strength": 1.0,
+      "min": 23.391646174034086,
+      "max": 7373.5155078704265,
+      "rms_change_from_v67": 49.36721714734776
+    },
+    "v69": {
+      "path": "/Users/abhimanyunain/Downloads/bigmart_submission_v69_denoised_quantity.csv",
+      "sha256": "70a5341ac308b410efde815954c50f2f967800d39950ff2621e3292feff109e4",
+      "rows": 5681,
+      "strength": 1.5,
+      "min": 23.41486067017777,
+      "max": 7404.888807032022,
+      "rms_change_from_v67": 74.05082572102162
+    }
+  },
+  "limitations": [
+    "Public scores cannot be determined before AV evaluates this new direction.",
+    "Training CV was used for model selection and is not an untouched external test.",
+    "Baseline uses previous public feedback; private score remains unknown.",
+    "Historical v63 ensemble is a frozen input, not retrained by this source."
+  ],
+  "versions": {
+    "python": "3.11.9",
+    "numpy": "2.4.4",
+    "pandas": "3.0.2",
+    "scipy": "1.17.1",
+    "sklearn": "1.8.0"
+  }
+}
