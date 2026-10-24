@@ -1,0 +1,44 @@
+{
+  "inputs": {
+    "v63": {
+      "file": "bigmart_submission_v63_exact_v60_optimum.csv",
+      "sha256": "9341aaf1f70110d7759c35598932b5cb15c0c4bfec7bd7a48d98b6658ad438cd",
+      "alpha": 0.0,
+      "reported_public_rmse": 1140.0228905024
+    },
+    "v65": {
+      "file": "bigmart_submission_v65_quantity_correction.csv",
+      "sha256": "c8fd57830494b137ef32af68ef525c9fd1cf6c5c783902e8f19b5899c877082d",
+      "alpha": 0.75,
+      "reported_public_rmse": 1126.0148395277
+    },
+    "v66": {
+      "file": "bigmart_submission_v66_quantity_correction.csv",
+      "sha256": "a910ffa2cf26d166b0635da7c5021acafb4eb72e2f8fa32236dbf06f302a2442",
+      "alpha": 1.0,
+      "reported_public_rmse": 1124.4058880453
+    }
+  },
+  "line_identity_max_error": 1.3642420526593924e-12,
+  "squared_rmse_quadratic": {
+    "a": 27840.424981198972,
+    "b": -63204.01477970679,
+    "c": 1299652.1908694473
+  },
+  "optimal_alpha": 1.135112248149756,
+  "calculated_public_rmse": 1124.1798633737867,
+  "observed_public_rmse": null,
+  "public_score_conditions": [
+    "Input scores correspond to the exact hashed files.",
+    "Same RMSE metric and same fixed public scoring rows."
+  ],
+  "scope": "Exact only for this one-dimensional line, not a global model optimum.",
+  "output": {
+    "path": "/Users/abhimanyunain/Downloads/bigmart_submission_v67_exact_quantity_optimum.csv",
+    "sha256": "f1052d3aa5f63bef2972f729fe8c0bb7c8529a251bcb5897c50cb1630649f298",
+    "rows": 5681,
+    "min": 23.34521718174672,
+    "max": 7465.860875046098,
+    "rms_change_from_v66": 22.506018013425653
+  }
+}

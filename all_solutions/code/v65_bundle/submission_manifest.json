@@ -1,0 +1,73 @@
+{
+  "inputs": {
+    "train": {
+      "path": "/Users/abhimanyunain/Downloads/train_v9rqX0R.csv",
+      "sha256": "6f1b47d794ff393663517a075c3648baf413d0f1d687878b21c806d293ec2e41"
+    },
+    "test": {
+      "path": "/Users/abhimanyunain/Downloads/test_AbJTz2l.csv",
+      "sha256": "2054baa1f31359249047c2f9fefc2c3f6ce702c9ef45a898923d2459c434b23a"
+    },
+    "sample": {
+      "path": "/Users/abhimanyunain/Downloads/sample_submission_8RXa3c6.csv",
+      "sha256": "30a56b38ab2f840c1fd61dd5e2e744fc80dbe6d5ce11a35b5db03c2a308f6898"
+    },
+    "baseline": {
+      "path": "/Users/abhimanyunain/Downloads/bigmart_submission_v63_exact_v60_optimum.csv",
+      "sha256": "9341aaf1f70110d7759c35598932b5cb15c0c4bfec7bd7a48d98b6658ad438cd"
+    }
+  },
+  "settings": {
+    "seeds": [
+      713,
+      2718,
+      9317
+    ],
+    "folds": 5,
+    "spline_knots": 20,
+    "ridge_alpha": 300,
+    "weights": {
+      "v65": 0.75,
+      "v66": 1.0
+    }
+  },
+  "validation": {
+    "quantity_integer_error": 7.105427357601002e-15,
+    "repeated_oof_neutral_rmse": 1071.4432643162538,
+    "repeated_oof_quantity_model_rmse": 1062.5681342317048
+  },
+  "public_score": null,
+  "limitations": [
+    "No hidden test labels are available. Public RMSE is unknown until evaluated by AV.",
+    "The frozen baseline was tuned on earlier public feedback; private-set effects are unknown.",
+    "CV model selection uses the available training data; this is not an untouched external test.",
+    "Only the new correction is retrained from raw data here. Historical baseline is a versioned input."
+  ],
+  "versions": {
+    "python": "3.11.9",
+    "numpy": "2.4.4",
+    "pandas": "3.0.2",
+    "scipy": "1.17.1",
+    "sklearn": "1.8.0"
+  },
+  "outputs": {
+    "v65": {
+      "path": "/Users/abhimanyunain/Downloads/bigmart_submission_v65_quantity_correction.csv",
+      "sha256": "c8fd57830494b137ef32af68ef525c9fd1cf6c5c783902e8f19b5899c877082d",
+      "weight": 0.75,
+      "rms_change_from_v63": 124.9295585057566,
+      "min": 26.719207441072427,
+      "max": 7132.513428758705,
+      "nonnegative_clipped_rows": 0
+    },
+    "v66": {
+      "path": "/Users/abhimanyunain/Downloads/bigmart_submission_v66_quantity_correction.csv",
+      "sha256": "a910ffa2cf26d166b0635da7c5021acafb4eb72e2f8fa32236dbf06f302a2442",
+      "weight": 1.0,
+      "rms_change_from_v63": 166.57274467434212,
+      "min": 24.52894325476324,
+      "max": 7348.909718339819,
+      "nonnegative_clipped_rows": 0
+    }
+  }
+}
